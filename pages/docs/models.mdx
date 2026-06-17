@@ -1,8 +1,8 @@
 # Models & Usage
 
 FrostyFi routes **all chat models through [OpenRouter](https://openrouter.ai)** — a
-single gateway in front of every major provider. This page explains the model picker, the
-sliding-scale monthly budget, and the **≈ calls left** meter.
+single gateway in front of every major provider. This page explains the model picker, how
+monthly usage scales with the model you choose, and the **≈ calls left** meter.
 
 ## One gateway, one picker
 
@@ -27,39 +27,35 @@ Models come in two pools:
 **Model access is binary — `free` or `paid`.** The free tier sees only free models; **both
 Pro and Enterprise see every paid model.** There is no "this model is Enterprise-only."
 
-## The sliding-scale monthly budget
+## Monthly usage scales with the model
 
-How much you can use depends on your [subscription tier](/docs/pricing):
+How much you can do each month depends on your [subscription tier](/docs/pricing) **and on
+the models you pick** — that's the fair part. A call to a lightweight model and a call to a
+frontier model are very different amounts of compute, so your allowance is measured by
+usage rather than a flat call count. Cheaper models stretch much further; premium models
+use more of your allowance per call.
 
-| Tier | What bounds your usage |
-|------|------------------------|
-| **Free** | A flat **50 calls/month**, against **$0 free models only**. No dollar cap needed — free models cost nothing. |
-| **Pro** | A **monthly USD budget** enforced by your per-user OpenRouter key (default **$8.75/mo**). Unlimited *count* of calls — the dollar budget is the real bound. |
-| **Enterprise** | A larger **monthly USD budget** (default **$34.65/mo**), same mechanism. |
+| Tier | Monthly usage |
+|------|---------------|
+| **Free** | A flat **50 calls/month** on **free models only**. |
+| **Pro** | A generous monthly allowance — roughly **400–4,700 premium calls/month**, depending on the models you use. |
+| **Enterprise** | A larger allowance — roughly **1,500–18,000 premium calls/month**, depending on the models you use. |
 
-Under the hood, each paid user gets their **own OpenRouter key minted with a monthly USD
-limit**, drawn from FrostyFi's shared, funded balance. When you hit the cap, OpenRouter
-returns HTTP `402` and FrostyFi shows a graceful "budget reached" message. The cap resets
-monthly. (The dollar figures are environment-tunable by the operator.)
-
-> Why a dollar budget instead of a fixed number of calls? Because a call to a cheap model
-> and a call to an expensive model cost very different amounts. A flat call count would
-> either waste your budget on cheap models or blow it on expensive ones. The dollar budget
-> spends fairly across whatever models you choose.
+When you reach your monthly allowance, FrostyFi shows a graceful "limit reached" message
+and it resets at the start of each month. Free and fast models remain available to Pro and
+Enterprise without drawing down the premium allowance.
 
 ## The "calls left" estimate
 
-A raw dollar figure would expose FrostyFi's pricing margin, so the usage meter never shows
-dollars. Instead it translates your remaining monthly budget into an **≈ N calls left**
-estimate **for the model you currently have selected**:
+The usage meter translates your remaining monthly allowance into an **≈ N calls left**
+estimate **for the model you currently have selected** — never a raw cost figure:
 
 - Switch to a **cheaper** model and the estimate goes **up**.
 - Switch to a **pricier** model and it goes **down**.
 
-This is margin-neutral (the same dollars either way) and gives you an honest, intuitive
-sense of what your budget buys on each model. The estimate uses a representative
-tokens-per-call profile, so it's a guide, not a contract — the **hard limit is always the
-monthly USD cap** (the HTTP 402 from OpenRouter).
+It's the same allowance either way — the meter just gives you an honest, intuitive sense of
+what's left on the model you're using. The estimate uses a representative tokens-per-call
+profile, so it's a guide, not a contract.
 
 The **free tier** meter is simpler: it just shows calls used against the flat **50/month**
 allowance.

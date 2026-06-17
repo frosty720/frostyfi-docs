@@ -19,12 +19,28 @@ const config = {
     link: 'https://discord.gg/RhSxZrGBF3',
   },
   footer: {
-    text: '© 2026 FrostyLabs',
+    text: (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', width: '100%' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.25rem', fontSize: '0.875rem' }}>
+          <a href="https://frostylabs.ai" target="_blank" rel="noreferrer">Website</a>
+          <a href="https://flow.frostylabs.ai" target="_blank" rel="noreferrer">Launch App</a>
+          <a href="https://t.me/+ZX21TSI9AaY4ODUx" target="_blank" rel="noreferrer">Telegram</a>
+          <a href="https://discord.gg/RhSxZrGBF3" target="_blank" rel="noreferrer">Discord</a>
+          <a href="https://x.com/FrostyLabsAi" target="_blank" rel="noreferrer">X / Twitter</a>
+        </div>
+        <span>© 2026 FrostyLabs · Agents that get paid, on-chain.</span>
+      </div>
+    ),
   },
   head: (
     <>
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <meta name="description" content="FrostyFi - Web3 AI Workflow Automation Platform" />
+      <link rel="icon" href="/favicon.ico" sizes="any" />
+      <link rel="icon" type="image/png" href="/resources/frostylogo.png" />
+      <link rel="apple-touch-icon" href="/resources/frostylogo.png" />
+      <meta property="og:title" content="FrostyFi Docs" />
+      <meta property="og:description" content="Build AI agents that think, act on-chain, and get paid." />
     </>
   ),
 }
