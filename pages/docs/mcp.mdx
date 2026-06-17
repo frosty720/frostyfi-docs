@@ -1,0 +1,65 @@
+# MCP Integration
+
+Connect external tools via the Model Context Protocol.
+
+## What is MCP?
+
+MCP (Model Context Protocol) allows AI models to interact with external tools and services.
+
+## Adding an MCP Server
+
+The hosted app connects to **remote MCP servers only** (for security). Local stdio /
+`npx`-spawned servers are not supported.
+
+![The MCP Servers page — connect your first server, with one-click vetted integrations](/screenshots/mcp-1.png)
+
+1. Go to **Settings** → **MCP Servers**
+2. Click **Add Server**
+3. Select a remote transport type:
+   - **StreamableHTTP**: HTTP-based (recommended)
+   - **SSE**: Server-Sent Events
+
+The marketplace also ships vetted remote servers (e.g. CoinGecko, Alpha Vantage, Stripe,
+Etherscan, Blockscout) you can add in one click.
+
+![The MCP Marketplace — discover and add vetted remote MCP servers](/screenshots/mcp-2.png)
+
+## Example: a remote MCP server
+
+```json
+{
+  "name": "coingecko",
+  "transport": "streamableHttp",
+  "url": "https://mcp.example.com/coingecko"
+}
+```
+
+In the UI, you give the server a name and paste a URL-based config (with any auth header).
+Remote (URL-based) servers only — command-based servers must come from the curated marketplace.
+
+![The MCP configuration form — a URL-based remote server with an auth header and live preview](/screenshots/mcp-config.png)
+
+## Using MCP Tools in Chat
+
+Type `@` followed by the tool name to call it:
+
+```
+@coingecko price of ETH and BTC right now
+```
+
+## Built-in Tools
+
+Beyond MCP servers, every chat ships with these built-in tools:
+
+| Tool | Description |
+|------|-------------|
+| Web search | Web search via EXA |
+| Web content | Fetch and read a page's contents |
+| HTTP fetch | Call any REST endpoint |
+| Code (JS / Python) | Run sandboxed JavaScript or Python |
+| Create workflow | Scaffold a workflow from a description |
+| Image generation | Generate images (routed through OpenRouter) |
+
+## Creating Custom Servers
+
+See [MCP SDK](https://github.com/modelcontextprotocol/sdk) for building your own remote MCP server.

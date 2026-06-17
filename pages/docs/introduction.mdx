@@ -1,0 +1,70 @@
+# What is FrostyFi?
+
+**FrostyFi** is a visual workflow-automation
+platform for AI agents and blockchain. It lets you go from a chat message to a deployed,
+monetizable on-chain agent — without leaving the browser.
+
+It combines four things most tools keep separate:
+
+1. **A chat workspace** — talk to AI models, attach files, and call tools.
+2. **A visual workflow builder** — drag-and-drop nodes onto a canvas to automate
+   anything from "summarize an RSS feed" to "monitor a wallet and send a transaction."
+3. **Deployable agents** — publish a workflow as a live agent that other apps and
+   agents can call.
+4. **Blockchain-native primitives** — charge per call in USDC ([x402](/docs/agents#x402-payments)),
+   register an on-chain identity and reputation ([ERC-8004](/docs/agents#erc-8004-identity--reputation)),
+   and run EVM/Solana operations as workflow steps.
+
+## The product in two minutes
+
+- **Chat** with a curated set of AI models, all routed through
+  [OpenRouter](/docs/models). Mention an
+  **Assistant** with `@` to bring in a domain expert, or mention a **Workflow** to run it
+  inline as a tool.
+- **Build workflows** on an [`@xyflow/react`](/docs/workflows) canvas. Every workflow
+  starts at an **Input** node and ends at an **Output** node; in between you wire LLM,
+  HTTP, condition, code, EVM, Solana, Vault, loop, and integration nodes.
+- **Deploy** a workflow to **Frosty Engine**, the execution backend that runs your
+  workflows on a schedule (cron) or via webhook — in the background, without a browser open.
+- **Monetize** by publishing a workflow as an **Agent**: an
+  [A2A](/docs/agents#a2a-protocol)-speaking endpoint with an on-chain identity that can
+  charge USDC micropayments per request.
+
+## Who it's for
+
+- **Builders & automators** who want a no-code/low-code way to chain AI and APIs together.
+- **Web3 developers** who need on-chain reads/writes, multi-chain coverage (1700+ chains
+  via ThirdWeb), and wallet operations as first-class workflow steps.
+- **Agent developers** who want to publish paid, discoverable agents that speak the
+  standard Agent-to-Agent (A2A) protocol and carry an ERC-8004 on-chain identity.
+
+## How the pieces fit together
+
+```
+  Chat  ──@mention──►  Assistants (reasoning experts)
+   │                   Workflows (run inline as a tool)
+   │
+   ▼
+  Workflow builder  ──deploy──►  Frosty Engine
+   (Input → … → Output)            • cron schedules
+   │                               • webhook triggers
+   │
+   ▼
+  Publish as Agent  ──►  A2A endpoint + ERC-8004 identity + x402 payments
+                          (discoverable in the Marketplace)
+```
+
+## Honest status notes
+
+FrostyFi is shipping continuously. A couple of things to set expectations:
+
+- **Voice chat is not available yet.** It is built but hidden for launch while it's
+  re-architected onto the OpenRouter pipeline (it previously depended on a single
+  owner-key provider). It will return in a later multimodal sprint.
+- **The app uses remote MCP servers only.** For security, FrostyFi connects to remote
+  (HTTP/SSE) MCP servers — not local stdio/`npx`-spawned ones.
+- **The Permafrost ($PERMA) token has not launched.** It is gated behind explicit
+  [launch gates](/docs/roadmap) (real traction, a working native model, audited contracts,
+  live docs). Today the product runs on USDC subscriptions.
+
+Next: [Getting Started →](/docs/getting-started)

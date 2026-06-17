@@ -1,0 +1,77 @@
+# POL & Protocol Funding
+
+> How FrostyFi funds itself and deepens its own liquidity — from real subscription revenue, without VCs and without dumping tokens.
+
+import { Callout } from 'nextra/components'
+
+<Callout type="warning">
+Pre-launch design. The POL router, DAO liquidity, and funding splits deploy in Phase 3 after the [launch gates](/docs/roadmap#launch-gates) are met and `frosty-core` is audited.
+</Callout>
+
+## What POL is
+
+**POL = Protocol-Owned Liquidity.** Instead of renting liquidity from mercenary farmers who leave the moment incentives stop, FrostyFi's DAO *owns* the PERMA/USDC liquidity outright. That liquidity:
+
+- earns trading fees on every swap (a growing, protocol-owned income stream),
+- can't be pulled out from under the market, and
+- grows automatically as the product earns revenue.
+
+POL turns the treasury into a productive endowment rather than a balance that only shrinks.
+
+## The flywheel
+
+The core loop ties product revenue directly to the token and the treasury:
+
+```
+User subscribes (USDC)
+        │
+        ├─►  a share buys PERMA on the DEX  ─►  paired into DAO-owned POL
+        │                                          │
+        │                                          └─►  POL earns trading fees ─► treasury grows
+        │
+        ├─►  reserves (USDC) back bonds + runway
+        │
+        └─►  dev funding (continued development)
+
+Users spend PERMA on premium features (native model, agent deploy, hosted endpoints)
+        │
+        └─►  part burned (supply ↓) · part to lockers (real yield to POLAR holders)
+```
+
+Two distinct forces:
+- **Buy pressure** — every subscription routes USDC into buying PERMA for POL. Demand scales with real usage, not hype.
+- **Utility & yield** — spending PERMA on premium features burns supply and pays POLAR lockers. (See [Tokenomics](/docs/tokenomics#why-you-actually-need-perma).)
+
+<Callout type="info">
+The PERMA buy is funded from the gap between what a user *could* spend (their usage cap) and what they *actually* spend on average — so it deepens liquidity without eating into margins.
+</Callout>
+
+## Buy from on-chain and off-chain payers
+
+- **Wallet (USDC) subscribers** — the PERMA buy happens in the same flow as the payment, atomically.
+- **Card / Coinbase Commerce subscribers** — no on-chain payment, so those are swept into a **batched treasury buyback** on a schedule. Same destination, different path.
+
+A slippage guard protects every buy, and the PERMA/USDC pool is seeded at launch so routine buys don't move the price.
+
+## How the project is funded
+
+FrostyFi is a **sole-operator, bootstrapped** project — no outside capital. Funding happens in two phases:
+
+| Phase | How the dev is paid | Where the surplus goes |
+|---|---|---|
+| **Pre-token** (Phases 1–2) | Fixed salary + running costs, off the top of subscription revenue | Reserve / future POL |
+| **Post-token** (Phase 3+) | Same fixed salary off the top — capped and governance-adjustable (POLAR + timelock) | Surplus splits on-chain: majority to POL, plus reserves, buyback & distribute |
+| **Once self-funded** (optional, later) | May migrate to a fixed **percentage** of revenue, once a % comfortably exceeds the salary | Unchanged — surplus to POL/buckets |
+
+The principle is the same throughout: **the developer is paid from revenue to keep building, not from a token allocation to sell** — a fixed salary, with everything above it flowing to the protocol. Any token upside the founder gets is bought on the open market with personal capital, exactly like every other holder.
+
+## Why this beats the VC / insider model
+
+- **No overhang.** There is no team or investor bag scheduled to unlock and dump — because none was minted.
+- **Aligned incentives.** The dev earns more only when the protocol earns more. To get paid, you keep it alive and growing.
+- **Self-deepening liquidity.** Revenue continuously thickens POL, reducing slippage and volatility for everyone.
+- **Transparent.** Splits, the dev share, and POL holdings are on-chain and governed by POLAR.
+
+## Roadmap context
+
+The runway math behind this: FrostyFi becomes self-funding at roughly a few hundred paying subscribers, and surplus above the dev's salary + costs flows to POL from there. The token and POL system launch only after the SaaS is proven and self-sustaining — see **[Roadmap & Launch Gates](/docs/roadmap)**.

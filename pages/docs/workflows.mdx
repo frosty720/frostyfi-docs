@@ -1,0 +1,130 @@
+# Workflows & the Node Library
+
+A **workflow** is a directed graph you build on a drag-and-drop canvas (powered by
+`@xyflow/react`). Each **node** is a step; each **edge** carries data from one node's
+output to the next node's input. This page covers how data flows, every node type, and how
+to run a workflow in the background with Frosty Engine.
+
+![A workflow on the canvas — Input → HTTP → LLM → Output, with a documentation note](/screenshots/workflow-canvas.png)
+
+## How data flows
+
+Every workflow follows the same shape:
+
+```
+Input ──► (any nodes) ──► Output
+```
+
+- **Every workflow must start with an Input node.** It's the entry point and the
+  validation gate — webhook and scheduler triggers chain *after* it.
+- Each node reads from the outputs of upstream nodes and produces its own output, which
+  downstream nodes can reference.
+- **Output** produces the final result the workflow returns (to chat, to a webhook caller,
+  or to an A2A payer).
+
+Use **Template** and **Set** nodes to shape and name intermediate values, **Condition** to
+branch, **Loop** to iterate over arrays, and **Merge** to recombine parallel paths.
+
+## The node library
+
+### Core flow
+
+| Node | What it does |
+|------|--------------|
+| **Input** | Entry point. Receives the initial data for the run. Required. |
+| **Output** | Exit point. Produces the workflow's final result. |
+| **Condition** | If/else branching based on a comparison. |
+| **Set** | Assign values to named variables for later nodes to use. |
+| **Merge** | Combine data from multiple parallel execution paths. |
+| **Loop** | Iterate over an array and run a sub-workflow per item. |
+| **Wait** | Delay execution for a set duration. |
+| **Template** | Produce text with `{{variable}}` substitution from earlier outputs. |
+| **Note** | A documentation/annotation node (no execution effect). |
+
+### AI
+
+| Node | What it does |
+|------|--------------|
+| **LLM** | Call an AI model (routed through OpenRouter) with a prompt. |
+| **Agent** | An autonomous AI agent step with tools, memory, and multi-step reasoning. |
+| **Tool** | Execute an [MCP](/docs/mcp) tool. |
+
+### Web & integrations
+
+| Node | What it does |
+|------|--------------|
+| **HTTP** | Make a REST API request to any endpoint. |
+| **Webhook** | Trigger the workflow from an inbound HTTP request (see Frosty Engine). |
+| **Scheduler** | Trigger the workflow on a cron schedule (see Frosty Engine). |
+| **EmailSend** | Send email via SMTP. |
+| **Telegram** | Send messages to Telegram chats/channels. |
+| **Discord** | Send messages to Discord channels via webhooks. |
+| **Twilio** | Send SMS and WhatsApp messages via Twilio. |
+| **RSS** | Read and parse RSS/Atom feeds. |
+| **Twitter** | Post and interact with the Twitter/X API. |
+| **ChainGPT** | ChainGPT AI-powered Web3 tools. |
+
+### Media
+
+| Node | What it does |
+|------|--------------|
+| **Image** | Generate images from a prompt (routed through OpenRouter). |
+| **Video** | Generate video from a prompt (routed through OpenRouter). |
+| **Voice** | Text-to-speech and speech-to-text (TTS / STT). |
+| **File** | Work with file attachments — read, write, and pass files between nodes. |
+
+### Code
+
+| Node | What it does |
+|------|--------------|
+| **Code** | Run sandboxed JavaScript. In Frosty Engine, code runs inside an `isolated-vm` sandbox for safe execution. |
+
+### Blockchain
+
+| Node | What it does |
+|------|--------------|
+| **Vault** | Key custody + signing via ThirdWeb Vault — manage server wallets (`getWallet`, `createEoa`, `listEoas`) and sign (`signMessage`, `signTypedData`, `signTransaction`, `signAuthorization`), plus Solana equivalents. Keys are held in the Vault, never pasted as raw private keys. See [Vaults](/docs/vaults). |
+| **EVM** | EVM operations via the ThirdWeb v5 SDK — read balances, read/write contracts, send transactions, ERC-20/721/1155 transfers, ENS resolution, Uniswap V3 quotes, bridge status, contract deploys, and **x402 payments** (`x402Payment`, `x402RetryWithPayment`). Multi-chain: 1700+ chains via ThirdWeb. |
+| **Solana** | Solana operations via `@solana/web3.js`. |
+
+### DeFi & trading
+
+| Node | What it does |
+|------|--------------|
+| **Uniswap** | Uniswap swaps and quotes on EVM chains. |
+| **SushiSwap** | SushiSwap swaps and quotes on EVM chains. |
+| **PancakeSwap** | PancakeSwap swaps and quotes on EVM chains. |
+| **Jupiter** | Solana swaps and quotes via the Jupiter aggregator. |
+| **Hyperliquid** | Hyperliquid perps/markets — prices, order books, positions (and trading). |
+
+> **Vault, not raw keys.** FrostyFi never asks you to paste a private key or seed phrase.
+> Blockchain write operations are signed through ThirdWeb Vault, so signing material stays
+> in the vault and out of your workflow config.
+
+## Deploying & scheduling with Frosty Engine
+
+The canvas is for building. To run a workflow **in the background — without a browser open —**
+you deploy it to **Frosty Engine**, the Express-based execution backend that runs each node
+type with executors optimized for headless execution.
+
+Two trigger types make a workflow run by itself:
+
+- **Scheduler (cron)** — runs the workflow on a recurring schedule. Cron schedules are
+  durable: they're stored in the database and reloaded when the engine restarts.
+- **Webhook** — runs the workflow when an external service POSTs to its webhook URL.
+  Webhook calls are authenticated with a per-webhook secret.
+
+Background execution (Frosty Engine) is a **Pro / Enterprise** feature — see
+[Pricing](/docs/pricing).
+
+> **Note:** recurring cron schedules survive engine restarts. One-time (delayed) schedules
+> and in-flight executions are currently held in memory and are not guaranteed to resume
+> after a restart — durable job queuing is on the roadmap. For time-critical automations,
+> prefer recurring schedules.
+
+### From workflow to agent
+
+Once a workflow is published and deployed, you can publish it as a paid, on-chain
+**agent**. That's covered next.
+
+Next: [Agents, A2A & Payments →](/docs/agents)

@@ -1,0 +1,54 @@
+# Vaults
+
+Secure key custody and signing via ThirdWeb Vault.
+
+## Overview
+
+The Vault holds server wallets so private keys never leave secure infrastructure (AWS Nitro
+Enclaves). The **Vault node** handles wallet management and signing; it does **not** read
+balances or send funds — those are the job of the [EVM](/docs/workflows) and Solana nodes,
+which sign their transactions through the Vault.
+
+## Supported Operations
+
+| Operation | Description |
+|-----------|-------------|
+| `getWallet` | Get the configured server wallet |
+| `createEoa` | Create a new EOA server wallet |
+| `listEoas` | List EOA server wallets |
+| `signMessage` | Sign an arbitrary message |
+| `signTypedData` | Sign EIP-712 typed data |
+| `signTransaction` | Sign a transaction |
+| `signAuthorization` | Sign an EIP-3009 / authorization payload |
+| `signStructuredMessage` | Sign a structured message |
+| Solana | `createSolanaAccount`, `listSolanaAccounts`, `signSolanaTransaction`, `signSolanaMessage` |
+
+## Supported Chains
+
+- Ethereum
+- Base
+- Arbitrum
+- Polygon
+- Optimism
+- And more via Thirdweb
+
+## Using in Workflows
+
+Add a **Vault node** to sign with a server wallet — for example, signing a message:
+
+```json
+{
+  "type": "vault",
+  "operation": "signMessage",
+  "message": "gm"
+}
+```
+
+To move funds or call a contract, use the **EVM** (or **Solana**) node — it composes with
+the Vault for signing, so the key still never leaves the vault.
+
+## Security
+
+- Private keys never leave Thirdweb infrastructure
+- User-scoped isolation
+- AWS Nitro Enclaves for secure execution

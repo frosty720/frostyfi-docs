@@ -1,0 +1,73 @@
+# Models & Usage
+
+FrostyFi routes **all chat models through [OpenRouter](https://openrouter.ai)** — a
+single gateway in front of every major provider. This page explains the model picker, the
+sliding-scale monthly budget, and the **≈ calls left** meter.
+
+## One gateway, one picker
+
+![The model picker, with Text / Image / Video tabs and the calls-left estimate](/screenshots/model-picker.png)
+
+Instead of separate provider integrations and per-provider keys, FrostyFi sends every chat
+request through OpenRouter. That means:
+
+- **One curated picker.** Add or remove a model in one place; no parallel
+  tool/vision tables to keep in sync.
+- **One spend control.** Each user's usage runs through a per-user OpenRouter key with a
+  hard monthly cap (more below).
+- **App attribution.** Every inference call carries FrostyFi's attribution headers, so the
+  app appears on OpenRouter's public rankings and analytics.
+
+Models come in two pools:
+
+- **Free models** — the always-on `:free` set (strong open models at $0, e.g. Gemma,
+  DeepSeek, Qwen, GPT-OSS). New `:free` models on OpenRouter are surfaced automatically.
+- **Paid models** — a curated flagship set.
+
+**Model access is binary — `free` or `paid`.** The free tier sees only free models; **both
+Pro and Enterprise see every paid model.** There is no "this model is Enterprise-only."
+
+## The sliding-scale monthly budget
+
+How much you can use depends on your [subscription tier](/docs/pricing):
+
+| Tier | What bounds your usage |
+|------|------------------------|
+| **Free** | A flat **50 calls/month**, against **$0 free models only**. No dollar cap needed — free models cost nothing. |
+| **Pro** | A **monthly USD budget** enforced by your per-user OpenRouter key (default **$8.75/mo**). Unlimited *count* of calls — the dollar budget is the real bound. |
+| **Enterprise** | A larger **monthly USD budget** (default **$34.65/mo**), same mechanism. |
+
+Under the hood, each paid user gets their **own OpenRouter key minted with a monthly USD
+limit**, drawn from FrostyFi's shared, funded balance. When you hit the cap, OpenRouter
+returns HTTP `402` and FrostyFi shows a graceful "budget reached" message. The cap resets
+monthly. (The dollar figures are environment-tunable by the operator.)
+
+> Why a dollar budget instead of a fixed number of calls? Because a call to a cheap model
+> and a call to an expensive model cost very different amounts. A flat call count would
+> either waste your budget on cheap models or blow it on expensive ones. The dollar budget
+> spends fairly across whatever models you choose.
+
+## The "calls left" estimate
+
+A raw dollar figure would expose FrostyFi's pricing margin, so the usage meter never shows
+dollars. Instead it translates your remaining monthly budget into an **≈ N calls left**
+estimate **for the model you currently have selected**:
+
+- Switch to a **cheaper** model and the estimate goes **up**.
+- Switch to a **pricier** model and it goes **down**.
+
+This is margin-neutral (the same dollars either way) and gives you an honest, intuitive
+sense of what your budget buys on each model. The estimate uses a representative
+tokens-per-call profile, so it's a guide, not a contract — the **hard limit is always the
+monthly USD cap** (the HTTP 402 from OpenRouter).
+
+The **free tier** meter is simpler: it just shows calls used against the flat **50/month**
+allowance.
+
+## Cost tracking
+
+FrostyFi records the real per-call cost reported by OpenRouter into a single usage ledger
+per user. That ledger powers the meter, enforces budgets, and is the same accounting layer
+that will support PERMA token usage in the future.
+
+Next: [Subscriptions & Pricing →](/docs/pricing)

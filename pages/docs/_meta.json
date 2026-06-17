@@ -1,0 +1,21 @@
+{
+  "introduction": "Introduction",
+  "getting-started": "Getting Started",
+  "concepts": "Core Concepts",
+  "workflows": "Workflows & Nodes",
+  "agents": "Agents, A2A & Payments",
+  "models": "Models & Usage",
+  "-- legacy --": {
+    "type": "separator",
+    "title": "Reference"
+  },
+  "features": "Features",
+  "engine": "Frosty Engine",
+  "mcp": "MCP",
+  "vaults": "Vaults",
+  "pricing": "Pricing",
+  "tokenomics": "Tokenomics",
+  "pol": "POL & Funding",
+  "roadmap": "Roadmap",
+  "faq": "FAQ"
+}

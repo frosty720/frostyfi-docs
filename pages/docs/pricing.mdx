@@ -1,0 +1,69 @@
+# Subscriptions & Pricing
+
+FrostyFi has three tiers. Subscriptions are paid in **USDC on Base** through the
+`FrostySubscription` smart contract — there's no credit card and no NFT to manage; your
+tier is read directly from the chain against your wallet.
+
+## Tiers
+
+![The in-app pricing page — Free, Pro, and Enterprise tiers](/screenshots/pricing.png)
+
+| | **Free** | **Pro** | **Enterprise** |
+|---|---|---|---|
+| Price | $0/mo | **$25/mo** | **$99/mo** |
+| Chat models | Free models only | **All models** | **All models** |
+| Monthly usage | 50 calls (free models) | USD budget (default ~$8.75) | Larger USD budget (default ~$34.65) |
+| Workflows | 5 | 50 | Unlimited |
+| Background execution (Frosty Engine) | — | ✅ | ✅ |
+| Deploy workflows as agents (A2A / x402) | — | ✅ | ✅ |
+
+See [Models & Usage](/docs/models) for exactly how the monthly budget and the
+**≈ calls left** meter work. Model access is binary: Pro and Enterprise both get *every*
+paid model — there is no per-model tier gating.
+
+## How payment works
+
+Subscriptions settle in **USDC (6 decimals) on Base**. The app supports two on-chain
+purchase flows:
+
+- **Approve + subscribe (2 transactions)** — works for all wallets, including
+  smart-contract wallets.
+- **`subscribeWithAuthorization` (1 transaction, EIP-3009)** — a gasless-style single
+  signature, available for EOA wallets.
+
+To subscribe:
+
+1. Connect your wallet (or use email/social login, which provisions an embedded wallet).
+2. Choose **Pro** or **Enterprise** on the pricing page.
+3. Approve the USDC spend and confirm.
+4. Your tier flips on-chain immediately, and your usage budget is provisioned.
+
+The `FrostySubscription` contract is deployed on Base (mainnet `0x80f6…3716`,
+chain id 8453) with a Base Sepolia deployment (`0xF23B…31bd`) for testing. The contract
+replaced FrostyFi's earlier NFT/Unlock-based subscriptions.
+
+## Affiliate / referral program
+
+FrostyFi pays a **referral cut on subscriptions** you bring in, settled on-chain:
+
+- Share a link with your wallet as the referrer (`?ref=<your-wallet>`). The referral is
+  captured in a cookie that survives the sign-in redirect.
+- When someone subscribes through your link, your wallet is passed as the on-chain
+  `referrer`, and the contract accrues your share to a claimable **referral balance**.
+- Claim your earnings any time from the **Creator Dashboard → Affiliate Earnings** card
+  (calls `claimReferral()` on-chain).
+
+The referral cut is set on-chain in basis points (`referralBps`) and is read live in the
+UI. The program is designed around a **30%** affiliate share
+(`referralBps = 3000`); the contract's shipped default is configurable by the operator.
+Self-referrals are ignored.
+
+## Enterprise
+
+Need custom limits or features beyond the standard Enterprise tier? Contact
+**hello@frostylabs.ai**.
+
+> **About Permafrost ($PERMA):** FrostyFi has a planned token, **Permafrost ($PERMA)**, but it **has not launched** and is
+> not required for anything today — all subscriptions are USDC. The token is gated behind
+> explicit [launch gates](/docs/roadmap). See [Tokenomics](/docs/tokenomics) and
+> [POL & Funding](/docs/pol) for the design.

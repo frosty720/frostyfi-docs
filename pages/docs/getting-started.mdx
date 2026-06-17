@@ -1,0 +1,85 @@
+# Getting Started
+
+This guide walks you through your first five minutes on the hosted app at
+[flow.frostylabs.ai](https://flow.frostylabs.ai): signing in, sending your first chat,
+picking a model, and creating a workflow from a template.
+
+## 1. Sign in
+
+FrostyFi uses **ThirdWeb Auth** — authentication is wallet-based, and the session is a
+JWT stored in a cookie (valid for 7 days). You have two ways to sign in:
+
+- **Connect a wallet** — MetaMask, Coinbase Wallet, Rainbow, or any WalletConnect wallet.
+  You'll be asked to sign a message (Sign-In With Ethereum). No transaction, no gas.
+- **Email / social login** — sign in with an email or a social account
+  (Google, etc.). ThirdWeb provisions an embedded wallet for you behind the scenes, so you
+  still get an on-chain address without managing a seed phrase.
+
+Either way you end up with a wallet address, which is your identity across chat,
+workflows, subscriptions, and agents.
+
+## 2. Your first chat
+
+Once signed in, you land in the chat workspace. Type a message and send it — responses
+stream back in real time (FrostyFi uses the Vercel AI SDK under the hood).
+
+![The FrostyFi chat workspace](/screenshots/chat-workspace.png)
+
+A few things you can do in chat:
+
+- **Attach files** for the model to read.
+- **`@mention` an Assistant** to pull in a reasoning expert with a tailored persona and
+  skill set (e.g. an analyst or a copywriter). See [Core Concepts](/docs/concepts#assistants).
+- **`@mention` a Workflow** to run one of your workflows inline as a tool and get its
+  output back in the conversation.
+
+## 3. Pick a model
+
+Use the **model picker** in the chat composer to choose which AI model answers you. Every
+hosted model is routed through [OpenRouter](/docs/models), so you get a single, consistent
+picker instead of juggling provider keys.
+
+![The model picker, with Text / Image / Video tabs and the calls-left estimate](/screenshots/model-picker.png)
+
+- **Free tier** sees the **free models** (the `:free` set — strong open models at $0).
+- **Pro and Enterprise** see those **plus the curated paid flagship models**. Model access
+  is binary: every paid tier gets *every* paid model — there's no "this model is
+  Enterprise-only" gating.
+
+The picker also shows an **≈ calls left** estimate that updates when you switch models, so
+you can see roughly how much your monthly budget buys on the model you've selected. See
+[Models & Usage](/docs/models#the-calls-left-estimate) for how that number is computed.
+
+## 4. Create your first workflow from a template
+
+![The Workflow Templates gallery](/screenshots/templates-gallery.png)
+
+The fastest way to get a working workflow is to clone a **template**:
+
+1. Open **Templates** from the sidebar.
+2. Browse or search the gallery (templates are grouped by category — crypto/trading,
+   automation, and more).
+3. Click **Use template**. FrostyFi clones the template into your own workspace (node IDs
+   are remapped so it's fully yours to edit).
+4. You're dropped into the **visual workflow builder**, where you can rewire nodes, change
+   prompts, and add steps.
+
+![The visual workflow builder](/screenshots/workflow-canvas.png)
+
+Every workflow begins with an **Input** node and ends with an **Output** node. To learn
+what each node does, see [Workflows & Nodes](/docs/workflows).
+
+## 5. Run, schedule, or deploy it
+
+- **Run inline:** `@mention` the workflow from chat to execute it once and see the output.
+- **Schedule or webhook-trigger it:** deploy it to [Frosty Engine](/docs/workflows#frosty-engine)
+  so it runs in the background on a cron schedule or when an external service calls its
+  webhook. (Background execution requires a Pro or Enterprise [subscription](/docs/pricing).)
+- **Publish it as an agent:** turn the workflow into a paid, on-chain
+  [A2A agent](/docs/agents) others can call.
+
+## Next steps
+
+- [Core Concepts](/docs/concepts) — Workflows vs. Assistants vs. Agents vs. Skills vs. MCP
+- [Workflows & Nodes](/docs/workflows) — the full node library
+- [Subscriptions & Pricing](/docs/pricing) — Free / Pro / Enterprise

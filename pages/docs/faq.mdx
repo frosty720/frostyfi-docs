@@ -1,0 +1,42 @@
+# FAQ
+
+## General
+
+**Q: What is FrostyFi?**
+A: A Web3-native platform for building AI-powered workflows with blockchain automation.
+
+**Q: Do I need crypto to use it?**
+A: Yes, subscription requires USDC on Base chain. Free tier available for testing.
+
+**Q: Where is it hosted?**
+A: flow.frostylabs.ai (frontend), Oracle Cloud VPS (backend)
+
+## Technical
+
+**Q: What models are supported?**
+A: All major providers (OpenAI, Anthropic, Google, xAI, Groq, and more) are available through a single gateway — every chat model is routed through OpenRouter. See [Models & Usage](/docs/models).
+
+**Q: Can I use my own API keys?**
+A: No — LLM access is managed by FrostyFi through OpenRouter, with a per-user monthly budget (like Cursor). You don't bring or manage provider keys.
+
+**Q: Is my data secure?**
+A: Yes — user-scoped isolation, and blockchain signing goes through ThirdWeb Vault so private keys never touch your workflow config.
+
+**Q: Can I self-host?**
+A: Not yet — FrostyFi is SaaS-only today. A self-host option (Docker/Coolify) is on the [roadmap](/docs/roadmap).
+
+## Billing
+
+**Q: How do subscriptions work?**
+A: Subscriptions are paid in USDC on Base through the `FrostySubscription` smart contract — your tier is read directly from the chain against your wallet. No credit card, no NFT. See [Subscriptions & Pricing](/docs/pricing).
+
+**Q: Can I cancel?**
+A: Yes — simply don't renew. Your tier lapses on-chain when the subscription expires.
+
+**Q: Refunds?**
+A: Contact hello@frostylabs.ai
+
+## Support
+
+- Discord: https://discord.gg/RhSxZrGBF3
+- Email: hello@frostylabs.ai

@@ -1,0 +1,62 @@
+# Frosty Engine
+
+Automated background workflow execution.
+
+## Overview
+
+Frosty Engine runs workflows on schedules or via webhooks. Available to Pro and Enterprise users.
+
+Each deployed workflow has a **Runs** panel that surfaces its background executions — trigger
+type (webhook / schedule), status, and latency — so you can see at a glance how your
+automations are performing.
+
+![The Runs panel — background executions with status and latency](/screenshots/runs-panel.png)
+
+## Features
+
+- **Scheduled Workflows**: Cron-based automation
+- **Webhook Triggers**: HTTP endpoints to trigger workflows
+- **Tier Verification**: Subscription checks on every run
+- **Vault Integration**: Blockchain operations in background
+- **Execution History**: Complete audit trail
+
+## Deployment States
+
+| State | Scheduler | Webhook |
+|-------|-----------|---------|
+| Not Deployed | ❌ | ❌ |
+| Deployed | ✅ | ✅ |
+| Paused | ⏸️ | ❌ |
+| Stopped | ❌ | ❌ |
+
+## API Endpoints
+
+### Deployment
+- `POST /api/deploy` - Deploy workflow
+- `POST /api/deployments/:id/pause` - Pause
+- `POST /api/deployments/:id/resume` - Resume
+- `DELETE /api/deployments/:id` - Remove
+
+### Execution
+- `POST /api/execute` - Manual run
+- `GET /api/executions/:id` - Get status
+
+### Webhooks
+- `POST /webhooks/:id` - Trigger a deployed workflow via its webhook
+
+> Cron schedules and webhooks are configured as part of a workflow's **deploy** (the
+> scheduler and webhook receiver read them from the database) — there is no separate
+> schedule-management endpoint.
+
+## Security
+
+- JWT authentication required
+- Subscription tier verification
+- Rate limiting enabled
+- Webhook secret validation
+
+## Requirements
+
+- Pro ($25/mo) or Enterprise ($99/mo) subscription
+- Redis for job queue
+- Shared database with main app

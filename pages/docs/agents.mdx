@@ -1,0 +1,119 @@
+# Agents, A2A & Payments
+
+An **Agent** in FrostyFi is a [workflow](/docs/workflows) you've deployed as a live,
+callable endpoint with an on-chain identity. This page covers how to deploy one, and the
+three blockchain-native systems that make agents discoverable, payable, and trustworthy:
+the **A2A protocol**, **x402 payments**, and **ERC-8004 identity**.
+
+> Reminder from [Core Concepts](/docs/concepts): only **workflow-backed agents** become
+> A2A / x402 / ERC-8004 endpoints. Reasoning **Assistants** stay inside chat — to deploy
+> assistant-like behavior, build it into a workflow first.
+
+## Deploying a workflow as an agent
+
+1. Build and **publish** your workflow. It must have a trigger the engine can call — in
+   practice a **webhook** trigger (so the agent endpoint can invoke it).
+2. In the workflow builder header, click **Deploy as agent** (available on paid tiers for
+   published workflows).
+3. FrostyFi find-or-creates the agent record for that workflow and opens the **A2A deploy
+   modal**, where you set the **x402 price** and **network**.
+4. Confirm. Your agent is now live with an A2A endpoint and an agent card.
+
+The default per-call price is **0.01 USDC**; you can change it (or set it free).
+
+## A2A protocol
+
+**A2A (Agent-to-Agent)** is the standard JSON-RPC protocol agents use to talk to each
+other. Once deployed, your agent exposes:
+
+- An **agent card** at `/.well-known/agent-card.json` — a machine-readable description of
+  the agent (its name, skills, endpoint, and payment requirements) that lets other agents
+  discover and understand it.
+- A **JSON-RPC 2.0 endpoint** that accepts standard methods:
+  - `message/send` — send the agent a request and get its output back.
+  - `tasks/get` — poll the status/result of a task.
+  - `tasks/cancel` — cancel a task.
+
+When a caller hits `message/send`, FrostyFi executes the underlying workflow via
+[Frosty Engine](/docs/workflows#frosty-engine) and returns the workflow's **output** to the
+caller.
+
+## x402 payments
+
+**x402** is a per-request micropayment protocol: the agent charges a small amount of
+**USDC on Base** for each call. It uses the standard HTTP `402 Payment Required` flow:
+
+1. A caller requests the agent. The agent responds **402** with payment requirements
+   (amount, network, token, recipient).
+2. The caller signs an **EIP-3009** USDC authorization and retries with an `X-PAYMENT`
+   header.
+3. The agent **verifies** the payment with a facilitator.
+4. The agent **executes the workflow** (execute-then-settle — so failed runs aren't
+   charged).
+5. The agent **settles** the payment on-chain (real USDC moves), then returns the result
+   with an `X-PAYMENT-RESPONSE` receipt header.
+
+This makes every agent call a tiny, trustless transaction — no API keys, no invoicing, no
+accounts. FrostyFi uses the ThirdWeb x402 facilitator by default, and the full
+402 → pay → verify → execute → settle loop has been proven end-to-end on Base.
+
+> Amounts are in atomic USDC units (USDC has 6 decimals), so `"10000"` = 0.01 USDC.
+
+Every deployed agent shows a ready-to-paste **"How to call"** snippet — its endpoint, its
+`agent-card.json` URL, the per-call price, and an `x402-fetch` example that pays in one line:
+
+![An agent's How-to-call panel — endpoint, agent card, and an x402 payment snippet](/screenshots/8004-card.png)
+
+## ERC-8004 identity & reputation
+
+**ERC-8004** gives agents an **on-chain identity and reputation** so callers can trust who
+they're paying. It's built on three on-chain registries:
+
+- **Identity Registry** — registers the agent on-chain and points to its registration file
+  (which describes its A2A services and schema). Registration is owner-driven and tied to
+  the agent creator's wallet, so an agent's identity can't be spoofed.
+- **Reputation Registry** — holds feedback about the agent. Feedback is permissionless:
+  anyone who has interacted with an agent can leave on-chain feedback, and the agent's
+  reputation summary is readable on-chain.
+- **Validation Registry** — for attestations about an agent's execution (forward-looking;
+  maps to verified-execution use cases).
+
+FrostyFi supports ERC-8004 on Base mainnet (and Base Sepolia for testing); all mainnet
+agents share one Identity Registry and one Reputation Registry address. Registered agents
+get **Basescan** and **8004scan** explorer links and a reputation card in the UI.
+
+![An agent's on-chain reputation card with 8004scan / owner explorer links and on-chain payment history](/screenshots/dash-2.png)
+
+## Marketplace
+
+Deployed agents can be listed in the **Agent Marketplace** so others can discover and call
+them. The marketplace surfaces an agent's card, its price, and (for ERC-8004-registered
+agents) its on-chain reputation — turning your workflow into a product other people and
+agents can find and pay for.
+
+![The A2A Marketplace — a deployed agent with its x402 price and ERC-8004 verification](/screenshots/a2a-marketplace.png)
+
+## Creator Dashboard
+
+The **Creator Dashboard** tracks every agent you've deployed: total USDC earnings,
+executions, success rate, latency, unique buyers, and your top-performing agent — plus a
+per-day earnings chart, on-chain payment history, and your **affiliate** (referral)
+earnings.
+
+![The Creator Dashboard — agent earnings and performance at a glance](/screenshots/dash-1.png)
+
+## Putting it together
+
+```
+Caller ──message/send──►  Agent (A2A endpoint)
+                              │  402 + x402 requirements
+        ◄─────402───────------┘
+Caller ──sign EIP-3009 USDC, retry with X-PAYMENT──►
+                              │  verify → execute workflow (Frosty Engine) → settle USDC
+        ◄── result + X-PAYMENT-RESPONSE receipt ───┘
+
+  Identity & trust:  ERC-8004 (on-chain identity + permissionless reputation)
+  Discovery:         Agent card (/.well-known/agent-card.json) + Marketplace
+```
+
+Next: [Models & Usage →](/docs/models)

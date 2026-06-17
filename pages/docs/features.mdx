@@ -1,0 +1,76 @@
+# Features
+
+## AI Chat
+
+- **Multi-Model Support**: every major provider (OpenAI, Anthropic, Google, xAI, Groq, and more) through a single OpenRouter gateway — see [Models & Usage](/docs/models)
+- **Real-time Streaming**: Live response streaming with Vercel AI SDK
+- **Tool Mentions**: Type `@toolname` to call specific tools
+- **Tool Presets**: Pre-configured tool sets for different tasks
+- **Tool Choice Modes**: Auto, Manual, or None
+- **Temporary Chats**: Popup chats for quick questions
+
+## Visual Workflows
+
+A few of the node types (see [Workflows & Nodes](/docs/workflows) for the full library of 30+):
+
+| Node | Description |
+|------|-------------|
+| **Input** | Workflow entry point |
+| **LLM** | AI model interaction |
+| **Tool** | MCP tool execution |
+| **HTTP** | REST API requests |
+| **Condition** | If/else branching |
+| **Template** | Text with variable substitution |
+| **EVM** | On-chain reads, sends, contract calls |
+| **Vault** | Wallet key custody + signing |
+| **Output** | Workflow result |
+
+Features:
+- Drag-and-drop builder
+- Version control
+- Publish as tools
+- Background execution via Frosty Engine
+
+## Vaults
+
+Secure key custody and signing via ThirdWeb Vault — private keys never leave the vault:
+
+- **getWallet / createEoa / listEoas** - Manage server wallets
+- **signMessage** - Sign arbitrary messages
+- **signTypedData** - EIP-712 typed-data signing
+- **signTransaction** - Sign a transaction
+- **signAuthorization** - EIP-3009 / authorization signing
+- Solana equivalents (create/list accounts, sign transaction/message)
+
+Balance reads, native/token transfers, and contract calls are the job of the **EVM** and **Solana** nodes (which sign through Vault). See [Vaults](/docs/vaults).
+
+## MCP Integration
+
+Connect remote MCP servers (the hosted app is **remote-only** for security):
+
+- **SSE** - Server-Sent Events
+- **StreamableHTTP** - HTTP-based tools
+
+The marketplace ships vetted remote servers (e.g. CoinGecko, Alpha Vantage, Stripe, Etherscan, Blockscout). See [MCP](/docs/mcp).
+
+## Frosty Engine
+
+Background workflow execution:
+
+- **Scheduled** - Cron-based automation
+- **Webhooks** - HTTP-triggered workflows
+- **Tier Limits** - Pro/Enterprise only
+- **Vault Integration** - Blockchain ops in background
+
+## Authentication
+
+- Wallet sign-in (MetaMask, Coinbase, Rainbow, any WalletConnect wallet)
+- Social / email login via ThirdWeb in-app wallet (Google, Discord, Telegram, X, GitHub, Coinbase, email, passkey)
+- 7-day JWT sessions
+
+## UI/UX
+
+- Dark/Light theme
+- Responsive design
+- Toast notifications
+- Keyboard shortcuts

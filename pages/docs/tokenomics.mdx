@@ -1,0 +1,91 @@
+# Permafrost ($PERMA) Tokenomics
+
+> **Permafrost** ($PERMA) is FrostyFi's protocol token, designed for a fair launch with no insiders — value accrues from real product usage, not speculation.
+
+import { Callout } from 'nextra/components'
+
+<Callout type="warning">
+Pre-launch design. Final parameters (supply, launch mechanism, exact splits) are confirmed in the token implementation session and audited before any deployment. Numbers marked **(target)** may change.
+</Callout>
+
+## The fair-launch promise
+
+$PERMA has **no team allocation, no VC, no presale, no insider round, no marketing bag, and no airdrop.** The founder acquires PERMA the same way you do — by buying it on the open market with personal capital. **Owner allocation at genesis: 0%.**
+
+This is the whole point: there is no insider supply waiting to dump on you, because there is no insider supply at all.
+
+## One token, two states
+
+Permafrost (PERMA) is a single ERC-20 with two states — the Curve `veCRV` pattern:
+
+| | **PERMA** | **POLAR** |
+|---|---|---|
+| What | The liquid ERC-20 token | A **soulbound** (non-transferable) locked position |
+| How you get it | Buy on a DEX, earn via bonds/rewards | Lock PERMA for a chosen duration |
+| Grants | — | Governance votes + a share of protocol revenue |
+| Tradeable | Yes | No — it is a position, not a second token |
+
+POLAR is not a second tradeable token to farm-and-dump. It is your locked governance and revenue-share position, and it decays over time unless maintained — so influence goes to people with ongoing skin in the game.
+
+## Supply — uncapped, but disciplined
+
+PERMA uses **uncapped supply with hard-coded stop-gaps** rather than a fixed cap. Every path that can ever mint PERMA is constrained in code:
+
+- **Monthly inflation cap** on staking rewards (max 10%/mo, 5% default).
+- **Treasury-backed debt ceiling** on bonds (max outstanding bond debt as a % of treasury value) with a per-window circuit breaker.
+- **Purpose-bound destinations** — mints can only go where the rules allow.
+
+The result is *functionally* fixed-behavior supply with the flexibility to fund growth responsibly. **100M PERMA is the launch anchor for price discovery (target), not a hard ceiling** — starting price target **$0.001 (target)**.
+
+In practice PERMA trends **deflationary once the product pays for itself**: revenue-funded buyback-and-burn overtakes bootstrap emissions right around FrostyFi's self-funding milestone, and grows from there. Scarcity comes from **real revenue**, not an artificial cap — while uncapped-with-discipline keeps the bonding and yield flywheel funded indefinitely. Net supply targets **≤ 0 at steady state** (burns ≥ emissions).
+
+## Where subscription revenue goes
+
+Revenue flows as a waterfall — operating costs and a fixed developer salary come **off the top**, then the **surplus** splits on-chain into protocol buckets (parameters finalized before deploy):
+
+**Off the top:**
+- **Running costs** — infrastructure and model usage.
+- **Developer salary** — a fixed, capped amount funding continued full-time development. Governance-adjustable (POLAR + timelock), never unilateral. The dev is paid from **revenue, not from a token allocation**, and may later migrate to a fixed *percentage* of revenue once the protocol is comfortably self-funding.
+
+**Surplus split (on-chain):**
+
+| Bucket | Purpose |
+|---|---|
+| **Liquidity (POL)** — largest share | Buys PERMA + seeds DAO-owned liquidity → see [POL & Funding](/docs/pol) |
+| **Reserves (USDC)** | Treasury backing for bonds and runway |
+| **Buyback & burn** | Buys PERMA and burns it |
+| **Buy-and-distribute** | Buys PERMA and routes it to lockers as real yield |
+
+Because the developer earns a **fixed salary and everything above it flows to the protocol**, the founder's incentive is to grow the protocol, not to skim a bigger cut.
+
+## Why you actually need PERMA (utility)
+
+Buy pressure alone isn't enough — PERMA has real *jobs*. Premium, PERMA-denominated actions split between **burn** (reduces supply) and **lockers** (real yield to POLAR holders):
+
+| PERMA sink | Split |
+|---|---|
+| Premium / native-model inference (FrostyG4) | 50% burn / 50% to lockers |
+| Custom ERC-8004 agent deployment (one-time) | 80% burn / 20% to lockers |
+| Hosted A2A endpoint (monthly) | 30% burn / 70% to lockers |
+| Workflow marketplace fees | 50% burn / 50% to lockers |
+| Priority execution surcharge | 30% burn / 70% to lockers |
+| Bonded agent stake | 100% locked (slashed on bad behavior) |
+
+<Callout type="info">
+PERMA pays for **FrostyFi's own native model** (FrostyG4), never for third-party models like Opus. Paying a token for a USD-denominated API bill would force token sales — so PERMA utility is pointed only where it doesn't create sell pressure.
+</Callout>
+
+## Distribution at launch (target)
+
+- **~60–70%** distributed via a fair-launch mechanism (multi-week daily auction or LBP — decided at implementation).
+- **~15–20%** bonding reserve (6–12 months of organic bond demand).
+- **~10%** points-program conversion reserve.
+- **~5%** initial DEX seed, paired with USDC accumulated from subscriptions.
+- **~5–10%** lock-emission reserve, released to lockers over 2–4 years on a transparent schedule.
+- **0%** to the owner/team.
+
+## What's not final yet
+
+The token launches only when its [launch gates](/docs/roadmap#launch-gates) are met. Before any deployment, the contracts (`frosty-core`) are fixed and third-party audited, and the exact supply, launch mechanism, and split parameters are confirmed. Treat every number here as the intended design, not a committed on-chain value.
+
+See also: **[POL & Protocol Funding](/docs/pol)** · **[Roadmap & Launch Gates](/docs/roadmap)**

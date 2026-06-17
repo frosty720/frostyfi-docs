@@ -1,0 +1,112 @@
+# Core Concepts
+
+FrostyFi has a handful of building blocks that are easy to confuse because they all touch
+"AI." This page defines each one precisely, and — most importantly — draws the line
+between an **Assistant** and an **Agent**.
+
+## Workflows
+
+A **Workflow** is the headline feature: a visual, node-based automation you build on a
+drag-and-drop canvas. A workflow is a directed graph of **nodes** (steps) connected by
+**edges** (data flow). It always starts at an **Input** node and ends at an **Output**
+node; in between you wire up LLM calls, HTTP requests, conditions, code, blockchain
+operations, loops, and integrations.
+
+Workflows are stored in the database as nodes + edges. They can run three ways:
+
+- **Inline** — `@mentioned` from chat and executed as a tool.
+- **In the background** — deployed to [Frosty Engine](/docs/workflows#frosty-engine) on a
+  cron schedule or via webhook.
+- **As an agent** — published so external callers can invoke them (see Agents below).
+
+See [Workflows & Nodes](/docs/workflows) for the full node library.
+
+## Assistants
+
+An **Assistant** is a **reasoning chat expert**. Think of it as a configured persona — a
+role/expertise, a system prompt, a set of skills, and a set of tools — that you can summon
+in chat with `@`.
+
+Key properties:
+
+- **Model-agnostic.** An assistant isn't tied to one model; it runs on whatever model
+  you've selected in the picker.
+- **`@mentionable`** in chat. When you mention an assistant, its persona and skills are
+  injected into the conversation.
+- **Cannot be deployed.** Assistants live inside the chat runtime — they have no headless
+  background runtime, so they are *not* turned into x402/A2A/ERC-8004 endpoints directly.
+  If you need an assistant's behavior as a deployable unit, build it into a workflow (the
+  **Agent node** lets a workflow embed assistant-style reasoning).
+
+## Agents
+
+An **Agent** is a **deployed workflow agent**. It is a workflow that has been published as
+a live, callable endpoint with an on-chain identity. In FrostyFi's model, *"workflow
+agent" and "A2A agent" are the same thing* — the same record, flagged for deployment.
+
+An agent gives you:
+
+- An [A2A](/docs/agents#a2a-protocol) endpoint and a discoverable **agent card**.
+- Optional [x402](/docs/agents#x402-payments) per-call USDC payments.
+- An optional [ERC-8004](/docs/agents#erc-8004-identity--reputation) on-chain identity and
+  reputation.
+- A listing in the [Marketplace](/docs/agents#marketplace).
+
+### Assistant vs. Agent — the precise distinction
+
+| | **Assistant** | **Agent** |
+|---|---|---|
+| What it is | A reasoning chat persona | A deployed workflow |
+| Backed by a workflow? | No (`workflowId` is null) | Yes (has a `workflowId`) |
+| Where it runs | Inside the chat runtime | Headless, in Frosty Engine |
+| `@mentionable` in chat? | Yes | No — call it via its agent endpoint or run its workflow |
+| Can be deployed? | No | Yes — that *is* what makes it an agent |
+| x402 / A2A / ERC-8004? | No | Yes |
+
+The short version: **Assistants are for thinking inside chat; Agents are for running
+deployed workflows that others can call and pay for.** Both surfaces get the same
+monetization path *through workflows* — you compose an assistant's capabilities into a
+workflow and then deploy that workflow as an agent.
+
+## Skills
+
+A **Skill** is **instruction-only documentation injected into an assistant**. A skill is
+not code and not a tool — it's a block of guidance (best practices, a procedure, domain
+knowledge) that gets added to an assistant's system prompt. When the user's request
+matches a skill, the assistant follows that guidance.
+
+Skills are how you teach an assistant *how* to do something without writing software. You
+attach skills to assistants in the assistant editor.
+
+## MCP servers
+
+**MCP servers** ([Model Context Protocol](/docs/mcp)) are external sources of **tools**.
+Connecting an MCP server gives your chats and assistants a set of callable tools (e.g.
+market data, payments, web fetching).
+
+MCP is **remote-only** — you connect to remote (HTTP/SSE) MCP servers. The marketplace
+ships vetted remote servers (e.g. CoinGecko, Alpha Vantage, Stripe, Etherscan, Blockscout).
+
+## Templates
+
+A **Template** is a **clone-to-use workflow**. The template gallery contains pre-built
+public workflows; clicking **Use template** copies one into your workspace (with fresh node
+IDs) so you can run and customize it. Templates are the fastest way to start — see
+[Getting Started](/docs/getting-started#4-create-your-first-workflow-from-a-template).
+
+![The Workflow Templates gallery](/screenshots/templates-gallery.png)
+
+## How they relate
+
+```
+Templates ──clone──► Workflows ──deploy──► Agents (A2A / x402 / ERC-8004)
+                         ▲
+                         │ run inline as a tool
+                         │
+        Chat ──@──► Assistants  (persona + Skills + Tools)
+                         ▲
+                         │ provide tools
+                    MCP servers
+```
+
+Next: [Workflows & Nodes →](/docs/workflows)
