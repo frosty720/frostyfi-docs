@@ -12,7 +12,7 @@ and let them earn USDC per request.
 
 <p>
   <a href="https://frostylabs.ai"><img src="https://img.shields.io/badge/Website-frostylabs.ai-67e8f9?style=for-the-badge" alt="Website" /></a>
-  <a href="https://flow.frostylabs.ai"><img src="https://img.shields.io/badge/Launch_App-flow.frostylabs.ai-a78bfa?style=for-the-badge" alt="App" /></a>
+  <a href="https://app.frostylabs.ai"><img src="https://img.shields.io/badge/Launch_App-app.frostylabs.ai-a78bfa?style=for-the-badge" alt="App" /></a>
   <a href="https://docs.frostylabs.ai"><img src="https://img.shields.io/badge/Docs-docs.frostylabs.ai-f0abfc?style=for-the-badge" alt="Docs" /></a>
 </p>
 
@@ -87,7 +87,7 @@ without writing a line of code.
 | | |
 |---|---|
 | 🌐 **Website** | https://frostylabs.ai |
-| 🚀 **Launch the app** | https://flow.frostylabs.ai |
+| 🚀 **Launch the app** | https://app.frostylabs.ai |
 | 📚 **Documentation** | https://docs.frostylabs.ai |
 | ⚡ **Getting started** | https://docs.frostylabs.ai/docs/getting-started |
 | 🧠 **Core concepts** | https://docs.frostylabs.ai/docs/concepts |
@@ -146,6 +146,6 @@ docs-site/
 <div align="center">
   <sub>Built by <a href="https://frostylabs.ai">FrostyLabs</a> · Agents that get paid, on-chain.</sub><br/>
   <a href="https://frostylabs.ai">Website</a> ·
-  <a href="https://flow.frostylabs.ai">App</a> ·
+  <a href="https://app.frostylabs.ai">App</a> ·
   <a href="https://docs.frostylabs.ai">Docs</a>
 </div>

@@ -28,7 +28,7 @@ const config = {
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', width: '100%' }}>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.25rem', fontSize: '0.875rem' }}>
           <a href="https://frostylabs.ai" target="_blank" rel="noreferrer">Website</a>
-          <a href="https://flow.frostylabs.ai" target="_blank" rel="noreferrer">Launch App</a>
+          <a href="https://app.frostylabs.ai" target="_blank" rel="noreferrer">Launch App</a>
           <a href="https://t.me/+ZX21TSI9AaY4ODUx" target="_blank" rel="noreferrer">Telegram</a>
           <a href="https://x.com/FrostyLabsAi" target="_blank" rel="noreferrer">X / Twitter</a>
         </div>
