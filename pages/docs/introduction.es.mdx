@@ -1,0 +1,75 @@
+# ¿Qué es FrostyFi?
+
+**FrostyFi** es una plataforma visual de automatización de flujos de trabajo
+para agentes de IA y blockchain. Te permite ir desde un mensaje de chat hasta un agente on-chain desplegado y
+monetizable — sin salir del navegador.
+
+Combina cuatro cosas que la mayoría de las herramientas mantienen separadas:
+
+1. **Un espacio de trabajo de chat** — habla con modelos de IA, adjunta archivos e invoca herramientas.
+2. **Un constructor visual de flujos de trabajo** — arrastra y suelta nodos sobre un lienzo para automatizar
+   cualquier cosa, desde "resumir un feed RSS" hasta "monitorear una wallet y enviar una transacción".
+3. **Agentes desplegables** — publica un flujo de trabajo como un agente en vivo que otras apps y
+   agentes pueden invocar.
+4. **Primitivas nativas de blockchain** — cobra por llamada en USDC ([x402](/docs/agents#x402-payments)),
+   registra una identidad y reputación on-chain ([ERC-8004](/docs/agents#erc-8004-identity--reputation)),
+   y ejecuta operaciones EVM/Solana como pasos del flujo de trabajo.
+
+## El producto en dos minutos
+
+- **Chatea** con un conjunto curado de modelos de IA, todos enrutados a través de
+  [OpenRouter](/docs/models). Menciona un
+  **Asistente** con `@` para traer un experto de dominio, o menciona un **Flujo de trabajo** para ejecutarlo
+  en línea como una herramienta.
+- **Construye flujos de trabajo** en un lienzo de [`@xyflow/react`](/docs/workflows). Cada flujo de trabajo
+  comienza en un nodo **Input** y termina en un nodo **Output**; entre medias conectas nodos LLM,
+  HTTP, de condición, de código, EVM, Solana, Vault, de bucle y de integración.
+- **Despliega** un flujo de trabajo en **Frosty Engine**, el backend de ejecución que ejecuta tus
+  flujos de trabajo en una programación (cron) o mediante webhook — en segundo plano, sin un navegador abierto.
+- **Monetiza** publicando un flujo de trabajo como un **Agente**: un
+  endpoint que habla [A2A](/docs/agents#a2a-protocol) con una identidad on-chain que puede
+  cobrar micropagos en USDC por solicitud.
+
+## Para quién es
+
+- **Constructores y automatizadores** que quieren una forma no-code/low-code de encadenar IA y APIs.
+- **Desarrolladores Web3** que necesitan lecturas/escrituras on-chain, cobertura multi-cadena (más de 1700 cadenas
+  vía ThirdWeb) y operaciones de wallet como pasos de primera clase del flujo de trabajo.
+- **Desarrolladores de agentes** que quieren publicar agentes de pago y descubribles que hablen el
+  protocolo estándar Agent-to-Agent (A2A) y lleven una identidad on-chain ERC-8004.
+
+## Cómo encajan las piezas
+
+```mermaid
+flowchart TD
+    Chat["Chat workspace"]
+    Assist["Assistants — reasoning experts"]
+    Inline["Workflows — run inline as a tool"]
+    Builder["Workflow builder<br/>Input → … → Output"]
+    Engine["Frosty Engine<br/>cron schedules · webhook triggers"]
+    Agent["Publish as Agent"]
+    Endpoint["A2A endpoint + ERC-8004 identity + x402 payments<br/>discoverable in the Marketplace"]
+
+    Chat -->|@mention| Assist
+    Chat -->|@mention| Inline
+    Chat --> Builder
+    Builder -->|deploy| Engine
+    Builder --> Agent
+    Agent --> Endpoint
+```
+
+## Estado actual
+
+FrostyFi se está desplegando continuamente. Un par de cosas para ajustar expectativas:
+
+- **El chat de voz aún no está disponible.** Está construido pero oculto para el lanzamiento mientras se
+  rearquitectura sobre la canalización de OpenRouter (anteriormente dependía de un único
+  proveedor de clave de propietario). Volverá en un sprint multimodal posterior.
+- **La app usa solo servidores MCP remotos.** Por seguridad, FrostyFi se conecta a servidores MCP remotos
+  (HTTP/SSE) — no a los locales de stdio/generados por `npx`.
+- **El token $FROST no ha lanzado.** Se **gana principalmente por los clientes que pagan** mediante
+  emisiones vinculadas a ingresos, con una porción vendida a través de bonos que financian la liquidez
+  propiedad del protocolo. La fecha de lanzamiento está por determinar — hoy el producto funciona
+  enteramente con USDC. Consulta [Tokenomics](/docs/tokenomics).
+
+Siguiente: [Primeros pasos →](/docs/getting-started)

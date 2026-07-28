@@ -1,0 +1,72 @@
+# FrostyFi란 무엇인가요?
+
+**FrostyFi**는 AI 에이전트와 블록체인을 위한 비주얼 워크플로우 자동화
+플랫폼입니다. 브라우저를 벗어나지 않고도 채팅 메시지에서 배포되어 수익화 가능한
+온체인 에이전트까지 이어갈 수 있게 해줍니다.
+
+FrostyFi는 대부분의 도구가 따로 두는 네 가지를 결합합니다:
+
+1. **채팅 워크스페이스** — AI 모델과 대화하고, 파일을 첨부하고, 도구를 호출합니다.
+2. **비주얼 워크플로우 빌더** — 노드를 캔버스로 드래그 앤 드롭하여
+   "RSS 피드 요약"부터 "지갑을 모니터링하고 트랜잭션 전송"까지 무엇이든 자동화합니다.
+3. **배포 가능한 에이전트** — 워크플로우를 다른 앱과 에이전트가 호출할 수 있는
+   라이브 에이전트로 게시합니다.
+4. **블록체인 네이티브 프리미티브** — 호출당 USDC로 요금을 부과하고([x402](/docs/agents#x402-payments)),
+   온체인 아이덴티티와 평판을 등록하고([ERC-8004](/docs/agents#erc-8004-identity--reputation)),
+   EVM/Solana 작업을 워크플로우 단계로 실행합니다.
+
+## 2분으로 보는 제품
+
+- 모두 [OpenRouter](/docs/models)를 통해 라우팅되는 엄선된 AI 모델 세트와 **채팅**하세요.
+  `@`로 **어시스턴트**를 멘션하여 도메인 전문가를 불러오거나, **워크플로우**를 멘션하여
+  도구처럼 인라인으로 실행하세요.
+- [`@xyflow/react`](/docs/workflows) 캔버스에서 **워크플로우를 구축**하세요. 모든 워크플로우는
+  **Input** 노드에서 시작하고 **Output** 노드에서 끝납니다. 그 사이에 LLM,
+  HTTP, 조건, 코드, EVM, Solana, Vault, 루프, 통합 노드를 연결합니다.
+- 워크플로우를 실행 백엔드인 **Frosty Engine**에 **배포**하세요. Frosty Engine은
+  브라우저를 열어두지 않고도 백그라운드에서 스케줄(cron) 또는 웹훅으로 워크플로우를 실행합니다.
+- 워크플로우를 **에이전트**로 게시하여 **수익화**하세요: 요청당 USDC 마이크로페이먼트를 부과할 수 있는,
+  온체인 아이덴티티를 갖춘 [A2A](/docs/agents#a2a-protocol) 지원 엔드포인트입니다.
+
+## 누구를 위한 것인가요
+
+- AI와 API를 노코드/로우코드 방식으로 연결하려는 **빌더 및 자동화 담당자**.
+- 온체인 읽기/쓰기, 멀티체인 커버리지(ThirdWeb를 통한 1700개 이상 체인),
+  지갑 작업을 최상위 워크플로우 단계로 필요로 하는 **Web3 개발자**.
+- 표준 Agent-to-Agent(A2A) 프로토콜을 지원하고 ERC-8004 온체인 아이덴티티를 갖춘,
+  유료이며 검색 가능한 에이전트를 게시하려는 **에이전트 개발자**.
+
+## 각 요소가 어떻게 맞물리는가
+
+```mermaid
+flowchart TD
+    Chat["Chat workspace"]
+    Assist["Assistants — reasoning experts"]
+    Inline["Workflows — run inline as a tool"]
+    Builder["Workflow builder<br/>Input → … → Output"]
+    Engine["Frosty Engine<br/>cron schedules · webhook triggers"]
+    Agent["Publish as Agent"]
+    Endpoint["A2A endpoint + ERC-8004 identity + x402 payments<br/>discoverable in the Marketplace"]
+
+    Chat -->|@mention| Assist
+    Chat -->|@mention| Inline
+    Chat --> Builder
+    Builder -->|deploy| Engine
+    Builder --> Agent
+    Agent --> Endpoint
+```
+
+## 현재 상태
+
+FrostyFi는 지속적으로 출시되고 있습니다. 기대치를 맞추기 위한 몇 가지 사항:
+
+- **음성 채팅은 아직 제공되지 않습니다.** 구축은 완료되었지만 OpenRouter 파이프라인 위로
+  재설계되는 동안 출시 시점에는 숨겨져 있습니다(이전에는 단일 소유자 키 제공자에 의존했습니다).
+  추후 멀티모달 스프린트에서 다시 돌아올 예정입니다.
+- **앱은 원격 MCP 서버만 사용합니다.** 보안을 위해 FrostyFi는 로컬 stdio/`npx`로 생성된
+  서버가 아니라 원격(HTTP/SSE) MCP 서버에 연결합니다.
+- **$FROST 토큰은 아직 출시되지 않았습니다.** 이는 주로 수익 연동 배출을 통해 **유료 고객이 획득**하며,
+  일부는 프로토콜 소유 유동성에 자금을 대는 본드를 통해 판매됩니다. 출시일은 미정입니다 —
+  오늘날 제품은 전적으로 USDC로 운영됩니다. [토크노믹스](/docs/tokenomics)를 참조하세요.
+
+다음: [시작하기 →](/docs/getting-started)

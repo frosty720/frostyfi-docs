@@ -1,0 +1,57 @@
+# Vaults
+
+Garde et signature sécurisées des clés via ThirdWeb Vault.
+
+## Vue d'ensemble
+
+Le Vault détient les portefeuilles serveur afin que les clés privées ne quittent jamais
+l'infrastructure sécurisée (AWS Nitro Enclaves). Le **nœud Vault** gère la gestion des
+portefeuilles et la signature ; il ne lit **pas** les soldes ni n'envoie de fonds — cela
+relève des nœuds [EVM](/docs/workflows) et Solana, qui signent leurs transactions via le
+Vault.
+
+## Opérations prises en charge
+
+| Opération | Description |
+|-----------|-------------|
+| `getWallet` | Obtenir le portefeuille serveur configuré |
+| `createEoa` | Créer un nouveau portefeuille serveur EOA |
+| `listEoas` | Lister les portefeuilles serveur EOA |
+| `signMessage` | Signer un message arbitraire |
+| `signTypedData` | Signer des données typées EIP-712 |
+| `signTransaction` | Signer une transaction |
+| `signAuthorization` | Signer une charge utile EIP-3009 / d'autorisation |
+| `signStructuredMessage` | Signer un message structuré |
+| Solana | `createSolanaAccount`, `listSolanaAccounts`, `signSolanaTransaction`, `signSolanaMessage` |
+
+## Chaînes prises en charge
+
+- Ethereum
+- Base
+- Arbitrum
+- Polygon
+- Optimism
+- Et plus via Thirdweb
+
+## Utilisation dans les flux de travail
+
+Ajoutez un **nœud Vault** pour signer avec un portefeuille serveur — par exemple, signer un
+message :
+
+```json
+{
+  "type": "vault",
+  "operation": "signMessage",
+  "message": "gm"
+}
+```
+
+Pour déplacer des fonds ou appeler un contrat, utilisez le nœud **EVM** (ou **Solana**) — il
+se compose avec le Vault pour la signature, de sorte que la clé ne quitte toujours jamais le
+coffre.
+
+## Sécurité
+
+- Les clés privées ne quittent jamais l'infrastructure Thirdweb
+- Isolation au périmètre de l'utilisateur
+- AWS Nitro Enclaves pour une exécution sécurisée

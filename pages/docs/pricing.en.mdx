@@ -53,19 +53,19 @@ FrostyFi pays a **referral cut on subscriptions** you bring in, settled on-chain
 - When someone subscribes through your link, your wallet is passed as the on-chain
   `referrer`, and the contract accrues your share to a claimable **referral balance**.
 - Claim your earnings any time from the **Creator Dashboard → Affiliate Earnings** card
-  (calls `claimReferral()` on-chain).
+  (calls `claimAffiliate()` on the splitter).
 
-The referral cut is set on-chain in basis points (`referralBps`) and is read live in the
-UI. The program is designed around a **30%** affiliate share
-(`referralBps = 3000`); the contract's shipped default is configurable by the operator.
-Self-referrals are ignored.
+The affiliate program pays **10% across three sticky levels** — **6%** to the direct
+referrer, **2.5%** and **1.5%** to the two levels above — accrued on-chain as a claimable
+balance. Your upline is set once, on a referred user's first payment, and is fixed after.
+**No referrer? That share funds POL instead.** Self-referrals are ignored.
 
 ## Enterprise
 
 Need custom limits or features beyond the standard Enterprise tier? Contact
 **hello@frostylabs.ai**.
 
-> **About Permafrost ($PERMA):** FrostyFi has a planned token, **Permafrost ($PERMA)**, but it **has not launched** and is
-> not required for anything today — all subscriptions are USDC. The token is gated behind
-> explicit [launch gates](/docs/roadmap). See [Tokenomics](/docs/tokenomics) and
-> [POL & Funding](/docs/pol) for the design.
+> **About $FROST:** FrostyFi has a planned token, **$FROST** (lock it for a soulbound **PERMA**
+> position), but it **has not launched** and is not required for anything today — all subscriptions
+> are USDC. $FROST is mainly **earned by paying customers**, with a portion sold via bonds. See [Tokenomics](/docs/tokenomics)
+> and [POL](/docs/pol) for the design.

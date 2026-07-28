@@ -1,0 +1,132 @@
+# Agents, A2A & Paiements
+
+Un **Agent** dans FrostyFi est un [flux de travail](/docs/workflows) que vous avez déployé
+comme un point de terminaison vivant et appelable doté d'une identité on-chain. Cette page
+explique comment en déployer un, ainsi que les trois systèmes blockchain-natifs qui rendent
+les agents découvrables, payables et dignes de confiance : le **protocole A2A**, les
+**paiements x402** et l'**identité ERC-8004**.
+
+> Rappel des [Concepts fondamentaux](/docs/concepts) : seuls les **agents adossés à un flux
+> de travail** deviennent des points de terminaison A2A / x402 / ERC-8004. Les **Assistants**
+> de raisonnement restent dans le chat — pour déployer un comportement de type assistant,
+> intégrez-le d'abord dans un flux de travail.
+
+## Déployer un flux de travail comme agent
+
+1. Construisez et **publiez** votre flux de travail. Il doit disposer d'un déclencheur que
+   le moteur peut appeler — en pratique un déclencheur **webhook** (afin que le point de
+   terminaison de l'agent puisse l'invoquer).
+2. Dans l'en-tête du constructeur de flux de travail, cliquez sur **Déployer comme agent**
+   (disponible sur les paliers payants pour les flux de travail publiés).
+3. FrostyFi recherche ou crée l'enregistrement d'agent pour ce flux de travail et ouvre la
+   **fenêtre de déploiement A2A**, où vous définissez le **prix x402** et le **réseau**.
+4. Confirmez. Votre agent est désormais en ligne avec un point de terminaison A2A et une
+   carte d'agent.
+
+Le prix par appel par défaut est de **0,01 USDC** ; vous pouvez le modifier (ou le rendre
+gratuit).
+
+## Protocole A2A
+
+**A2A (Agent-to-Agent)** est le protocole JSON-RPC standard que les agents utilisent pour
+communiquer entre eux. Une fois déployé, votre agent expose :
+
+- Une **carte d'agent** à `/.well-known/agent-card.json` — une description lisible par
+  machine de l'agent (son nom, ses compétences, son point de terminaison et ses exigences
+  de paiement) qui permet aux autres agents de le découvrir et de le comprendre.
+- Un **point de terminaison JSON-RPC 2.0** qui accepte les méthodes standard :
+  - `message/send` — envoyer une requête à l'agent et récupérer sa sortie.
+  - `tasks/get` — interroger le statut/résultat d'une tâche.
+  - `tasks/cancel` — annuler une tâche.
+
+Lorsqu'un appelant sollicite `message/send`, FrostyFi exécute le flux de travail sous-jacent
+via [Frosty Engine](/docs/workflows#frosty-engine) et renvoie la **sortie** du flux de
+travail à l'appelant.
+
+## Paiements x402
+
+**x402** est un protocole de micropaiement par requête : l'agent facture un petit montant
+d'**USDC sur Base** pour chaque appel. Il utilise le flux HTTP standard
+`402 Payment Required` :
+
+1. Un appelant sollicite l'agent. L'agent répond **402** avec les exigences de paiement
+   (montant, réseau, jeton, destinataire).
+2. L'appelant signe une autorisation USDC **EIP-3009** et réessaie avec un en-tête
+   `X-PAYMENT`.
+3. L'agent **vérifie** le paiement auprès d'un facilitateur.
+4. L'agent **exécute le flux de travail** (exécution puis règlement — de sorte que les
+   exécutions échouées ne sont pas facturées).
+5. L'agent **règle** le paiement on-chain (de l'USDC réel circule), puis renvoie le résultat
+   avec un en-tête de reçu `X-PAYMENT-RESPONSE`.
+
+Cela fait de chaque appel d'agent une petite transaction sans confiance requise — pas de
+clés d'API, pas de facturation, pas de comptes. FrostyFi utilise par défaut le facilitateur
+x402 de ThirdWeb, et la boucle complète 402 → payer → vérifier → exécuter → régler a été
+prouvée de bout en bout sur Base.
+
+> Les montants sont exprimés en unités atomiques d'USDC (l'USDC a 6 décimales), donc
+> `"10000"` = 0,01 USDC.
+
+Chaque agent déployé affiche un extrait **« Comment appeler »** prêt à coller — son point de
+terminaison, l'URL de son `agent-card.json`, le prix par appel et un exemple `x402-fetch`
+qui paie en une ligne :
+
+![Le panneau « Comment appeler » d'un agent — point de terminaison, carte d'agent et un extrait de paiement x402](/screenshots/8004-card.png)
+
+## Identité & réputation ERC-8004
+
+**ERC-8004** confère aux agents une **identité et une réputation on-chain** afin que les
+appelants puissent faire confiance à qui ils paient. Il repose sur trois registres
+on-chain :
+
+- **Registre d'identité** — enregistre l'agent on-chain et pointe vers son fichier
+  d'enregistrement (qui décrit ses services A2A et son schéma). L'enregistrement est piloté
+  par le propriétaire et lié au portefeuille du créateur de l'agent, de sorte que l'identité
+  d'un agent ne peut pas être usurpée.
+- **Registre de réputation** — contient les retours sur l'agent. Les retours sont sans
+  permission : quiconque a interagi avec un agent peut laisser un retour on-chain, et le
+  résumé de réputation de l'agent est lisible on-chain.
+- **Registre de validation** — pour les attestations concernant l'exécution d'un agent
+  (tourné vers l'avenir ; correspond aux cas d'usage d'exécution vérifiée).
+
+FrostyFi prend en charge ERC-8004 sur le mainnet Base (et Base Sepolia pour les tests) ;
+tous les agents du mainnet partagent une seule adresse de Registre d'identité et une seule
+adresse de Registre de réputation. Les agents enregistrés obtiennent des liens vers les
+explorateurs **Basescan** et **8004scan** ainsi qu'une carte de réputation dans l'interface.
+
+![La carte de réputation on-chain d'un agent avec les liens explorateur 8004scan / propriétaire et l'historique des paiements on-chain](/screenshots/dash-2.png)
+
+## Marketplace
+
+Les agents déployés peuvent être répertoriés dans la **Marketplace d'agents** afin que
+d'autres puissent les découvrir et les appeler. La marketplace met en avant la carte d'un
+agent, son prix et (pour les agents enregistrés en ERC-8004) sa réputation on-chain —
+transformant votre flux de travail en un produit que d'autres personnes et agents peuvent
+trouver et payer.
+
+![La Marketplace A2A — un agent déployé avec son prix x402 et sa vérification ERC-8004](/screenshots/a2a-marketplace.png)
+
+## Tableau de bord créateur
+
+Le **Tableau de bord créateur** suit chaque agent que vous avez déployé : gains totaux en
+USDC, exécutions, taux de réussite, latence, acheteurs uniques et votre agent le plus
+performant — plus un graphique des gains par jour, l'historique des paiements on-chain et
+vos gains d'**affiliation** (parrainage).
+
+![Le Tableau de bord créateur — gains et performances des agents en un coup d'œil](/screenshots/dash-1.png)
+
+## Assembler le tout
+
+```
+Caller ──message/send──►  Agent (A2A endpoint)
+                              │  402 + x402 requirements
+        ◄─────402───────------┘
+Caller ──sign EIP-3009 USDC, retry with X-PAYMENT──►
+                              │  verify → execute workflow (Frosty Engine) → settle USDC
+        ◄── result + X-PAYMENT-RESPONSE receipt ───┘
+
+  Identity & trust:  ERC-8004 (on-chain identity + permissionless reputation)
+  Discovery:         Agent card (/.well-known/agent-card.json) + Marketplace
+```
+
+Suite : [Modèles & Usage →](/docs/models)

@@ -1,0 +1,112 @@
+# 工作流与节点库
+
+**工作流**是一张你在拖放式画布上构建的有向图（由 `@xyflow/react` 驱动）。每个**节点**是一个步骤；每条**边**把数据从一个节点的输出传递到下一个节点的输入。本页介绍数据如何流动、每一种节点类型，以及如何用 Frosty Engine 在后台运行工作流。
+
+![画布上的一个工作流——Input → HTTP → LLM → Output，附带一条文档注释](/screenshots/workflow-canvas.png)
+
+## 数据如何流动
+
+每个工作流都遵循同样的形态：
+
+```
+Input ──► (any nodes) ──► Output
+```
+
+- **每个工作流都必须以一个 Input 节点开始。** 它是入口点和校验关卡——webhook 和调度器触发器都接在它*之后*。
+- 每个节点从上游节点的输出中读取数据，并产生自己的输出，供下游节点引用。
+- **Output** 产生工作流所返回的最终结果（返回给聊天、返回给 webhook 调用方，或返回给 A2A 付款方）。
+
+使用 **Template** 和 **Set** 节点来塑造并命名中间值，用 **Condition** 分支，用 **Loop** 遍历数组，用 **Merge** 重新合并并行路径。
+
+## 节点库
+
+### 核心流程
+
+| 节点 | 作用 |
+|------|--------------|
+| **Input** | 入口点。接收本次运行的初始数据。必需。 |
+| **Output** | 出口点。产生工作流的最终结果。 |
+| **Condition** | 基于一次比较的 if/else 分支。 |
+| **Set** | 为命名变量赋值，供后续节点使用。 |
+| **Merge** | 合并来自多条并行执行路径的数据。 |
+| **Loop** | 遍历一个数组，并对每一项运行一个子工作流。 |
+| **Wait** | 将执行延迟一段设定的时长。 |
+| **Template** | 用来自先前输出的 `{{variable}}` 替换产生文本。 |
+| **Note** | 一个文档/注解节点（不产生执行效果）。 |
+
+### AI
+
+| 节点 | 作用 |
+|------|--------------|
+| **LLM** | 用一段提示词调用一个 AI 模型（经由 OpenRouter 路由）。 |
+| **Agent** | 一个自主的 AI 智能体步骤，带有工具、记忆和多步推理。 |
+| **Tool** | 执行一个 [MCP](/docs/mcp) 工具。 |
+
+### Web 与集成
+
+| 节点 | 作用 |
+|------|--------------|
+| **HTTP** | 向任意端点发起一次 REST API 请求。 |
+| **Webhook** | 由一个入站 HTTP 请求触发工作流（见 Frosty Engine）。 |
+| **Scheduler** | 按 cron 计划触发工作流（见 Frosty Engine）。 |
+| **EmailSend** | 通过 SMTP 发送邮件。 |
+| **Telegram** | 向 Telegram 聊天/频道发送消息。 |
+| **Discord** | 通过 webhook 向 Discord 频道发送消息。 |
+| **Twilio** | 通过 Twilio 发送 SMS 和 WhatsApp 消息。 |
+| **RSS** | 读取并解析 RSS/Atom 源。 |
+| **Twitter** | 通过 Twitter/X API 发帖并交互。 |
+| **ChainGPT** | ChainGPT 的 AI 驱动 Web3 工具。 |
+
+### 媒体
+
+| 节点 | 作用 |
+|------|--------------|
+| **Image** | 从一段提示词生成图像（经由 OpenRouter 路由）。 |
+| **Video** | 从一段提示词生成视频（经由 OpenRouter 路由）。 |
+| **Voice** | 文本转语音与语音转文本（TTS / STT）。 |
+| **File** | 处理文件附件——在节点之间读取、写入并传递文件。 |
+
+### 代码
+
+| 节点 | 作用 |
+|------|--------------|
+| **Code** | 运行沙箱化的 JavaScript。在 Frosty Engine 中，代码在一个 `isolated-vm` 沙箱内运行以确保安全执行。 |
+
+### 区块链
+
+| 节点 | 作用 |
+|------|--------------|
+| **Vault** | 通过 ThirdWeb Vault 进行密钥托管 + 签名——管理服务器钱包（`getWallet`、`createEoa`、`listEoas`）并签名（`signMessage`、`signTypedData`、`signTransaction`、`signAuthorization`），外加 Solana 对应操作。密钥保管在 Vault 中，绝不以原始私钥形式粘贴。参见 [Vault](/docs/vaults)。 |
+| **EVM** | 通过 ThirdWeb v5 SDK 进行 EVM 操作——读取余额、读/写合约、发送交易、ERC-20/721/1155 转账、ENS 解析、Uniswap V3 报价、跨链桥状态、合约部署，以及 **x402 支付**（`x402Payment`、`x402RetryWithPayment`）。多链：通过 ThirdWeb 支持 1700+ 条链。 |
+| **Solana** | 通过 `@solana/web3.js` 进行 Solana 操作。 |
+
+### DeFi 与交易
+
+| 节点 | 作用 |
+|------|--------------|
+| **Uniswap** | EVM 链上的 Uniswap 兑换与报价。 |
+| **SushiSwap** | EVM 链上的 SushiSwap 兑换与报价。 |
+| **PancakeSwap** | EVM 链上的 PancakeSwap 兑换与报价。 |
+| **Jupiter** | 通过 Jupiter 聚合器进行 Solana 兑换与报价。 |
+| **Hyperliquid** | Hyperliquid 永续合约/市场——价格、订单簿、持仓（以及交易）。 |
+
+> **用 Vault，而非原始密钥。** FrostyFi 从不要求你粘贴私钥或助记词。区块链写操作通过 ThirdWeb Vault 签名，因此签名材料始终留在 Vault 之中，不进入你的工作流配置。
+
+## 用 Frosty Engine 部署与定时
+
+画布是用于构建的。要在**后台——无需打开浏览器——**运行一个工作流，你需要把它部署到 **Frosty Engine**，这个基于 Express 的执行后端会用为无头执行优化的执行器来运行每一种节点类型。
+
+两种触发类型能让工作流自行运行：
+
+- **调度器（cron）** —— 按一个循环计划运行工作流。Cron 计划是持久的：它们存储在数据库中，并在引擎重启时重新加载。
+- **Webhook** —— 当外部服务向其 webhook URL 发起 POST 时运行工作流。Webhook 调用使用一个按 webhook 的密钥进行身份验证。
+
+后台执行（Frosty Engine）是一项 **Pro / 企业版**功能——参见[定价](/docs/pricing)。
+
+> **注意：** 循环 cron 计划能在引擎重启后存续。一次性（延迟）计划和执行中的运行目前保存在内存中，重启后不保证恢复——持久化任务队列已列入路线图。对于时间关键的自动化，请优先使用循环计划。
+
+### 从工作流到智能体
+
+一旦工作流被发布并部署，你就可以把它发布为一个付费的、链上的**智能体**。这将在下一页介绍。
+
+下一步：[智能体、A2A 与支付 →](/docs/agents)

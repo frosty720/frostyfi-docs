@@ -1,0 +1,76 @@
+# Modèles & Usage
+
+FrostyFi route **tous les modèles de chat via [OpenRouter](https://openrouter.ai)** — une
+passerelle unique devant chaque grand fournisseur. Cette page explique le sélecteur de
+modèle, comment l'usage mensuel évolue selon le modèle que vous choisissez, et le compteur
+**≈ appels restants**.
+
+## Une passerelle, un sélecteur
+
+![Le sélecteur de modèle, avec les onglets Texte / Image / Vidéo et l'estimation des appels restants](/screenshots/model-picker.png)
+
+Au lieu d'intégrations de fournisseurs distinctes et de clés par fournisseur, FrostyFi envoie
+chaque requête de chat via OpenRouter. Cela signifie :
+
+- **Un sélecteur sélectionné unique.** Ajoutez ou retirez un modèle à un seul endroit ; pas
+  de tables outil/vision parallèles à maintenir synchronisées.
+- **Un contrôle de dépense unique.** L'usage de chaque utilisateur passe par une clé
+  OpenRouter propre à l'utilisateur avec un plafond mensuel strict (plus de détails
+  ci-dessous).
+- **Attribution de l'application.** Chaque appel d'inférence porte les en-têtes d'attribution
+  de FrostyFi, de sorte que l'application apparaît dans les classements et analyses publics
+  d'OpenRouter.
+
+Les modèles se répartissent en deux ensembles :
+
+- **Modèles gratuits** — l'ensemble `:free` toujours actif (de puissants modèles ouverts à
+  0 $, par exemple Gemma, DeepSeek, Qwen, GPT-OSS). Les nouveaux modèles `:free` sur
+  OpenRouter sont mis en avant automatiquement.
+- **Modèles payants** — un ensemble phare sélectionné.
+
+**L'accès aux modèles est binaire — `gratuit` ou `payant`.** Le palier gratuit ne voit que
+les modèles gratuits ; **Pro et Enterprise voient tous deux chaque modèle payant.** Il n'y a
+pas de « ce modèle est réservé à Enterprise ».
+
+## L'usage mensuel évolue selon le modèle
+
+Ce que vous pouvez faire chaque mois dépend de votre [palier d'abonnement](/docs/pricing)
+**et des modèles que vous choisissez** — c'est la part équitable. Un appel à un modèle léger
+et un appel à un modèle de pointe représentent des quantités de calcul très différentes, donc
+votre allocation est mesurée par l'usage plutôt que par un décompte forfaitaire d'appels. Les
+modèles moins chers vont beaucoup plus loin ; les modèles premium consomment davantage de
+votre allocation par appel.
+
+| Palier | Usage mensuel |
+|------|---------------|
+| **Gratuit** | Un forfait de **50 appels/mois** sur les **modèles gratuits uniquement**. |
+| **Pro** | Une allocation mensuelle généreuse — environ **400 à 4 700 appels premium/mois**, selon les modèles que vous utilisez. |
+| **Enterprise** | Une allocation plus large — environ **1 500 à 18 000 appels premium/mois**, selon les modèles que vous utilisez. |
+
+Lorsque vous atteignez votre allocation mensuelle, FrostyFi affiche un message « limite
+atteinte » élégant et elle se réinitialise au début de chaque mois. Les modèles gratuits et
+rapides restent disponibles pour Pro et Enterprise sans entamer l'allocation premium.
+
+## L'estimation « appels restants »
+
+Le compteur d'usage traduit votre allocation mensuelle restante en une estimation
+**≈ N appels restants** **pour le modèle que vous avez actuellement sélectionné** — jamais un
+chiffre de coût brut :
+
+- Passez à un modèle **moins cher** et l'estimation **augmente**.
+- Passez à un modèle **plus cher** et elle **diminue**.
+
+C'est la même allocation dans les deux cas — le compteur vous donne simplement une idée
+honnête et intuitive de ce qu'il reste sur le modèle que vous utilisez. L'estimation utilise
+un profil représentatif de jetons par appel, c'est donc un repère, pas un contrat.
+
+Le compteur du **palier gratuit** est plus simple : il affiche simplement les appels utilisés
+par rapport à l'allocation forfaitaire de **50/mois**.
+
+## Suivi des coûts
+
+FrostyFi enregistre le coût réel par appel rapporté par OpenRouter dans un registre d'usage
+unique par utilisateur. Ce registre alimente le compteur, applique les budgets, et constitue
+la même couche comptable qui prendra en charge l'usage du jeton PERMA à l'avenir.
+
+Suite : [Abonnements & Tarifs →](/docs/pricing)

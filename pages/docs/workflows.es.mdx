@@ -1,0 +1,130 @@
+# Flujos de trabajo y la biblioteca de nodos
+
+Un **flujo de trabajo** es un grafo dirigido que construyes en un lienzo de arrastrar y soltar (impulsado por
+`@xyflow/react`). Cada **nodo** es un paso; cada **arista** lleva datos desde la salida de un nodo
+a la entrada del siguiente nodo. Esta página cubre cómo fluyen los datos, cada tipo de nodo, y cómo
+ejecutar un flujo de trabajo en segundo plano con Frosty Engine.
+
+![Un flujo de trabajo en el lienzo — Input → HTTP → LLM → Output, con una nota de documentación](/screenshots/workflow-canvas.png)
+
+## Cómo fluyen los datos
+
+Cada flujo de trabajo sigue la misma forma:
+
+```
+Input ──► (any nodes) ──► Output
+```
+
+- **Todo flujo de trabajo debe comenzar con un nodo Input.** Es el punto de entrada y la
+  puerta de validación — los disparadores de webhook y programador se encadenan *después* de él.
+- Cada nodo lee de las salidas de los nodos anteriores y produce su propia salida, a la que
+  los nodos posteriores pueden hacer referencia.
+- **Output** produce el resultado final que devuelve el flujo de trabajo (al chat, a un llamante de webhook,
+  o a un pagador A2A).
+
+Usa los nodos **Template** y **Set** para dar forma y nombrar valores intermedios, **Condition** para
+ramificar, **Loop** para iterar sobre arrays, y **Merge** para recombinar rutas paralelas.
+
+## La biblioteca de nodos
+
+### Flujo principal
+
+| Nodo | Qué hace |
+|------|--------------|
+| **Input** | Punto de entrada. Recibe los datos iniciales de la ejecución. Requerido. |
+| **Output** | Punto de salida. Produce el resultado final del flujo de trabajo. |
+| **Condition** | Ramificación if/else basada en una comparación. |
+| **Set** | Asigna valores a variables nombradas para que los usen nodos posteriores. |
+| **Merge** | Combina datos de múltiples rutas de ejecución paralelas. |
+| **Loop** | Itera sobre un array y ejecuta un subflujo de trabajo por elemento. |
+| **Wait** | Retrasa la ejecución durante una duración establecida. |
+| **Template** | Produce texto con sustitución de `{{variable}}` a partir de salidas anteriores. |
+| **Note** | Un nodo de documentación/anotación (sin efecto de ejecución). |
+
+### IA
+
+| Nodo | Qué hace |
+|------|--------------|
+| **LLM** | Llama a un modelo de IA (enrutado a través de OpenRouter) con un prompt. |
+| **Agent** | Un paso de agente de IA autónomo con herramientas, memoria y razonamiento de múltiples pasos. |
+| **Tool** | Ejecuta una herramienta [MCP](/docs/mcp). |
+
+### Web e integraciones
+
+| Nodo | Qué hace |
+|------|--------------|
+| **HTTP** | Realiza una solicitud a una API REST a cualquier endpoint. |
+| **Webhook** | Activa el flujo de trabajo desde una solicitud HTTP entrante (ver Frosty Engine). |
+| **Scheduler** | Activa el flujo de trabajo en una programación cron (ver Frosty Engine). |
+| **EmailSend** | Envía correo electrónico mediante SMTP. |
+| **Telegram** | Envía mensajes a chats/canales de Telegram. |
+| **Discord** | Envía mensajes a canales de Discord mediante webhooks. |
+| **Twilio** | Envía mensajes SMS y de WhatsApp mediante Twilio. |
+| **RSS** | Lee y analiza feeds RSS/Atom. |
+| **Twitter** | Publica e interactúa con la API de Twitter/X. |
+| **ChainGPT** | Herramientas Web3 impulsadas por IA de ChainGPT. |
+
+### Multimedia
+
+| Nodo | Qué hace |
+|------|--------------|
+| **Image** | Genera imágenes a partir de un prompt (enrutado a través de OpenRouter). |
+| **Video** | Genera vídeo a partir de un prompt (enrutado a través de OpenRouter). |
+| **Voice** | Texto a voz y voz a texto (TTS / STT). |
+| **File** | Trabaja con archivos adjuntos — lee, escribe y pasa archivos entre nodos. |
+
+### Código
+
+| Nodo | Qué hace |
+|------|--------------|
+| **Code** | Ejecuta JavaScript en un entorno aislado. En Frosty Engine, el código se ejecuta dentro de un sandbox `isolated-vm` para una ejecución segura. |
+
+### Blockchain
+
+| Nodo | Qué hace |
+|------|--------------|
+| **Vault** | Custodia y firma de claves mediante ThirdWeb Vault — gestiona wallets de servidor (`getWallet`, `createEoa`, `listEoas`) y firma (`signMessage`, `signTypedData`, `signTransaction`, `signAuthorization`), más equivalentes de Solana. Las claves se mantienen en el Vault, nunca se pegan como claves privadas en bruto. Consulta [Vaults](/docs/vaults). |
+| **EVM** | Operaciones EVM mediante el SDK v5 de ThirdWeb — leer saldos, leer/escribir contratos, enviar transacciones, transferencias ERC-20/721/1155, resolución ENS, cotizaciones de Uniswap V3, estado de puentes, despliegues de contratos, y **pagos x402** (`x402Payment`, `x402RetryWithPayment`). Multi-cadena: más de 1700 cadenas vía ThirdWeb. |
+| **Solana** | Operaciones de Solana mediante `@solana/web3.js`. |
+
+### DeFi y trading
+
+| Nodo | Qué hace |
+|------|--------------|
+| **Uniswap** | Swaps y cotizaciones de Uniswap en cadenas EVM. |
+| **SushiSwap** | Swaps y cotizaciones de SushiSwap en cadenas EVM. |
+| **PancakeSwap** | Swaps y cotizaciones de PancakeSwap en cadenas EVM. |
+| **Jupiter** | Swaps y cotizaciones de Solana mediante el agregador Jupiter. |
+| **Hyperliquid** | Perps/mercados de Hyperliquid — precios, libros de órdenes, posiciones (y trading). |
+
+> **Vault, no claves en bruto.** FrostyFi nunca te pide pegar una clave privada o frase semilla.
+> Las operaciones de escritura de blockchain se firman a través de ThirdWeb Vault, por lo que el material de firma permanece
+> en el vault y fuera de la configuración de tu flujo de trabajo.
+
+## Desplegar y programar con Frosty Engine
+
+El lienzo es para construir. Para ejecutar un flujo de trabajo **en segundo plano — sin un navegador abierto —**
+lo despliegas en **Frosty Engine**, el backend de ejecución basado en Express que ejecuta cada tipo de
+nodo con executors optimizados para la ejecución sin interfaz.
+
+Dos tipos de disparador hacen que un flujo de trabajo se ejecute por sí solo:
+
+- **Scheduler (cron)** — ejecuta el flujo de trabajo en una programación recurrente. Las programaciones cron son
+  duraderas: se almacenan en la base de datos y se recargan cuando el motor se reinicia.
+- **Webhook** — ejecuta el flujo de trabajo cuando un servicio externo hace POST a su URL de webhook.
+  Las llamadas de webhook se autentican con un secreto por webhook.
+
+La ejecución en segundo plano (Frosty Engine) es una funcionalidad **Pro / Enterprise** — consulta
+[Precios](/docs/pricing).
+
+> **Nota:** las programaciones cron recurrentes sobreviven a los reinicios del motor. Las programaciones únicas (retrasadas)
+> y las ejecuciones en curso se mantienen actualmente en memoria y no se garantiza que se reanuden
+> tras un reinicio — la cola de trabajos duradera está en la hoja de ruta. Para automatizaciones críticas en el tiempo,
+> prefiere las programaciones recurrentes.
+
+### De flujo de trabajo a agente
+
+Una vez que un flujo de trabajo está publicado y desplegado, puedes publicarlo como un
+**agente** de pago y on-chain. Eso se cubre a continuación.
+
+Siguiente: [Agentes, A2A y pagos →](/docs/agents)

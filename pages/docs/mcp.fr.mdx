@@ -1,0 +1,62 @@
+# Intégration MCP
+
+Connectez des outils externes via le Model Context Protocol.
+
+## Qu'est-ce que MCP ?
+
+MCP (Model Context Protocol) permet aux modèles d'IA d'interagir avec des outils et services externes.
+
+## Ajouter un serveur MCP
+
+L'application hébergée se connecte à des **serveurs MCP distants uniquement** (pour des raisons de sécurité). Les serveurs locaux stdio / générés par `npx` ne sont pas pris en charge.
+
+![La page Serveurs MCP — connectez votre premier serveur, avec des intégrations vérifiées en un clic](/screenshots/mcp-1.png)
+
+1. Allez dans **Paramètres** → **Serveurs MCP**
+2. Cliquez sur **Ajouter un serveur**
+3. Sélectionnez un type de transport distant :
+   - **StreamableHTTP** : basé sur HTTP (recommandé)
+   - **SSE** : Server-Sent Events
+
+La marketplace propose aussi des serveurs distants vérifiés (par exemple CoinGecko, Alpha Vantage, Stripe, Etherscan, Blockscout) que vous pouvez ajouter en un clic.
+
+![La Marketplace MCP — découvrez et ajoutez des serveurs MCP distants vérifiés](/screenshots/mcp-2.png)
+
+## Exemple : un serveur MCP distant
+
+```json
+{
+  "name": "coingecko",
+  "transport": "streamableHttp",
+  "url": "https://mcp.example.com/coingecko"
+}
+```
+
+Dans l'interface, vous donnez un nom au serveur et collez une configuration basée sur une URL (avec un éventuel en-tête d'authentification). Serveurs distants (basés sur une URL) uniquement — les serveurs basés sur une commande doivent provenir de la marketplace sélectionnée.
+
+![Le formulaire de configuration MCP — un serveur distant basé sur une URL avec un en-tête d'authentification et un aperçu en direct](/screenshots/mcp-config.png)
+
+## Utiliser les outils MCP dans le chat
+
+Tapez `@` suivi du nom de l'outil pour l'appeler :
+
+```
+@coingecko price of ETH and BTC right now
+```
+
+## Outils intégrés
+
+Au-delà des serveurs MCP, chaque chat est livré avec ces outils intégrés :
+
+| Outil | Description |
+|------|-------------|
+| Recherche web | Recherche web via EXA |
+| Contenu web | Récupérer et lire le contenu d'une page |
+| Requête HTTP | Appeler n'importe quel point de terminaison REST |
+| Code (JS / Python) | Exécuter du JavaScript ou du Python en bac à sable |
+| Créer un flux de travail | Générer un flux de travail à partir d'une description |
+| Génération d'images | Générer des images (routées via OpenRouter) |
+
+## Créer des serveurs personnalisés
+
+Voir [MCP SDK](https://github.com/modelcontextprotocol/sdk) pour construire votre propre serveur MCP distant.

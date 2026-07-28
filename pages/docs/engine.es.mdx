@@ -1,0 +1,62 @@
+# Frosty Engine
+
+Ejecución automatizada de flujos de trabajo en segundo plano.
+
+## Descripción general
+
+Frosty Engine ejecuta flujos de trabajo en horarios programados o mediante webhooks. Disponible para usuarios Pro y Enterprise.
+
+Cada flujo de trabajo desplegado tiene un panel de **Ejecuciones** que muestra sus ejecuciones en segundo plano — tipo de
+disparador (webhook / programación), estado y latencia — para que puedas ver de un vistazo cómo están
+rindiendo tus automatizaciones.
+
+![El panel de Ejecuciones — ejecuciones en segundo plano con estado y latencia](/screenshots/runs-panel.png)
+
+## Funcionalidades
+
+- **Flujos de trabajo programados**: Automatización basada en cron
+- **Disparadores webhook**: Endpoints HTTP para activar flujos de trabajo
+- **Verificación de nivel**: Comprobaciones de suscripción en cada ejecución
+- **Integración con Vault**: Operaciones de blockchain en segundo plano
+- **Historial de ejecución**: Registro de auditoría completo
+
+## Estados de despliegue
+
+| Estado | Programador | Webhook |
+|-------|-----------|---------|
+| No desplegado | ❌ | ❌ |
+| Desplegado | ✅ | ✅ |
+| Pausado | ⏸️ | ❌ |
+| Detenido | ❌ | ❌ |
+
+## Endpoints de API
+
+### Despliegue
+- `POST /api/deploy` - Desplegar flujo de trabajo
+- `POST /api/deployments/:id/pause` - Pausar
+- `POST /api/deployments/:id/resume` - Reanudar
+- `DELETE /api/deployments/:id` - Eliminar
+
+### Ejecución
+- `POST /api/execute` - Ejecución manual
+- `GET /api/executions/:id` - Obtener estado
+
+### Webhooks
+- `POST /webhooks/:id` - Activar un flujo de trabajo desplegado mediante su webhook
+
+> Las programaciones cron y los webhooks se configuran como parte del **despliegue** de un flujo de trabajo (el
+> programador y el receptor de webhooks los leen desde la base de datos) — no hay un endpoint separado
+> de gestión de programaciones.
+
+## Seguridad
+
+- Autenticación JWT requerida
+- Verificación del nivel de suscripción
+- Limitación de tasa habilitada
+- Validación del secreto del webhook
+
+## Requisitos
+
+- Suscripción Pro ($25/mes) o Enterprise ($99/mes)
+- Redis para la cola de trabajos
+- Base de datos compartida con la aplicación principal

@@ -1,0 +1,111 @@
+# Conceptos fundamentales
+
+FrostyFi tiene un puñado de bloques de construcción que son fáciles de confundir porque todos tienen que ver
+con la "IA". Esta página define cada uno con precisión y — lo más importante — traza la línea
+entre un **Asistente** y un **Agente**.
+
+## Flujos de trabajo
+
+Un **Flujo de trabajo** es la funcionalidad principal: una automatización visual, basada en nodos, que construyes en un
+lienzo de arrastrar y soltar. Un flujo de trabajo es un grafo dirigido de **nodos** (pasos) conectados por
+**aristas** (flujo de datos). Siempre comienza en un nodo **Input** y termina en un nodo **Output**;
+entre medias conectas llamadas a LLM, solicitudes HTTP, condiciones, código, operaciones de blockchain,
+bucles e integraciones.
+
+Los flujos de trabajo se almacenan en la base de datos como nodos + aristas. Pueden ejecutarse de tres maneras:
+
+- **En línea** — invocados con `@` desde el chat y ejecutados como una herramienta.
+- **En segundo plano** — desplegados en [Frosty Engine](/docs/workflows#frosty-engine) en una
+  programación cron o mediante webhook.
+- **Como agente** — publicados para que llamantes externos puedan invocarlos (ver Agentes más abajo).
+
+Consulta [Flujos de trabajo y nodos](/docs/workflows) para la biblioteca completa de nodos.
+
+## Asistentes
+
+Un **Asistente** es un **experto de chat de razonamiento**. Piensa en él como una persona configurada — un
+rol/experiencia, un prompt de sistema, un conjunto de skills y un conjunto de herramientas — que puedes invocar
+en el chat con `@`.
+
+Propiedades clave:
+
+- **Agnóstico al modelo.** Un asistente no está ligado a un modelo; se ejecuta en el modelo que
+  hayas seleccionado en el selector.
+- **Invocable con `@`** en el chat. Cuando mencionas a un asistente, su persona y skills se
+  inyectan en la conversación.
+- **No se puede desplegar.** Los asistentes viven dentro del entorno de ejecución del chat — no tienen ningún
+  entorno de ejecución en segundo plano sin interfaz, por lo que *no* se convierten directamente en endpoints x402/A2A/ERC-8004.
+  Si necesitas el comportamiento de un asistente como una unidad desplegable, constrúyelo en un flujo de trabajo (el
+  **nodo Agent** permite que un flujo de trabajo incorpore razonamiento tipo asistente).
+
+## Agentes
+
+Un **Agente** es un **agente de flujo de trabajo desplegado**. Es un flujo de trabajo que ha sido publicado como
+un endpoint en vivo e invocable con una identidad on-chain. En el modelo de FrostyFi, *"agente de flujo de
+trabajo" y "agente A2A" son lo mismo* — el mismo registro, marcado para despliegue.
+
+Un agente te da:
+
+- Un endpoint [A2A](/docs/agents#a2a-protocol) y una **tarjeta de agente** descubrible.
+- Pagos opcionales por llamada en USDC con [x402](/docs/agents#x402-payments).
+- Una identidad y reputación on-chain opcional con [ERC-8004](/docs/agents#erc-8004-identity--reputation).
+- Un listado en el [Marketplace](/docs/agents#marketplace).
+
+### Asistente vs. Agente — la distinción precisa
+
+| | **Asistente** | **Agente** |
+|---|---|---|
+| Qué es | Una persona de chat de razonamiento | Un flujo de trabajo desplegado |
+| ¿Respaldado por un flujo de trabajo? | No (`workflowId` es nulo) | Sí (tiene un `workflowId`) |
+| Dónde se ejecuta | Dentro del entorno de ejecución del chat | Sin interfaz, en Frosty Engine |
+| ¿Invocable con `@` en el chat? | Sí | No — invócalo mediante su endpoint de agente o ejecuta su flujo de trabajo |
+| ¿Se puede desplegar? | No | Sí — eso *es* lo que lo convierte en un agente |
+| ¿x402 / A2A / ERC-8004? | No | Sí |
+
+La versión corta: **los Asistentes son para pensar dentro del chat; los Agentes son para ejecutar
+flujos de trabajo desplegados que otros pueden invocar y pagar.** Ambas superficies obtienen la misma
+ruta de monetización *a través de los flujos de trabajo* — compones las capacidades de un asistente en un
+flujo de trabajo y luego despliegas ese flujo de trabajo como agente.
+
+## Skills
+
+Un **Skill** es **documentación de solo instrucciones inyectada en un asistente**. Un skill
+no es código ni una herramienta — es un bloque de orientación (mejores prácticas, un procedimiento, conocimiento
+de dominio) que se añade al prompt de sistema de un asistente. Cuando la solicitud del usuario
+coincide con un skill, el asistente sigue esa orientación.
+
+Los skills son la forma de enseñarle a un asistente *cómo* hacer algo sin escribir software. Tú
+adjuntas skills a los asistentes en el editor de asistentes.
+
+## Servidores MCP
+
+Los **servidores MCP** ([Model Context Protocol](/docs/mcp)) son fuentes externas de **herramientas**.
+Conectar un servidor MCP le da a tus chats y asistentes un conjunto de herramientas invocables (por ejemplo,
+datos de mercado, pagos, obtención de contenido web).
+
+MCP es **solo remoto** — te conectas a servidores MCP remotos (HTTP/SSE). El marketplace
+ofrece servidores remotos verificados (por ejemplo, CoinGecko, Alpha Vantage, Stripe, Etherscan, Blockscout).
+
+## Plantillas
+
+Una **Plantilla** es un **flujo de trabajo listo para clonar y usar**. La galería de plantillas contiene flujos de trabajo
+públicos preconstruidos; al hacer clic en **Usar plantilla** se copia uno en tu espacio de trabajo (con IDs de nodo
+nuevos) para que puedas ejecutarlo y personalizarlo. Las plantillas son la forma más rápida de empezar — consulta
+[Primeros pasos](/docs/getting-started#4-create-your-first-workflow-from-a-template).
+
+![La galería de plantillas de flujos de trabajo](/screenshots/templates-gallery.png)
+
+## Cómo se relacionan
+
+```
+Templates ──clone──► Workflows ──deploy──► Agents (A2A / x402 / ERC-8004)
+                         ▲
+                         │ run inline as a tool
+                         │
+        Chat ──@──► Assistants  (persona + Skills + Tools)
+                         ▲
+                         │ provide tools
+                    MCP servers
+```
+
+Siguiente: [Flujos de trabajo y nodos →](/docs/workflows)

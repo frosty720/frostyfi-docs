@@ -1,0 +1,53 @@
+# FrostyFi 是什么？
+
+**FrostyFi** 是一个面向 AI 智能体与区块链的可视化工作流自动化平台。它让你从一条聊天消息出发，一直做到一个已部署、可变现的链上智能体——全程无需离开浏览器。
+
+它把大多数工具通常各自分开的四样东西整合在一起：
+
+1. **一个聊天工作区** —— 与 AI 模型对话、附加文件并调用工具。
+2. **一个可视化工作流构建器** —— 把节点拖放到画布上，自动化从「汇总一个 RSS 源」到「监控一个钱包并发送一笔交易」的各种任务。
+3. **可部署智能体** —— 把工作流发布为一个其他应用与智能体都能调用的实时智能体。
+4. **区块链原生基元** —— 通过 [x402](/docs/agents#x402-payments) 按次调用收取 USDC，注册链上身份与信誉（[ERC-8004](/docs/agents#erc-8004-identity--reputation)），并将 EVM/Solana 操作作为工作流步骤运行。
+
+## 两分钟看懂这款产品
+
+- 与一组精选的 AI 模型进行**聊天**，全部经由 [OpenRouter](/docs/models) 路由。用 `@` 提及一个**助手**以引入某领域专家，或提及一个**工作流**以将其作为工具内联运行。
+- 在 [`@xyflow/react`](/docs/workflows) 画布上**构建工作流**。每个工作流都从一个**输入（Input）**节点开始，到一个**输出（Output）**节点结束；中间你连接 LLM、HTTP、条件、代码、EVM、Solana、Vault、循环及各类集成节点。
+- 将工作流**部署**到 **Frosty Engine**——这个执行后端会按计划（cron）或通过 webhook 运行你的工作流——在后台运行，无需打开浏览器。
+- 通过把工作流发布为**智能体**来**变现**：一个说 [A2A](/docs/agents#a2a-protocol) 协议、拥有链上身份、能对每次请求收取 USDC 微支付的端点。
+
+## 它适合谁
+
+- **构建者与自动化爱好者** —— 想要一种无代码/低代码的方式，把 AI 与各类 API 串联起来。
+- **Web3 开发者** —— 需要将链上读写、多链覆盖（通过 ThirdWeb 支持 1700+ 条链）以及钱包操作作为一等的工作流步骤。
+- **智能体开发者** —— 想要发布付费、可被发现、说标准 Agent-to-Agent（A2A）协议、并携带 ERC-8004 链上身份的智能体。
+
+## 各部分如何组合
+
+```mermaid
+flowchart TD
+    Chat["Chat workspace"]
+    Assist["Assistants — reasoning experts"]
+    Inline["Workflows — run inline as a tool"]
+    Builder["Workflow builder<br/>Input → … → Output"]
+    Engine["Frosty Engine<br/>cron schedules · webhook triggers"]
+    Agent["Publish as Agent"]
+    Endpoint["A2A endpoint + ERC-8004 identity + x402 payments<br/>discoverable in the Marketplace"]
+
+    Chat -->|@mention| Assist
+    Chat -->|@mention| Inline
+    Chat --> Builder
+    Builder -->|deploy| Engine
+    Builder --> Agent
+    Agent --> Endpoint
+```
+
+## 当前状态
+
+FrostyFi 在持续发布中。有几件事需要先设定预期：
+
+- **语音聊天尚不可用。** 它已经构建完成，但在为发布而被隐藏，正在被重新架构到 OpenRouter 管线之上（它此前依赖于单一的所有者密钥提供商）。它会在后续的多模态冲刺中回归。
+- **应用仅使用远程 MCP 服务器。** 出于安全考虑，FrostyFi 连接的是远程（HTTP/SSE）MCP 服务器——而非本地的 stdio / `npx` 启动的服务器。
+- **$FROST 代币尚未发行。** 它主要由**付费客户赚取**，通过与收入挂钩的排放获得，另有一部分通过债券出售，用于为协议自有流动性提供资金。发行日期待定——如今产品完全运行在 USDC 之上。参见[代币经济](/docs/tokenomics)。
+
+下一步：[快速上手 →](/docs/getting-started)

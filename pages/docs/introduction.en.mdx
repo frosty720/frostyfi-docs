@@ -40,21 +40,25 @@ It combines four things most tools keep separate:
 
 ## How the pieces fit together
 
-```
-  Chat  ──@mention──►  Assistants (reasoning experts)
-   │                   Workflows (run inline as a tool)
-   │
-   ▼
-  Workflow builder  ──deploy──►  Frosty Engine
-   (Input → … → Output)            • cron schedules
-   │                               • webhook triggers
-   │
-   ▼
-  Publish as Agent  ──►  A2A endpoint + ERC-8004 identity + x402 payments
-                          (discoverable in the Marketplace)
+```mermaid
+flowchart TD
+    Chat["Chat workspace"]
+    Assist["Assistants — reasoning experts"]
+    Inline["Workflows — run inline as a tool"]
+    Builder["Workflow builder<br/>Input → … → Output"]
+    Engine["Frosty Engine<br/>cron schedules · webhook triggers"]
+    Agent["Publish as Agent"]
+    Endpoint["A2A endpoint + ERC-8004 identity + x402 payments<br/>discoverable in the Marketplace"]
+
+    Chat -->|@mention| Assist
+    Chat -->|@mention| Inline
+    Chat --> Builder
+    Builder -->|deploy| Engine
+    Builder --> Agent
+    Agent --> Endpoint
 ```
 
-## Honest status notes
+## Current status
 
 FrostyFi is shipping continuously. A couple of things to set expectations:
 
@@ -63,8 +67,8 @@ FrostyFi is shipping continuously. A couple of things to set expectations:
   owner-key provider). It will return in a later multimodal sprint.
 - **The app uses remote MCP servers only.** For security, FrostyFi connects to remote
   (HTTP/SSE) MCP servers — not local stdio/`npx`-spawned ones.
-- **The Permafrost ($PERMA) token has not launched.** It is gated behind explicit
-  [launch gates](/docs/roadmap) (real traction, a working native model, audited contracts,
-  live docs). Today the product runs on USDC subscriptions.
+- **The $FROST token has not launched.** It is mainly **earned by paying customers** through
+  revenue-linked emissions, with a portion sold via bonds that fund protocol-owned liquidity.
+  Launch date is TBA — today the product runs entirely on USDC. See [Tokenomics](/docs/tokenomics).
 
 Next: [Getting Started →](/docs/getting-started)

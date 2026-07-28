@@ -1,0 +1,85 @@
+# Qu'est-ce que FrostyFi ?
+
+**FrostyFi** est une plateforme d'automatisation visuelle de flux de travail pour les agents
+IA et la blockchain. Elle vous permet de passer d'un message de chat à un agent on-chain
+déployé et monétisable — sans quitter le navigateur.
+
+Elle combine quatre choses que la plupart des outils gardent séparées :
+
+1. **Un espace de travail de chat** — dialoguez avec des modèles d'IA, joignez des fichiers
+   et appelez des outils.
+2. **Un constructeur visuel de flux de travail** — glissez-déposez des nœuds sur un canevas
+   pour automatiser n'importe quoi, de « résumer un flux RSS » à « surveiller un portefeuille
+   et envoyer une transaction ».
+3. **Des agents déployables** — publiez un flux de travail comme un agent vivant que
+   d'autres applications et agents peuvent appeler.
+4. **Des primitives blockchain-natives** — facturez par appel en USDC
+   ([x402](/docs/agents#x402-payments)), enregistrez une identité et une réputation on-chain
+   ([ERC-8004](/docs/agents#erc-8004-identity--reputation)), et exécutez des opérations
+   EVM/Solana comme étapes de flux de travail.
+
+## Le produit en deux minutes
+
+- **Dialoguez** avec un ensemble sélectionné de modèles d'IA, tous routés via
+  [OpenRouter](/docs/models). Mentionnez un **Assistant** avec `@` pour faire intervenir un
+  expert de domaine, ou mentionnez un **flux de travail** pour l'exécuter en ligne comme un
+  outil.
+- **Construisez des flux de travail** sur un canevas [`@xyflow/react`](/docs/workflows).
+  Chaque flux de travail commence par un nœud **Input** et se termine par un nœud
+  **Output** ; entre les deux, vous connectez des nœuds LLM, HTTP, condition, code, EVM,
+  Solana, Vault, boucle et intégration.
+- **Déployez** un flux de travail sur **Frosty Engine**, le backend d'exécution qui exécute
+  vos flux de travail selon un planning (cron) ou via webhook — en arrière-plan, sans
+  navigateur ouvert.
+- **Monétisez** en publiant un flux de travail comme **Agent** : un point de terminaison
+  parlant l'[A2A](/docs/agents#a2a-protocol) doté d'une identité on-chain qui peut facturer
+  des micropaiements USDC par requête.
+
+## À qui s'adresse-t-il
+
+- **Constructeurs & automatiseurs** qui veulent une façon no-code/low-code d'enchaîner IA et
+  API.
+- **Développeurs Web3** qui ont besoin de lectures/écritures on-chain, d'une couverture
+  multi-chaînes (plus de 1700 chaînes via ThirdWeb) et d'opérations de portefeuille comme
+  étapes de flux de travail à part entière.
+- **Développeurs d'agents** qui veulent publier des agents payants et découvrables parlant
+  le protocole standard Agent-to-Agent (A2A) et portant une identité on-chain ERC-8004.
+
+## Comment les pièces s'emboîtent
+
+```mermaid
+flowchart TD
+    Chat["Chat workspace"]
+    Assist["Assistants — reasoning experts"]
+    Inline["Workflows — run inline as a tool"]
+    Builder["Workflow builder<br/>Input → … → Output"]
+    Engine["Frosty Engine<br/>cron schedules · webhook triggers"]
+    Agent["Publish as Agent"]
+    Endpoint["A2A endpoint + ERC-8004 identity + x402 payments<br/>discoverable in the Marketplace"]
+
+    Chat -->|@mention| Assist
+    Chat -->|@mention| Inline
+    Chat --> Builder
+    Builder -->|deploy| Engine
+    Builder --> Agent
+    Agent --> Endpoint
+```
+
+## État actuel
+
+FrostyFi est livré en continu. Quelques points pour ajuster les attentes :
+
+- **Le chat vocal n'est pas encore disponible.** Il est construit mais masqué pour le
+  lancement pendant qu'il est ré-architecturé sur le pipeline OpenRouter (il dépendait
+  auparavant d'un fournisseur à clé propriétaire unique). Il reviendra dans un sprint
+  multimodal ultérieur.
+- **L'application n'utilise que des serveurs MCP distants.** Pour des raisons de sécurité,
+  FrostyFi se connecte à des serveurs MCP distants (HTTP/SSE) — et non à des serveurs locaux
+  stdio/générés par `npx`.
+- **Le jeton $FROST n'a pas été lancé.** Il est principalement **gagné par les clients
+  payants** via des émissions liées aux revenus, une partie étant vendue via des bonds qui
+  financent la liquidité détenue par le protocole. La date de lancement reste à déterminer —
+  aujourd'hui, le produit fonctionne entièrement en USDC. Voir
+  [Tokenomics](/docs/tokenomics).
+
+Suite : [Prise en main →](/docs/getting-started)

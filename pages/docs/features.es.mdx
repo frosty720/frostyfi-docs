@@ -1,0 +1,76 @@
+# Funcionalidades
+
+## Chat con IA
+
+- **Compatibilidad con múltiples modelos**: cada proveedor principal (OpenAI, Anthropic, Google, xAI, Groq y más) a través de una única puerta de enlace de OpenRouter — consulta [Modelos y uso](/docs/models)
+- **Streaming en tiempo real**: Transmisión de respuestas en vivo con el Vercel AI SDK
+- **Menciones de herramientas**: Escribe `@nombreherramienta` para invocar herramientas específicas
+- **Presets de herramientas**: Conjuntos de herramientas preconfigurados para diferentes tareas
+- **Modos de elección de herramienta**: Auto, Manual o Ninguno
+- **Chats temporales**: Chats emergentes para preguntas rápidas
+
+## Flujos de trabajo visuales
+
+Algunos de los tipos de nodos (consulta [Flujos de trabajo y nodos](/docs/workflows) para la biblioteca completa de más de 30):
+
+| Nodo | Descripción |
+|------|-------------|
+| **Input** | Punto de entrada del flujo de trabajo |
+| **LLM** | Interacción con modelo de IA |
+| **Tool** | Ejecución de herramienta MCP |
+| **HTTP** | Solicitudes a APIs REST |
+| **Condition** | Ramificación if/else |
+| **Template** | Texto con sustitución de variables |
+| **EVM** | Lecturas on-chain, envíos, llamadas a contratos |
+| **Vault** | Custodia y firma de claves de wallet |
+| **Output** | Resultado del flujo de trabajo |
+
+Funcionalidades:
+- Constructor de arrastrar y soltar
+- Control de versiones
+- Publicar como herramientas
+- Ejecución en segundo plano mediante Frosty Engine
+
+## Vaults
+
+Custodia y firma seguras de claves mediante ThirdWeb Vault — las claves privadas nunca salen del vault:
+
+- **getWallet / createEoa / listEoas** - Gestionar wallets de servidor
+- **signMessage** - Firmar mensajes arbitrarios
+- **signTypedData** - Firma de datos tipados EIP-712
+- **signTransaction** - Firmar una transacción
+- **signAuthorization** - Firma de autorización / EIP-3009
+- Equivalentes de Solana (crear/listar cuentas, firmar transacción/mensaje)
+
+Las lecturas de saldo, las transferencias nativas/de tokens y las llamadas a contratos son tarea de los nodos **EVM** y **Solana** (que firman a través de Vault). Consulta [Vaults](/docs/vaults).
+
+## Integración MCP
+
+Conecta servidores MCP remotos (la app alojada es **solo remota** por seguridad):
+
+- **SSE** - Server-Sent Events
+- **StreamableHTTP** - Herramientas basadas en HTTP
+
+El marketplace ofrece servidores remotos verificados (por ejemplo, CoinGecko, Alpha Vantage, Stripe, Etherscan, Blockscout). Consulta [MCP](/docs/mcp).
+
+## Frosty Engine
+
+Ejecución de flujos de trabajo en segundo plano:
+
+- **Programados** - Automatización basada en cron
+- **Webhooks** - Flujos de trabajo activados por HTTP
+- **Límites de nivel** - Solo Pro/Enterprise
+- **Integración con Vault** - Operaciones de blockchain en segundo plano
+
+## Autenticación
+
+- Inicio de sesión con wallet (MetaMask, Coinbase, Rainbow, cualquier wallet de WalletConnect)
+- Inicio de sesión social / con correo mediante la wallet integrada de ThirdWeb (Google, Discord, Telegram, X, GitHub, Coinbase, correo, passkey)
+- Sesiones JWT de 7 días
+
+## UI/UX
+
+- Tema oscuro/claro
+- Diseño responsive
+- Notificaciones toast
+- Atajos de teclado

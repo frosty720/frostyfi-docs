@@ -1,0 +1,125 @@
+# Concepts fondamentaux
+
+FrostyFi comporte une poignée de briques de base faciles à confondre parce qu'elles touchent
+toutes à l'« IA ». Cette page définit chacune d'entre elles précisément et — surtout — trace
+la ligne de démarcation entre un **Assistant** et un **Agent**.
+
+## Flux de travail
+
+Un **flux de travail** est la fonctionnalité phare : une automatisation visuelle basée sur
+des nœuds que vous construisez sur un canevas glisser-déposer. Un flux de travail est un
+graphe orienté de **nœuds** (étapes) reliés par des **arêtes** (flux de données). Il commence
+toujours par un nœud **Input** (entrée) et se termine par un nœud **Output** (sortie) ;
+entre les deux, vous connectez des appels LLM, des requêtes HTTP, des conditions, du code,
+des opérations blockchain, des boucles et des intégrations.
+
+Les flux de travail sont stockés dans la base de données sous forme de nœuds + arêtes. Ils
+peuvent s'exécuter de trois façons :
+
+- **En ligne** — `@mentionnés` depuis le chat et exécutés comme un outil.
+- **En arrière-plan** — déployés sur [Frosty Engine](/docs/workflows#frosty-engine) selon un
+  planning cron ou via webhook.
+- **En tant qu'agent** — publiés afin que des appelants externes puissent les invoquer (voir
+  Agents ci-dessous).
+
+Consultez [Flux de travail & Nœuds](/docs/workflows) pour la bibliothèque complète de nœuds.
+
+## Assistants
+
+Un **Assistant** est un **expert de chat de raisonnement**. Considérez-le comme une persona
+configurée — un rôle/une expertise, une invite système, un ensemble de skills et un ensemble
+d'outils — que vous pouvez invoquer dans le chat avec `@`.
+
+Propriétés clés :
+
+- **Agnostique au modèle.** Un assistant n'est pas lié à un seul modèle ; il s'exécute sur
+  le modèle que vous avez sélectionné dans le sélecteur.
+- **`@mentionnable`** dans le chat. Lorsque vous mentionnez un assistant, sa persona et ses
+  skills sont injectées dans la conversation.
+- **Ne peut pas être déployé.** Les assistants vivent à l'intérieur de l'environnement
+  d'exécution du chat — ils n'ont pas d'environnement d'exécution en arrière-plan sans
+  interface, ils ne sont donc *pas* transformés directement en points de terminaison
+  x402/A2A/ERC-8004. Si vous avez besoin du comportement d'un assistant comme unité
+  déployable, intégrez-le dans un flux de travail (le **nœud Agent** permet à un flux de
+  travail d'incorporer un raisonnement de type assistant).
+
+## Agents
+
+Un **Agent** est un **agent de flux de travail déployé**. C'est un flux de travail qui a été
+publié comme un point de terminaison vivant et appelable doté d'une identité on-chain. Dans
+le modèle de FrostyFi, *« agent de flux de travail » et « agent A2A » sont la même chose* —
+le même enregistrement, marqué pour le déploiement.
+
+Un agent vous offre :
+
+- Un point de terminaison [A2A](/docs/agents#a2a-protocol) et une **carte d'agent**
+  découvrable.
+- Des paiements [x402](/docs/agents#x402-payments) optionnels en USDC par appel.
+- Une identité et une réputation on-chain [ERC-8004](/docs/agents#erc-8004-identity--reputation)
+  optionnelles.
+- Une inscription dans la [Marketplace](/docs/agents#marketplace).
+
+### Assistant vs Agent — la distinction précise
+
+| | **Assistant** | **Agent** |
+|---|---|---|
+| Ce que c'est | Une persona de chat de raisonnement | Un flux de travail déployé |
+| Adossé à un flux de travail ? | Non (`workflowId` est null) | Oui (possède un `workflowId`) |
+| Où il s'exécute | À l'intérieur de l'environnement de chat | Sans interface, dans Frosty Engine |
+| `@mentionnable` dans le chat ? | Oui | Non — appelez-le via son point de terminaison d'agent ou exécutez son flux de travail |
+| Peut être déployé ? | Non | Oui — c'est *cela même* qui en fait un agent |
+| x402 / A2A / ERC-8004 ? | Non | Oui |
+
+En bref : **les Assistants servent à réfléchir dans le chat ; les Agents servent à exécuter
+des flux de travail déployés que d'autres peuvent appeler et payer.** Les deux surfaces
+bénéficient du même chemin de monétisation *à travers les flux de travail* — vous composez
+les capacités d'un assistant dans un flux de travail, puis déployez ce flux de travail comme
+agent.
+
+## Skills
+
+Un **Skill** est une **documentation composée uniquement d'instructions injectée dans un
+assistant**. Un skill n'est ni du code ni un outil — c'est un bloc de directives (bonnes
+pratiques, une procédure, une connaissance de domaine) qui est ajouté à l'invite système
+d'un assistant. Lorsque la demande de l'utilisateur correspond à un skill, l'assistant suit
+ces directives.
+
+Les skills sont la façon d'enseigner à un assistant *comment* faire quelque chose sans écrire
+de logiciel. Vous rattachez des skills aux assistants dans l'éditeur d'assistant.
+
+## Serveurs MCP
+
+Les **serveurs MCP** ([Model Context Protocol](/docs/mcp)) sont des sources externes
+d'**outils**. Connecter un serveur MCP donne à vos chats et assistants un ensemble d'outils
+appelables (par exemple des données de marché, des paiements, la récupération de contenu
+web).
+
+MCP est **uniquement distant** — vous vous connectez à des serveurs MCP distants (HTTP/SSE).
+La marketplace propose des serveurs distants vérifiés (par exemple CoinGecko, Alpha Vantage,
+Stripe, Etherscan, Blockscout).
+
+## Templates
+
+Un **Template** est un **flux de travail à cloner pour l'utiliser**. La galerie de templates
+contient des flux de travail publics préconstruits ; cliquer sur **Utiliser le template** en
+copie un dans votre espace de travail (avec de nouveaux identifiants de nœuds) afin que vous
+puissiez l'exécuter et le personnaliser. Les templates sont la façon la plus rapide de
+démarrer — voir
+[Prise en main](/docs/getting-started#4-create-your-first-workflow-from-a-template).
+
+![La galerie de Templates de flux de travail](/screenshots/templates-gallery.png)
+
+## Comment ils s'articulent
+
+```
+Templates ──clone──► Workflows ──deploy──► Agents (A2A / x402 / ERC-8004)
+                         ▲
+                         │ run inline as a tool
+                         │
+        Chat ──@──► Assistants  (persona + Skills + Tools)
+                         ▲
+                         │ provide tools
+                    MCP servers
+```
+
+Suite : [Flux de travail & Nœuds →](/docs/workflows)

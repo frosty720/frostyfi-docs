@@ -1,0 +1,65 @@
+# MCP 통합
+
+Model Context Protocol을 통해 외부 도구를 연결하세요.
+
+## MCP란 무엇인가요?
+
+MCP(Model Context Protocol)는 AI 모델이 외부 도구 및 서비스와 상호작용할 수 있게 합니다.
+
+## MCP 서버 추가하기
+
+호스팅된 앱은 (보안을 위해) **원격 MCP 서버에만** 연결합니다. 로컬 stdio /
+`npx`로 생성된 서버는 지원되지 않습니다.
+
+![MCP 서버 페이지 — 원클릭 검증된 통합으로 첫 서버를 연결](/screenshots/mcp-1.png)
+
+1. **Settings** → **MCP Servers**로 이동
+2. **Add Server** 클릭
+3. 원격 전송 유형 선택:
+   - **StreamableHTTP**: HTTP 기반(권장)
+   - **SSE**: Server-Sent Events
+
+마켓플레이스는 또한 원클릭으로 추가할 수 있는 검증된 원격 서버(예: CoinGecko, Alpha Vantage, Stripe,
+Etherscan, Blockscout)를 제공합니다.
+
+![MCP 마켓플레이스 — 검증된 원격 MCP 서버를 발견하고 추가](/screenshots/mcp-2.png)
+
+## 예시: 원격 MCP 서버
+
+```json
+{
+  "name": "coingecko",
+  "transport": "streamableHttp",
+  "url": "https://mcp.example.com/coingecko"
+}
+```
+
+UI에서 서버에 이름을 부여하고 URL 기반 설정(인증 헤더가 있는 경우 포함)을 붙여넣습니다.
+원격(URL 기반) 서버만 가능합니다 — 명령어 기반 서버는 엄선된 마켓플레이스에서 와야 합니다.
+
+![MCP 설정 폼 — 인증 헤더와 라이브 미리보기가 있는 URL 기반 원격 서버](/screenshots/mcp-config.png)
+
+## 채팅에서 MCP 도구 사용하기
+
+`@` 다음에 도구 이름을 입력하여 호출하세요:
+
+```
+@coingecko price of ETH and BTC right now
+```
+
+## 내장 도구
+
+MCP 서버 외에도, 모든 채팅에는 다음 내장 도구가 함께 제공됩니다:
+
+| 도구 | 설명 |
+|------|-------------|
+| 웹 검색 | EXA를 통한 웹 검색 |
+| 웹 콘텐츠 | 페이지의 콘텐츠를 가져와서 읽기 |
+| HTTP 페치 | 모든 REST 엔드포인트 호출 |
+| 코드 (JS / Python) | 샌드박스 처리된 JavaScript 또는 Python 실행 |
+| 워크플로우 생성 | 설명에서 워크플로우 스캐폴딩 |
+| 이미지 생성 | 이미지 생성(OpenRouter를 통해 라우팅) |
+
+## 커스텀 서버 만들기
+
+자신만의 원격 MCP 서버를 구축하려면 [MCP SDK](https://github.com/modelcontextprotocol/sdk)를 참조하세요.

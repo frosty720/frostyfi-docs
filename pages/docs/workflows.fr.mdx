@@ -1,0 +1,136 @@
+# Flux de travail & la bibliothèque de nœuds
+
+Un **flux de travail** est un graphe orienté que vous construisez sur un canevas
+glisser-déposer (propulsé par `@xyflow/react`). Chaque **nœud** est une étape ; chaque
+**arête** transporte des données de la sortie d'un nœud vers l'entrée du nœud suivant. Cette
+page explique comment les données circulent, chaque type de nœud, et comment exécuter un flux
+de travail en arrière-plan avec Frosty Engine.
+
+![Un flux de travail sur le canevas — Input → HTTP → LLM → Output, avec une note de documentation](/screenshots/workflow-canvas.png)
+
+## Comment les données circulent
+
+Chaque flux de travail suit la même forme :
+
+```
+Input ──► (any nodes) ──► Output
+```
+
+- **Chaque flux de travail doit commencer par un nœud Input.** C'est le point d'entrée et la
+  porte de validation — les déclencheurs webhook et planificateur s'enchaînent *après* lui.
+- Chaque nœud lit à partir des sorties des nœuds en amont et produit sa propre sortie, que
+  les nœuds en aval peuvent référencer.
+- **Output** produit le résultat final que le flux de travail renvoie (au chat, à un appelant
+  de webhook, ou à un payeur A2A).
+
+Utilisez les nœuds **Template** et **Set** pour façonner et nommer les valeurs
+intermédiaires, **Condition** pour brancher, **Loop** pour itérer sur des tableaux, et
+**Merge** pour recombiner des chemins parallèles.
+
+## La bibliothèque de nœuds
+
+### Flux principal
+
+| Nœud | Ce qu'il fait |
+|------|--------------|
+| **Input** | Point d'entrée. Reçoit les données initiales de l'exécution. Obligatoire. |
+| **Output** | Point de sortie. Produit le résultat final du flux de travail. |
+| **Condition** | Branchement if/else basé sur une comparaison. |
+| **Set** | Affecter des valeurs à des variables nommées pour que les nœuds ultérieurs les utilisent. |
+| **Merge** | Combiner des données de plusieurs chemins d'exécution parallèles. |
+| **Loop** | Itérer sur un tableau et exécuter un sous-flux de travail par élément. |
+| **Wait** | Retarder l'exécution pendant une durée définie. |
+| **Template** | Produire du texte avec substitution `{{variable}}` à partir de sorties antérieures. |
+| **Note** | Un nœud de documentation/annotation (sans effet d'exécution). |
+
+### IA
+
+| Nœud | Ce qu'il fait |
+|------|--------------|
+| **LLM** | Appeler un modèle d'IA (routé via OpenRouter) avec une invite. |
+| **Agent** | Une étape d'agent IA autonome avec outils, mémoire et raisonnement multi-étapes. |
+| **Tool** | Exécuter un outil [MCP](/docs/mcp). |
+
+### Web & intégrations
+
+| Nœud | Ce qu'il fait |
+|------|--------------|
+| **HTTP** | Faire une requête d'API REST vers n'importe quel point de terminaison. |
+| **Webhook** | Déclencher le flux de travail depuis une requête HTTP entrante (voir Frosty Engine). |
+| **Scheduler** | Déclencher le flux de travail selon un planning cron (voir Frosty Engine). |
+| **EmailSend** | Envoyer un e-mail via SMTP. |
+| **Telegram** | Envoyer des messages à des chats/canaux Telegram. |
+| **Discord** | Envoyer des messages à des canaux Discord via des webhooks. |
+| **Twilio** | Envoyer des SMS et des messages WhatsApp via Twilio. |
+| **RSS** | Lire et analyser des flux RSS/Atom. |
+| **Twitter** | Publier et interagir avec l'API Twitter/X. |
+| **ChainGPT** | Outils Web3 alimentés par l'IA de ChainGPT. |
+
+### Média
+
+| Nœud | Ce qu'il fait |
+|------|--------------|
+| **Image** | Générer des images à partir d'une invite (routées via OpenRouter). |
+| **Video** | Générer une vidéo à partir d'une invite (routée via OpenRouter). |
+| **Voice** | Synthèse vocale et reconnaissance vocale (TTS / STT). |
+| **File** | Travailler avec des pièces jointes — lire, écrire et passer des fichiers entre les nœuds. |
+
+### Code
+
+| Nœud | Ce qu'il fait |
+|------|--------------|
+| **Code** | Exécuter du JavaScript en bac à sable. Dans Frosty Engine, le code s'exécute à l'intérieur d'un bac à sable `isolated-vm` pour une exécution sûre. |
+
+### Blockchain
+
+| Nœud | Ce qu'il fait |
+|------|--------------|
+| **Vault** | Garde des clés + signature via ThirdWeb Vault — gérer les portefeuilles serveur (`getWallet`, `createEoa`, `listEoas`) et signer (`signMessage`, `signTypedData`, `signTransaction`, `signAuthorization`), plus les équivalents Solana. Les clés sont détenues dans le Vault, jamais collées comme clés privées brutes. Voir [Vaults](/docs/vaults). |
+| **EVM** | Opérations EVM via le SDK ThirdWeb v5 — lire les soldes, lire/écrire des contrats, envoyer des transactions, transferts ERC-20/721/1155, résolution ENS, cotations Uniswap V3, statut de bridge, déploiements de contrats, et **paiements x402** (`x402Payment`, `x402RetryWithPayment`). Multi-chaînes : plus de 1700 chaînes via ThirdWeb. |
+| **Solana** | Opérations Solana via `@solana/web3.js`. |
+
+### DeFi & trading
+
+| Nœud | Ce qu'il fait |
+|------|--------------|
+| **Uniswap** | Échanges et cotations Uniswap sur les chaînes EVM. |
+| **SushiSwap** | Échanges et cotations SushiSwap sur les chaînes EVM. |
+| **PancakeSwap** | Échanges et cotations PancakeSwap sur les chaînes EVM. |
+| **Jupiter** | Échanges et cotations Solana via l'agrégateur Jupiter. |
+| **Hyperliquid** | Perps/marchés Hyperliquid — prix, carnets d'ordres, positions (et trading). |
+
+> **Vault, pas de clés brutes.** FrostyFi ne vous demande jamais de coller une clé privée ou
+> une phrase de récupération. Les opérations d'écriture blockchain sont signées via ThirdWeb
+> Vault, de sorte que le matériel de signature reste dans le coffre et hors de la
+> configuration de votre flux de travail.
+
+## Déployer & planifier avec Frosty Engine
+
+Le canevas sert à construire. Pour exécuter un flux de travail **en arrière-plan — sans
+navigateur ouvert —** vous le déployez sur **Frosty Engine**, le backend d'exécution basé
+sur Express qui exécute chaque type de nœud avec des exécuteurs optimisés pour l'exécution
+sans interface.
+
+Deux types de déclencheurs font qu'un flux de travail s'exécute de lui-même :
+
+- **Scheduler (cron)** — exécute le flux de travail selon un planning récurrent. Les
+  plannings cron sont durables : ils sont stockés dans la base de données et rechargés au
+  redémarrage du moteur.
+- **Webhook** — exécute le flux de travail lorsqu'un service externe fait un POST vers son
+  URL de webhook. Les appels de webhook sont authentifiés avec un secret par webhook.
+
+L'exécution en arrière-plan (Frosty Engine) est une fonctionnalité **Pro / Enterprise** —
+voir [Tarifs](/docs/pricing).
+
+> **Remarque :** les plannings cron récurrents survivent aux redémarrages du moteur. Les
+> plannings ponctuels (différés) et les exécutions en cours sont actuellement conservés en
+> mémoire et ne sont pas garantis de reprendre après un redémarrage — une mise en file
+> d'attente de tâches durable figure sur la feuille de route. Pour les automatisations
+> critiques en temps, préférez les plannings récurrents.
+
+### Du flux de travail à l'agent
+
+Une fois un flux de travail publié et déployé, vous pouvez le publier comme un **agent**
+payant et on-chain. C'est le sujet de la suite.
+
+Suite : [Agents, A2A & Paiements →](/docs/agents)

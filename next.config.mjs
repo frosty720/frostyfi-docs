@@ -7,4 +7,9 @@ const withNextra = nextra({
   flexsearch: true,
 })
 
-export default withNextra({})
+export default withNextra({
+  i18n: {
+    locales: ['en', 'es', 'fr', 'ja', 'ko', 'zh'],
+    defaultLocale: 'en',
+  },
+})

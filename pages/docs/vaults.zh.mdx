@@ -1,0 +1,50 @@
+# Vault
+
+通过 ThirdWeb Vault 实现安全的密钥托管与签名。
+
+## 概览
+
+Vault 保管服务器钱包，使私钥永不离开安全的基础设施（AWS Nitro Enclaves）。**Vault 节点**处理钱包管理与签名；它**不**读取余额、也**不**发送资金——那些是 [EVM](/docs/workflows) 与 Solana 节点的职责，它们会通过 Vault 为其交易签名。
+
+## 支持的操作
+
+| 操作 | 描述 |
+|-----------|-------------|
+| `getWallet` | 获取已配置的服务器钱包 |
+| `createEoa` | 创建一个新的 EOA 服务器钱包 |
+| `listEoas` | 列出 EOA 服务器钱包 |
+| `signMessage` | 签署任意消息 |
+| `signTypedData` | 签署 EIP-712 类型化数据 |
+| `signTransaction` | 签署一笔交易 |
+| `signAuthorization` | 签署一份 EIP-3009 / 授权载荷 |
+| `signStructuredMessage` | 签署一条结构化消息 |
+| Solana | `createSolanaAccount`、`listSolanaAccounts`、`signSolanaTransaction`、`signSolanaMessage` |
+
+## 支持的链
+
+- Ethereum
+- Base
+- Arbitrum
+- Polygon
+- Optimism
+- 以及更多，通过 Thirdweb
+
+## 在工作流中使用
+
+添加一个 **Vault 节点**以使用服务器钱包签名——例如，签署一条消息：
+
+```json
+{
+  "type": "vault",
+  "operation": "signMessage",
+  "message": "gm"
+}
+```
+
+要转移资金或调用合约，请使用 **EVM**（或 **Solana**）节点——它与 Vault 组合完成签名，因此密钥依然永不离开 Vault。
+
+## 安全性
+
+- 私钥永不离开 Thirdweb 基础设施
+- 按用户隔离
+- 用于安全执行的 AWS Nitro Enclaves

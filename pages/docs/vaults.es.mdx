@@ -1,0 +1,54 @@
+# Vaults
+
+Custodia y firma seguras de claves mediante ThirdWeb Vault.
+
+## Descripción general
+
+El Vault almacena wallets de servidor para que las claves privadas nunca salgan de la infraestructura segura (AWS Nitro
+Enclaves). El **nodo Vault** gestiona la administración de wallets y la firma; **no** lee
+saldos ni envía fondos — esa es tarea de los nodos [EVM](/docs/workflows) y Solana,
+que firman sus transacciones a través del Vault.
+
+## Operaciones compatibles
+
+| Operación | Descripción |
+|-----------|-------------|
+| `getWallet` | Obtener la wallet de servidor configurada |
+| `createEoa` | Crear una nueva wallet de servidor EOA |
+| `listEoas` | Listar wallets de servidor EOA |
+| `signMessage` | Firmar un mensaje arbitrario |
+| `signTypedData` | Firmar datos tipados EIP-712 |
+| `signTransaction` | Firmar una transacción |
+| `signAuthorization` | Firmar una carga útil de autorización / EIP-3009 |
+| `signStructuredMessage` | Firmar un mensaje estructurado |
+| Solana | `createSolanaAccount`, `listSolanaAccounts`, `signSolanaTransaction`, `signSolanaMessage` |
+
+## Cadenas compatibles
+
+- Ethereum
+- Base
+- Arbitrum
+- Polygon
+- Optimism
+- Y más mediante Thirdweb
+
+## Usar en flujos de trabajo
+
+Añade un **nodo Vault** para firmar con una wallet de servidor — por ejemplo, firmar un mensaje:
+
+```json
+{
+  "type": "vault",
+  "operation": "signMessage",
+  "message": "gm"
+}
+```
+
+Para mover fondos o llamar a un contrato, usa el nodo **EVM** (o **Solana**) — se compone con
+el Vault para la firma, por lo que la clave sigue sin salir nunca del vault.
+
+## Seguridad
+
+- Las claves privadas nunca salen de la infraestructura de Thirdweb
+- Aislamiento por usuario
+- AWS Nitro Enclaves para ejecución segura

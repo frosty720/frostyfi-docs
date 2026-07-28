@@ -1,0 +1,71 @@
+# Suscripciones y precios
+
+FrostyFi tiene tres niveles. Las suscripciones se pagan en **USDC en Base** a través del
+contrato inteligente `FrostySubscription` — no hay tarjeta de crédito ni NFT que gestionar; tu
+nivel se lee directamente de la cadena contra tu wallet.
+
+## Niveles
+
+![La página de precios en la app — niveles Free, Pro y Enterprise](/screenshots/pricing.png)
+
+| | **Free** | **Pro** | **Enterprise** |
+|---|---|---|---|
+| Precio | $0/mes | **$25/mes** | **$99/mes** |
+| Modelos de chat | Solo modelos gratuitos | **Todos los modelos** | **Todos los modelos** |
+| Uso mensual | 50 llamadas (modelos gratuitos) | ≈400–4700 llamadas premium/mes (varía según el modelo) | ≈1500–18 000 llamadas premium/mes (varía según el modelo) |
+| Flujos de trabajo | 5 | 50 | Ilimitados |
+| Ejecución en segundo plano (Frosty Engine) | — | ✅ | ✅ |
+| Desplegar flujos de trabajo como agentes (A2A / x402) | — | ✅ | ✅ |
+
+Tu recuento de llamadas no es un número fijo — **escala con el modelo que elijas**. Los modelos más
+baratos rinden mucho más; los modelos de frontera usan más de tu asignación mensual por llamada.
+Consulta [Modelos y uso](/docs/models) para saber cómo funcionan el uso mensual y el medidor de **≈ llamadas
+restantes**. El acceso a los modelos es binario: Pro y Enterprise obtienen ambos *todos* los modelos de pago — no hay
+restricciones de nivel por modelo.
+
+## Cómo funciona el pago
+
+Las suscripciones se liquidan en **USDC (6 decimales) en Base**. La app admite dos flujos
+de compra on-chain:
+
+- **Aprobar + suscribir (2 transacciones)** — funciona para todas las wallets, incluidas
+  las wallets de contrato inteligente.
+- **`subscribeWithAuthorization` (1 transacción, EIP-3009)** — una única firma
+  de estilo sin gas, disponible para wallets EOA.
+
+Para suscribirte:
+
+1. Conecta tu wallet (o usa el inicio de sesión social/con correo, que aprovisiona una wallet integrada).
+2. Elige **Pro** o **Enterprise** en la página de precios.
+3. Aprueba el gasto de USDC y confirma.
+4. Tu nivel cambia on-chain de inmediato, y tu presupuesto de uso queda aprovisionado.
+
+El contrato `FrostySubscription` está desplegado en Base (mainnet `0x80f6…3716`,
+chain id 8453) con un despliegue en Base Sepolia (`0xF23B…31bd`) para pruebas. El contrato
+reemplazó las suscripciones anteriores de FrostyFi basadas en NFT/Unlock.
+
+## Programa de afiliados / referidos
+
+FrostyFi paga una **porción de referido sobre las suscripciones** que traes, liquidada on-chain:
+
+- Comparte un enlace con tu wallet como referente (`?ref=<tu-wallet>`). El referido se
+  captura en una cookie que sobrevive a la redirección de inicio de sesión.
+- Cuando alguien se suscribe a través de tu enlace, tu wallet se pasa como el `referrer`
+  on-chain, y el contrato acumula tu porción en un **saldo de referido** reclamable.
+- Reclama tus ganancias en cualquier momento desde la tarjeta **Panel del creador → Ganancias de afiliado**
+  (llama a `claimAffiliate()` en el divisor).
+
+El programa de afiliados paga un **10% a través de tres niveles fijos** — **6%** al referente
+directo, **2.5%** y **1.5%** a los dos niveles superiores — acumulado on-chain como un saldo
+reclamable. Tu upline se establece una vez, en el primer pago de un usuario referido, y queda fijo después.
+**¿Sin referente? Esa porción financia POL en su lugar.** Los autorreferidos se ignoran.
+
+## Enterprise
+
+¿Necesitas límites o funcionalidades personalizadas más allá del nivel Enterprise estándar? Contacta con
+**hello@frostylabs.ai**.
+
+> **Sobre $FROST:** FrostyFi tiene un token planificado, **$FROST** (bloquéalo para obtener una posición **PERMA**
+> soulbound), pero **no ha lanzado** y hoy no es necesario para nada — todas las suscripciones
+> son en USDC. $FROST se **gana principalmente por los clientes que pagan**, con una porción vendida a través de bonos. Consulta [Tokenomics](/docs/tokenomics)
+> y [POL](/docs/pol) para el diseño.

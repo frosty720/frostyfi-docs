@@ -1,0 +1,76 @@
+# 功能特性
+
+## AI 聊天
+
+- **多模型支持**：通过单一 OpenRouter 网关接入每一个主流提供商（OpenAI、Anthropic、Google、xAI、Groq 等）——参见[模型与用量](/docs/models)
+- **实时流式传输**：借助 Vercel AI SDK 的实时响应流
+- **工具提及**：输入 `@工具名` 即可调用特定工具
+- **工具预设**：面向不同任务的预配置工具集
+- **工具选择模式**：自动、手动或关闭
+- **临时聊天**：用于快速提问的弹出式聊天
+
+## 可视化工作流
+
+以下是部分节点类型（完整的 30+ 节点库参见[工作流与节点](/docs/workflows)）：
+
+| 节点 | 描述 |
+|------|-------------|
+| **Input** | 工作流入口点 |
+| **LLM** | AI 模型交互 |
+| **Tool** | MCP 工具执行 |
+| **HTTP** | REST API 请求 |
+| **Condition** | if/else 分支 |
+| **Template** | 带变量替换的文本 |
+| **EVM** | 链上读取、发送、合约调用 |
+| **Vault** | 钱包密钥托管 + 签名 |
+| **Output** | 工作流结果 |
+
+功能特性：
+- 拖放式构建器
+- 版本控制
+- 发布为工具
+- 通过 Frosty Engine 后台执行
+
+## Vault
+
+通过 ThirdWeb Vault 实现安全的密钥托管与签名——私钥永不离开 Vault：
+
+- **getWallet / createEoa / listEoas** —— 管理服务器钱包
+- **signMessage** —— 签署任意消息
+- **signTypedData** —— EIP-712 类型化数据签名
+- **signTransaction** —— 签署交易
+- **signAuthorization** —— EIP-3009 / 授权签名
+- Solana 对应操作（创建/列出账户、签署交易/消息）
+
+余额读取、原生代币/代币转账以及合约调用是 **EVM** 与 **Solana** 节点的职责（它们通过 Vault 签名）。参见 [Vault](/docs/vaults)。
+
+## MCP 集成
+
+连接远程 MCP 服务器（托管版应用出于安全考虑**仅限远程**）：
+
+- **SSE** —— Server-Sent Events
+- **StreamableHTTP** —— 基于 HTTP 的工具
+
+市场提供经过审核的远程服务器（例如 CoinGecko、Alpha Vantage、Stripe、Etherscan、Blockscout）。参见 [MCP](/docs/mcp)。
+
+## Frosty Engine
+
+后台工作流执行：
+
+- **定时** —— 基于 cron 的自动化
+- **Webhooks** —— HTTP 触发的工作流
+- **套餐限制** —— 仅限 Pro/企业版
+- **Vault 集成** —— 在后台执行区块链操作
+
+## 身份验证
+
+- 钱包登录（MetaMask、Coinbase、Rainbow，以及任何 WalletConnect 钱包）
+- 通过 ThirdWeb 内置钱包进行社交 / 邮箱登录（Google、Discord、Telegram、X、GitHub、Coinbase、邮箱、passkey）
+- 7 天有效期的 JWT 会话
+
+## UI/UX
+
+- 深色/浅色主题
+- 响应式设计
+- Toast 通知
+- 键盘快捷键

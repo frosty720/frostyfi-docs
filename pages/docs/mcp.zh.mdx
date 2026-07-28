@@ -1,0 +1,62 @@
+# MCP 集成
+
+通过 Model Context Protocol 连接外部工具。
+
+## 什么是 MCP？
+
+MCP（Model Context Protocol）让 AI 模型能够与外部工具和服务交互。
+
+## 添加 MCP 服务器
+
+托管版应用**仅连接远程 MCP 服务器**（出于安全考虑）。不支持本地 stdio / `npx` 启动的服务器。
+
+![MCP 服务器页面——连接你的首个服务器，附带一键接入的经审核集成](/screenshots/mcp-1.png)
+
+1. 前往**设置** → **MCP 服务器**
+2. 点击**添加服务器**
+3. 选择一种远程传输类型：
+   - **StreamableHTTP**：基于 HTTP（推荐）
+   - **SSE**：Server-Sent Events
+
+市场还提供经过审核的远程服务器（例如 CoinGecko、Alpha Vantage、Stripe、Etherscan、Blockscout），你可以一键添加。
+
+![MCP 市场——发现并添加经过审核的远程 MCP 服务器](/screenshots/mcp-2.png)
+
+## 示例：一个远程 MCP 服务器
+
+```json
+{
+  "name": "coingecko",
+  "transport": "streamableHttp",
+  "url": "https://mcp.example.com/coingecko"
+}
+```
+
+在 UI 中，你为服务器命名并粘贴一份基于 URL 的配置（可带任意认证头）。仅支持远程（基于 URL）的服务器——基于命令的服务器必须来自精选市场。
+
+![MCP 配置表单——一个带认证头和实时预览的基于 URL 的远程服务器](/screenshots/mcp-config.png)
+
+## 在聊天中使用 MCP 工具
+
+输入 `@` 后跟工具名即可调用它：
+
+```
+@coingecko price of ETH and BTC right now
+```
+
+## 内置工具
+
+除 MCP 服务器外，每个聊天都自带以下内置工具：
+
+| 工具 | 描述 |
+|------|-------------|
+| Web 搜索 | 通过 EXA 进行网页搜索 |
+| Web 内容 | 抓取并读取某页面的内容 |
+| HTTP 抓取 | 调用任意 REST 端点 |
+| 代码（JS / Python） | 运行沙箱化的 JavaScript 或 Python |
+| 创建工作流 | 根据描述搭建工作流骨架 |
+| 图像生成 | 生成图像（经由 OpenRouter 路由） |
+
+## 创建自定义服务器
+
+关于构建你自己的远程 MCP 服务器，参见 [MCP SDK](https://github.com/modelcontextprotocol/sdk)。

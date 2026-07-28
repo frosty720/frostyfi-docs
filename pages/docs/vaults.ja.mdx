@@ -1,0 +1,54 @@
+# Vaults
+
+ThirdWeb Vault によるセキュアなキー管理と署名。
+
+## 概要
+
+Vault はサーバーウォレットを保持するため、秘密鍵がセキュアなインフラ（AWS Nitro
+Enclaves）を離れることはありません。**Vault ノード** はウォレット管理と署名を扱います。残高の読み取りや
+資金の送金は **行いません** — それらは [EVM](/docs/workflows) と Solana ノードの役割で、
+それらは Vault を通じてトランザクションに署名します。
+
+## サポートされる操作
+
+| 操作 | 説明 |
+|-----------|-------------|
+| `getWallet` | 構成済みのサーバーウォレットを取得する |
+| `createEoa` | 新しい EOA サーバーウォレットを作成する |
+| `listEoas` | EOA サーバーウォレットを一覧表示する |
+| `signMessage` | 任意のメッセージに署名する |
+| `signTypedData` | EIP-712 型付きデータに署名する |
+| `signTransaction` | トランザクションに署名する |
+| `signAuthorization` | EIP-3009 / 認可ペイロードに署名する |
+| `signStructuredMessage` | 構造化メッセージに署名する |
+| Solana | `createSolanaAccount`、`listSolanaAccounts`、`signSolanaTransaction`、`signSolanaMessage` |
+
+## サポートされるチェーン
+
+- Ethereum
+- Base
+- Arbitrum
+- Polygon
+- Optimism
+- Thirdweb 経由でさらに多数
+
+## ワークフローでの使用
+
+**Vault ノード** を追加して、サーバーウォレットで署名します — 例えば、メッセージに署名します：
+
+```json
+{
+  "type": "vault",
+  "operation": "signMessage",
+  "message": "gm"
+}
+```
+
+資金を移動したりコントラクトを呼び出したりするには、**EVM**（または **Solana**）ノードを使います — これは
+署名のために Vault と組み合わさるため、キーはやはり Vault を離れることはありません。
+
+## セキュリティ
+
+- 秘密鍵が Thirdweb のインフラを離れることはない
+- ユーザー単位の分離
+- セキュアな実行のための AWS Nitro Enclaves

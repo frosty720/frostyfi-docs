@@ -1,0 +1,58 @@
+# Frosty Engine
+
+自动化的后台工作流执行。
+
+## 概览
+
+Frosty Engine 按计划或通过 webhook 运行工作流。面向 Pro 与企业版用户提供。
+
+每个已部署的工作流都有一个**运行（Runs）**面板，用于展示其后台执行情况——触发类型（webhook / 定时）、状态与延迟——让你一眼看清自动化的运行表现。
+
+![运行面板——带状态与延迟的后台执行](/screenshots/runs-panel.png)
+
+## 功能特性
+
+- **定时工作流**：基于 cron 的自动化
+- **Webhook 触发器**：用于触发工作流的 HTTP 端点
+- **套餐校验**：每次运行都进行订阅检查
+- **Vault 集成**：在后台执行区块链操作
+- **执行历史**：完整的审计追踪
+
+## 部署状态
+
+| 状态 | 调度器 | Webhook |
+|-------|-----------|---------|
+| 未部署 | ❌ | ❌ |
+| 已部署 | ✅ | ✅ |
+| 已暂停 | ⏸️ | ❌ |
+| 已停止 | ❌ | ❌ |
+
+## API 端点
+
+### 部署
+- `POST /api/deploy` —— 部署工作流
+- `POST /api/deployments/:id/pause` —— 暂停
+- `POST /api/deployments/:id/resume` —— 恢复
+- `DELETE /api/deployments/:id` —— 移除
+
+### 执行
+- `POST /api/execute` —— 手动运行
+- `GET /api/executions/:id` —— 获取状态
+
+### Webhooks
+- `POST /webhooks/:id` —— 通过其 webhook 触发一个已部署的工作流
+
+> Cron 计划与 webhook 是作为工作流**部署**的一部分进行配置的（调度器和 webhook 接收器从数据库读取它们）——不存在单独的计划管理端点。
+
+## 安全性
+
+- 需要 JWT 身份验证
+- 订阅套餐校验
+- 已启用限流
+- Webhook 密钥校验
+
+## 使用要求
+
+- Pro（$25/月）或企业版（$99/月）订阅
+- 用于任务队列的 Redis
+- 与主应用共享的数据库

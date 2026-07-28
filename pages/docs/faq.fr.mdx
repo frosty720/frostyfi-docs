@@ -1,0 +1,50 @@
+# FAQ
+
+## Général
+
+**Q : Qu'est-ce que FrostyFi ?**
+R : Une plateforme Web3-native pour construire des flux de travail alimentés par l'IA avec une automatisation blockchain.
+
+**Q : Ai-je besoin de crypto pour l'utiliser ?**
+R : Oui, l'abonnement requiert de l'USDC sur la chaîne Base. Un palier gratuit est disponible pour les tests.
+
+**Q : Où est-il hébergé ?**
+R : app.frostylabs.ai (frontend), VPS Oracle Cloud (backend)
+
+## Technique
+
+**Q : Quels modèles sont pris en charge ?**
+R : Tous les grands fournisseurs (OpenAI, Anthropic, Google, xAI, Groq, et plus) sont disponibles via une passerelle unique — chaque modèle de chat est routé via OpenRouter. Voir [Modèles & Usage](/docs/models).
+
+**Q : Puis-je utiliser mes propres clés d'API ?**
+R : Non — l'accès aux LLM est géré par FrostyFi via OpenRouter, avec un budget mensuel par utilisateur (comme Cursor). Vous n'apportez ni ne gérez de clés de fournisseur.
+
+**Q : Mes données sont-elles sécurisées ?**
+R : Oui — isolation au périmètre de l'utilisateur, et la signature blockchain passe par ThirdWeb Vault, de sorte que les clés privées ne touchent jamais la configuration de votre flux de travail.
+
+**Q : Puis-je l'auto-héberger ?**
+R : Pas encore — FrostyFi est uniquement en SaaS aujourd'hui. Une option d'auto-hébergement (Docker/Coolify) figure sur la [feuille de route](/docs/roadmap).
+
+## Compte
+
+**Q : Comment récupérer mon compte ? J'ai oublié mon mot de passe.**
+R : Il n'y a pas de mots de passe. Les comptes FrostyFi sont basés sur un portefeuille — votre portefeuille **est** votre compte. Si votre session expire ou que vous êtes déconnecté, reconnectez simplement le même portefeuille et vous retrouvez tout intact.
+
+**Q : Que se passe-t-il si je perds l'accès à mon portefeuille ?**
+R : La clé privée / phrase de récupération de votre portefeuille est le seul mécanisme de récupération — sauvegardez-la en lieu sûr. Si la clé est perdue, le compte ne peut être récupéré ni par nous ni par personne d'autre. Si vous vous êtes inscrit avec une adresse e-mail ou une connexion sociale (portefeuille intégré ThirdWeb), la récupération passe plutôt par le processus de ThirdWeb lié à ce compte e-mail/social.
+
+## Facturation
+
+**Q : Comment fonctionnent les abonnements ?**
+R : Les abonnements sont payés en USDC sur Base via le contrat intelligent `FrostySubscription` — votre palier est lu directement depuis la chaîne à partir de votre portefeuille. Pas de carte de crédit, pas de NFT. Voir [Abonnements & Tarifs](/docs/pricing).
+
+**Q : Puis-je annuler ?**
+R : Oui — il suffit de ne pas renouveler. Votre palier expire on-chain lorsque l'abonnement arrive à échéance.
+
+**Q : Remboursements ?**
+R : Contactez hello@frostylabs.ai
+
+## Support
+
+- Telegram : https://t.me/+ZX21TSI9AaY4ODUx
+- E-mail : hello@frostylabs.ai

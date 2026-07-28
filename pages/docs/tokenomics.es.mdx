@@ -1,0 +1,129 @@
+# Tokenomics de $FROST
+
+> **$FROST** es el token del protocolo de FrostyFi — una distribución finita y vinculada a ingresos que convierte el uso real del producto en propiedad. Se **gana principalmente por los clientes que pagan** (sin preventa, sin VC), con una porción vendida a través de bonos que financian la liquidez propiedad del protocolo. Bloquéalo por **PERMA** y gana una porción de los ingresos del protocolo en USDC.
+
+import { Callout } from 'nextra/components'
+
+<Callout type="warning">
+Este es el diseño previsto. El token **no ha lanzado** — el TGE (generación del token) está por determinar. Todo lo que sigue se publica con antelación para que los términos sean conocidos, no impuestos por sorpresa en el lanzamiento.
+</Callout>
+
+## FROST y PERMA
+
+Dos cosas, un propósito:
+
+| | **FROST** | **PERMA** |
+|---|---|---|
+| Qué | El token líquido ERC-20 | Tu **posición de FROST bloqueado** — soulbound, no transferible |
+| Cómo lo obtienes | Gánalo pagando por FrostyFi | Bloquea FROST por un plazo elegido (1 semana – 4 años) |
+| Otorga | — | Peso de voto + una porción de los ingresos del protocolo — **comisiones de POL + ganancias de la DAO** — pagada en **USDC** |
+| Negociable | Sí | No — es la posición de bloqueo en sí, ligada a tu dirección |
+
+PERMA no es un token que mantienes o negocias — es tu posición de FROST bloqueado, registrada on-chain y ligada a tu dirección, exactamente como el veCRV de Curve. El peso de voto y la porción de comisiones escalan con cantidad × tiempo restante y decaen linealmente. Es **soulbound** para que nadie pueda comprar o vender tus votos ni tu derecho a rendimiento — pertenecen a quien bloqueó su propio FROST.
+
+**Bloquear es depósito en garantía, no gastar.** Cuando tu plazo termina, desbloqueas y **tu FROST regresa a ti**; la posición PERMA simplemente termina. El nombre es literal — bloquea FROST y se queda congelado como PERMA hasta que lo descongeles.
+
+## Suministro — 100M, tope estricto
+
+**Suministro total: 100 000 000 FROST — un tope estricto.** Cada token que existirá jamás proviene de una de estas cubetas:
+
+| Cubeta | Porción | Propósito |
+|---|---|---|
+| **Emisiones a clientes** | **42%** | La distribución en sí — finita, vinculada a ingresos, decreciente |
+| Reserva de bonos | 18% | Respalda la bonificación en USDC post-lanzamiento, limitada por un techo de deuda de la tesorería |
+| **Recompensa del desarrollador** | **10%** | Limitada por ingresos, mismos términos de reclamación que los clientes, divulgada (abajo) |
+| Semilla de POL | 10% | Siembra el LP del lanzamiento, luego la reserva de emparejamiento para el POL continuo |
+| Incentivo de LP | 5% | Profundidad de liquidez temprana de terceros |
+| Tesorería de la DAO | 15% | Una tesorería activa — agentes x402 propios, sobornos de liquidez, inversiones votadas; una porción de sus ganancias paga a quienes bloquean |
+
+Los tokens se acuñan solo cuando se reclaman, por lo que el suministro real normalmente se sitúa **por debajo** de 100M — las emisiones no reclamadas nunca se acuñan, y las quemas de más abajo lo empujan aún más bajo.
+
+## Cómo ganas FROST
+
+Solo los **suscriptores que pagan** ganan FROST. Las construcciones Free, de pago-por-despliegue y del Architect no ganan nada — por lo que no hay superficie de farming gratuito.
+
+> **Ganas FROST en proporción a lo que pagas, a la tasa de la era actual — y la tasa se reduce a la mitad cada $25 000 que el producto gana.**
+
+Las emisiones se liberan por dólar de ingresos del producto y se reparten entre los suscriptores activos **puramente a prorrata según los dólares pagados en ese periodo** — sin niveles, sin multiplicadores de antigüedad. Enterprise gana ~4× que Pro porque paga ~4×. Un mes que no pagas es un mes que no ganas nada.
+
+La tasa se reduce a la mitad en **hitos de ingresos, no en el calendario** — con forma de Bitcoin, verificable on-chain e imposible de falsificar sin pagar al protocolo dinero real:
+
+| Era | Ingresos acumulados | Tasa | Liberado |
+|---|---|---|---|
+| 1 | $0 → $25k | 840 FROST / $1 | 21M |
+| 2 | $25k → $50k | 420 / $1 | 10.5M |
+| 3 | $50k → $75k | 210 / $1 | 5.3M |
+| 4 | $75k → $100k | 105 / $1 | 2.6M |
+
+Ser temprano vale múltiplos — la tasa es más alta antes de la primera reducción a la mitad. Sin cuenta atrás, sin caducidad: ingresos lentos significan liberación lenta, por lo que la distribución dura exactamente lo que necesita durar.
+
+## El compromiso de lanzamiento justo
+
+FrostyFi es un proyecto bootstrapped y de operador único — sin VC, sin preventa.
+
+> **Sin preventa, sin pre-minado, nada en el lanzamiento — el desarrollador gana un 10% divulgado, acuñado solo a medida que los clientes que pagan ganan el suyo, en los mismos términos de reclamación exactos que cada cliente.**
+
+La recompensa del desarrollador acumula **1 FROST por cada 4.2 emitidos a clientes** (10M : 42M), impulsada por el mismo contador de ingresos y calendario de reducciones a la mitad. Sin ingresos, sin tokens para el desarrollador — se gana, no se otorga, y el riesgo a la baja (el protocolo fracasa → el desarrollador obtiene ~nada) es idéntico al de cada otro participante. Las reclamaciones del desarrollador pasan por el mismo contrato de reclamación y los mismos términos que los clientes, con una disciplina de venta publicada (wallet anunciada, nunca más de ~10–15% del volumen diario, nunca un volcado al mercado).
+
+## Reclamar — vestear, o bloquear
+
+Las emisiones acumulan **antes del lanzamiento como un saldo de libro de contabilidad no transferible** — el panel muestra el FROST ganado, pero aún no existe ningún token. En el lanzamiento, y en cada reclamación posterior, eliges una de dos puertas:
+
+- **Reclamar líquido** — vestea linealmente durante ~6 meses. La venta se distribuye mientras POL sigue creciendo por debajo.
+- **Reclamar el 100% al instante bloqueando** — tómalo todo ahora si va directo a un **bloqueo PERMA de al menos 6 meses**. Querer FROST líquido es lo que te cuesta la espera.
+
+<Callout type="info">
+La ruta instantánea es la que es buena para el protocolo — los holders que bloquean empiezan a ganar USDC de inmediato y no venden en un libro delgado. La reclamación de todos, incluida la del desarrollador, usa estas mismas dos puertas.
+</Callout>
+
+## Rendimiento real — bloquea por USDC
+
+**Mantener FROST por sí solo no gana nada.** Tienes que bloquearlo en una posición PERMA para ganar — los holders líquidos obtienen apreciación de precio y la deflación de las quemas, no rendimiento.
+
+Quienes bloquean ganan en **USDC** de dos fuentes:
+
+- **Comisiones de trading de POL** — la liquidez que posee POL gana comisiones en cada swap; el lado USDC va a quienes bloquean, 100%.
+- **Una porción de las ganancias de la DAO** — la DAO es un generador de ingresos activo, no una bóveda: opera una flota de agentes x402 propios, soborna por liquidez más profunda e invierte su cofre de guerra bajo voto. Una porción divulgada de lo que genera se paga a quienes bloquean.
+
+Ambas se pagan en una stablecoin — quienes bloquean nunca se pagan en FROST. (El lado FROST de las comisiones de POL va a la DAO.) Consulta **[POL](/docs/pol)**.
+
+Bloquear también desbloquea una escalera de derechos:
+
+| Bloqueo | Desbloquea |
+|---|---|
+| **25 000 FROST (≥6 meses)** | Créditos de producto — **50% de descuento en pago-por-despliegue**, **10% de descuento en suscripciones** |
+| **100 000 FROST** | Votación |
+| **1 000 000 FROST** | Proponer |
+
+Los créditos te pagan en *producto*, nunca en más tokens — y **nunca hay un nivel Pro gratuito**, porque eso permitiría a los holders dejar de pagar y matar de hambre los ingresos que financian todo.
+
+## Bonos — acelerando la liquidez
+
+Los ingresos construyen POL de forma constante; los bonos lo construyen *rápido*. Tras el lanzamiento, cualquiera puede depositar USDC y recibir $FROST con un **descuento público** (~10%), con vesting lineal durante unos **7 días**. El protocolo se queda con el USDC y lo despliega directo en POL.
+
+<Callout type="info">
+Resuelve profundidad y flotante en un solo movimiento: el bonista obtiene un tamaño que un pool delgado nunca podría llenar, y el protocolo obtiene la liquidez que le faltaba. **Un solo bono de $10k puede añadir más profundidad que meses de ingresos** — así es como POL pasa de delgado a profundo rápidamente.
+</Callout>
+
+- **Sin permiso y justo.** Sin whitelist, sin asignación, sin precio de insider — el descuento se publica y está abierto a todos. Respaldado por la reserva de bonos de 18M FROST.
+- **Limitado, no un grifo.** La emisión está acotada por un techo de deuda de la tesorería más un límite de tasa por semana, y los pagos se valoran sobre un TWAP de un pool *maduro*, no un spot manipulable. Los bonos abren aproximadamente una semana después del lanzamiento para que el precio se asiente primero.
+- **Financiación, no ingresos.** El principal del bono nunca alimenta el contador de emisiones — no puede desencadenar una reducción a la mitad ni una ganancia inesperada.
+
+## Quema — utilidad que retira suministro
+
+Cada token gastado en una utilidad de FrostyFi se **quema al 100%**:
+
+| Sumidero | Quema |
+|---|---|
+| Inferencia de **FrostyG4** (el modelo autoalojado de FrostyFi) | 100% |
+| Construcciones del Architect (post-lanzamiento, valoradas en FROST) | 100% |
+| Recargo por ejecución prioritaria | 100% |
+| Comisiones del marketplace | 100% |
+
+<Callout type="info">
+FROST valora **solo FrostyG4** — un modelo que FrostyFi autoaloja, por lo que su coste es GPU fija, no una factura en USD por token. Los modelos de terceros (Claude, GPT) siempre permanecen valorados en USD: pagar un token volátil contra una factura en USD forzaría al protocolo a venderlo. La utilidad de FROST apunta solo a donde no puede crear presión de venta.
+</Callout>
+
+---
+
+Ver también: **[POL — Liquidez Propiedad del Protocolo](/docs/pol)** · **[Precios](/docs/pricing)** · **[Hoja de ruta](/docs/roadmap)**

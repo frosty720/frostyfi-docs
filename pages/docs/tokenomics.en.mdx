@@ -1,0 +1,129 @@
+# $FROST Tokenomics
+
+> **$FROST** is FrostyFi's protocol token — a finite, revenue-linked distribution that turns real product usage into ownership. It is mainly **earned by paying customers** (no presale, no VC), with a portion sold via bonds that fund protocol-owned liquidity. Lock it for **PERMA** and earn a share of protocol revenue in USDC.
+
+import { Callout } from 'nextra/components'
+
+<Callout type="warning">
+This is the intended design. The token has **not launched** — TGE (token generation) is to be determined. Everything below is published in advance so the terms are known, not sprung at launch.
+</Callout>
+
+## FROST and PERMA
+
+Two things, one purpose:
+
+| | **FROST** | **PERMA** |
+|---|---|---|
+| What | The liquid ERC-20 token | Your **locked FROST position** — soulbound, non-transferable |
+| How you get it | Earn it by paying for FrostyFi | Lock FROST for a chosen term (1 week – 4 years) |
+| Grants | — | Vote weight + a share of protocol revenue — **POL fees + DAO earnings** — paid in **USDC** |
+| Tradeable | Yes | No — it is the lock position itself, bound to your address |
+
+PERMA is not a token you hold or trade — it is your locked FROST position, recorded on-chain and bound to your address, exactly like Curve's veCRV. Vote weight and fee share scale with amount × remaining time and decay linearly. It is **soulbound** so nobody can buy or sell your votes or your yield claim — they belong to whoever locked their own FROST.
+
+**Locking is escrow, not spending.** When your term ends you unlock and **your FROST returns to you**; the PERMA position simply ends. The name is literal — lock FROST and it stays frozen as PERMA until you thaw it.
+
+## Supply — 100M, hard cap
+
+**Total supply: 100,000,000 FROST — a hard cap.** Every token that will ever exist comes from one of these buckets:
+
+| Bucket | Share | Purpose |
+|---|---|---|
+| **Customer emissions** | **42%** | The distribution itself — finite, revenue-linked, decaying |
+| Bond reserve | 18% | Backs post-launch USDC bonding, gated by a treasury debt ceiling |
+| **Dev reward** | **10%** | Revenue-gated, same claim terms as customers, disclosed (below) |
+| POL seed | 10% | Seeds the launch LP, then the pairing reserve for ongoing POL |
+| LP incentive | 5% | Early third-party liquidity depth |
+| DAO treasury | 15% | An active treasury — first-party x402 agents, liquidity bribes, voted investments; a cut of its earnings pays lockers |
+
+Tokens are minted only when claimed, so real supply typically sits **below** 100M — unclaimed emissions are never minted, and the burn sinks below push it lower still.
+
+## How you earn FROST
+
+Only **paying subscribers** earn FROST. Free, pay-per-deploy, and Architect builds earn nothing — so there is no free farming surface.
+
+> **You earn FROST in proportion to what you pay, at the current era rate — and the rate halves every $25,000 the product earns.**
+
+Emissions are released per dollar of product revenue and split among active subscribers **purely pro-rata by dollars paid that period** — no tiers, no tenure multipliers. Enterprise earns ~4× Pro because it pays ~4×. A month you don't pay is a month you earn nothing.
+
+The rate halves on **revenue milestones, not the calendar** — Bitcoin-shaped, verifiable on-chain, and impossible to fake without paying the protocol real money:
+
+| Era | Cumulative revenue | Rate | Released |
+|---|---|---|---|
+| 1 | $0 → $25k | 840 FROST / $1 | 21M |
+| 2 | $25k → $50k | 420 / $1 | 10.5M |
+| 3 | $50k → $75k | 210 / $1 | 5.3M |
+| 4 | $75k → $100k | 105 / $1 | 2.6M |
+
+Being early is worth multiples — the rate is highest before the first halving. No countdown, no expiry: slow revenue means slow release, so the distribution lasts exactly as long as it needs to.
+
+## The fair-launch commitment
+
+FrostyFi is a bootstrapped, sole-operator project — no VC, no presale.
+
+> **No presale, no pre-mine, nothing at launch — the dev earns a disclosed 10%, minted only as paying customers earn theirs, on the exact same claim terms as every customer.**
+
+The dev reward accrues **1 FROST for every 4.2 emitted to customers** (10M : 42M), driven by the same revenue counter and halving schedule. No revenue, no dev tokens — it is earned, not granted, and the downside (protocol fails → dev gets ~nothing) is identical to every other participant. Dev claims pass through the same claim contract and the same terms as customers, with a published sell discipline (announced wallet, never more than ~10–15% of daily volume, never a market dump).
+
+## Claiming — vest, or lock
+
+Emissions accrue **before launch as a non-transferable ledger balance** — the dashboard shows earned FROST, but no token exists yet. At launch, and on every claim after, you choose one of two doors:
+
+- **Claim liquid** — vests linearly over ~6 months. Selling is spread out while POL keeps growing underneath it.
+- **Claim 100% instantly by locking** — take it all now if it goes straight into a **PERMA lock of at least 6 months**. Wanting liquid FROST is what costs you the wait.
+
+<Callout type="info">
+The instant path is the one that is good for the protocol — locked holders start earning USDC immediately and aren't selling into a thin book. Everyone's claim, including the dev's, uses these same two doors.
+</Callout>
+
+## Real yield — lock for USDC
+
+**Holding FROST alone earns nothing.** You have to lock it into a PERMA position to earn — liquid holders get price appreciation and the deflation from burns, not yield.
+
+Lockers earn in **USDC** from two sources:
+
+- **POL trading fees** — the liquidity POL owns earns fees on every swap; the USDC side goes to lockers, 100%.
+- **A share of DAO earnings** — the DAO is an active earner, not a vault: it runs a fleet of first-party x402 agents, bribes for deeper liquidity, and invests its war chest under vote. A disclosed cut of what it makes is paid to lockers.
+
+Both are paid in a stablecoin — lockers are never paid in FROST. (The FROST side of POL fees goes to the DAO.) See **[POL](/docs/pol)**.
+
+Locking also unlocks a ladder of rights:
+
+| Lock | Unlocks |
+|---|---|
+| **25,000 FROST (≥6 mo)** | Product credits — **50% off pay-per-deploy**, **10% off subscriptions** |
+| **100,000 FROST** | Voting |
+| **1,000,000 FROST** | Proposing |
+
+Credits pay you in *product*, never in more tokens — and there is **never a free Pro tier**, because that would let holders stop paying and starve the revenue that funds everything.
+
+## Bonds — accelerating the liquidity
+
+Revenue builds POL steadily; bonds build it *fast*. After launch, anyone can deposit USDC and receive $FROST at a **public discount** (~10%), vesting linearly over about **7 days**. The protocol keeps the USDC and deploys it straight into POL.
+
+<Callout type="info">
+It solves depth and float in one move: the bonder gets size a thin pool could never fill, and the protocol gets the liquidity it lacked. **A single $10k bond can add more depth than months of revenue** — this is how POL goes from thin to deep quickly.
+</Callout>
+
+- **Permissionless and fair.** No whitelist, no allocation, no insider price — the discount is published and open to everyone. Backed by the 18M-FROST bond reserve.
+- **Capped, not a faucet.** Issuance is bounded by a treasury debt ceiling plus a per-week rate limit, and payouts are priced off a *seasoned* pool TWAP, not a manipulable spot. Bonds open about a week after launch so the price settles first.
+- **Funding, not revenue.** Bond principal never feeds the emission counter — it cannot trigger a halving or a windfall.
+
+## Burn — utility that removes supply
+
+Every token spent on a FrostyFi utility is **100% burned**:
+
+| Sink | Burn |
+|---|---|
+| **FrostyG4** inference (FrostyFi's self-hosted model) | 100% |
+| Architect builds (post-launch, priced in FROST) | 100% |
+| Priority execution surcharge | 100% |
+| Marketplace fees | 100% |
+
+<Callout type="info">
+FROST prices **FrostyG4 only** — a model FrostyFi self-hosts, so its cost is fixed GPU, not a per-token USD bill. Third-party models (Claude, GPT) always stay USD-priced: paying a volatile token against a USD invoice would force the protocol to sell it. FROST utility points only where it can't create sell pressure.
+</Callout>
+
+---
+
+See also: **[POL — Protocol-Owned Liquidity](/docs/pol)** · **[Pricing](/docs/pricing)** · **[Roadmap](/docs/roadmap)**

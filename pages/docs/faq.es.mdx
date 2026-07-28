@@ -1,0 +1,50 @@
+# Preguntas frecuentes
+
+## General
+
+**P: ¿Qué es FrostyFi?**
+R: Una plataforma nativa de Web3 para construir flujos de trabajo impulsados por IA con automatización blockchain.
+
+**P: ¿Necesito criptomonedas para usarlo?**
+R: Sí, la suscripción requiere USDC en la cadena Base. Hay un nivel Free disponible para pruebas.
+
+**P: ¿Dónde está alojado?**
+R: app.frostylabs.ai (frontend), VPS de Oracle Cloud (backend)
+
+## Técnico
+
+**P: ¿Qué modelos son compatibles?**
+R: Todos los proveedores principales (OpenAI, Anthropic, Google, xAI, Groq y más) están disponibles a través de una única puerta de enlace — cada modelo de chat se enruta a través de OpenRouter. Consulta [Modelos y uso](/docs/models).
+
+**P: ¿Puedo usar mis propias claves de API?**
+R: No — el acceso a los LLM es gestionado por FrostyFi a través de OpenRouter, con un presupuesto mensual por usuario (como Cursor). No aportas ni gestionas claves de proveedores.
+
+**P: ¿Están seguros mis datos?**
+R: Sí — aislamiento por usuario, y la firma de blockchain pasa por ThirdWeb Vault, por lo que las claves privadas nunca tocan la configuración de tu flujo de trabajo.
+
+**P: ¿Puedo autoalojarlo?**
+R: Todavía no — hoy FrostyFi es solo SaaS. Una opción de autoalojamiento (Docker/Coolify) está en la [hoja de ruta](/docs/roadmap).
+
+## Cuenta
+
+**P: ¿Cómo recupero mi cuenta? Olvidé mi contraseña.**
+R: No hay contraseñas. Las cuentas de FrostyFi están basadas en wallet — tu wallet **es** tu cuenta. Si tu sesión expira o cierras sesión, simplemente reconecta la misma wallet y volverás a estar dentro con todo intacto.
+
+**P: ¿Qué pasa si pierdo el acceso a mi wallet?**
+R: La clave privada / frase semilla de tu wallet es el único mecanismo de recuperación — haz una copia de seguridad en un lugar seguro. Si se pierde la clave, la cuenta no puede ser recuperada por nosotros ni por nadie más. Si te registraste con correo electrónico o inicio de sesión social (wallet integrada de ThirdWeb), la recuperación se hace a través del flujo de ThirdWeb ligado a esa cuenta de correo/social en su lugar.
+
+## Facturación
+
+**P: ¿Cómo funcionan las suscripciones?**
+R: Las suscripciones se pagan en USDC en Base a través del contrato inteligente `FrostySubscription` — tu nivel se lee directamente de la cadena contra tu wallet. Sin tarjeta de crédito, sin NFT. Consulta [Suscripciones y precios](/docs/pricing).
+
+**P: ¿Puedo cancelar?**
+R: Sí — simplemente no renueves. Tu nivel caduca on-chain cuando expira la suscripción.
+
+**P: ¿Reembolsos?**
+R: Contacta con hello@frostylabs.ai
+
+## Soporte
+
+- Telegram: https://t.me/+ZX21TSI9AaY4ODUx
+- Correo electrónico: hello@frostylabs.ai

@@ -1,0 +1,76 @@
+# 機能
+
+## AI チャット
+
+- **マルチモデル対応**：あらゆる主要プロバイダー（OpenAI、Anthropic、Google、xAI、Groq など）を単一の OpenRouter ゲートウェイ経由で — [モデルと使用量](/docs/models)を参照
+- **リアルタイムストリーミング**：Vercel AI SDK によるライブなレスポンスストリーミング
+- **ツールメンション**：`@toolname` と入力して特定のツールを呼び出す
+- **ツールプリセット**：さまざまなタスク向けに事前構成されたツールセット
+- **ツール選択モード**：Auto、Manual、または None
+- **一時チャット**：手早い質問のためのポップアップチャット
+
+## ビジュアルワークフロー
+
+ノードタイプのいくつかを紹介します（30 以上の完全なライブラリは[ワークフローとノード](/docs/workflows)を参照）：
+
+| ノード | 説明 |
+|------|-------------|
+| **Input** | ワークフローのエントリポイント |
+| **LLM** | AI モデルとのやり取り |
+| **Tool** | MCP ツールの実行 |
+| **HTTP** | REST API リクエスト |
+| **Condition** | if/else 分岐 |
+| **Template** | 変数置換を含むテキスト |
+| **EVM** | オンチェーンの読み取り、送信、コントラクト呼び出し |
+| **Vault** | ウォレットキーの管理 + 署名 |
+| **Output** | ワークフローの結果 |
+
+機能：
+- ドラッグ＆ドロップのビルダー
+- バージョン管理
+- ツールとして公開
+- Frosty Engine によるバックグラウンド実行
+
+## Vaults
+
+ThirdWeb Vault によるセキュアなキー管理と署名 — 秘密鍵が Vault を離れることはありません：
+
+- **getWallet / createEoa / listEoas** - サーバーウォレットの管理
+- **signMessage** - 任意のメッセージへの署名
+- **signTypedData** - EIP-712 型付きデータの署名
+- **signTransaction** - トランザクションへの署名
+- **signAuthorization** - EIP-3009 / 認可の署名
+- Solana の同等機能（アカウントの作成/一覧、トランザクション/メッセージの署名）
+
+残高の読み取り、ネイティブ/トークンの転送、コントラクト呼び出しは **EVM** と **Solana** ノードの役割です（それらは Vault を通じて署名します）。[Vaults](/docs/vaults) を参照。
+
+## MCP 連携
+
+リモートの MCP サーバーに接続します（ホスティングされたアプリはセキュリティのため **リモート専用** です）：
+
+- **SSE** - Server-Sent Events
+- **StreamableHTTP** - HTTP ベースのツール
+
+マーケットプレイスは審査済みのリモートサーバー（例：CoinGecko、Alpha Vantage、Stripe、Etherscan、Blockscout）を提供します。[MCP](/docs/mcp) を参照。
+
+## Frosty Engine
+
+バックグラウンドでのワークフロー実行：
+
+- **スケジュール** - cron ベースの自動化
+- **ウェブフック** - HTTP でトリガーされるワークフロー
+- **ティア制限** - Pro/Enterprise のみ
+- **Vault 連携** - バックグラウンドでのブロックチェーン操作
+
+## 認証
+
+- ウォレットサインイン（MetaMask、Coinbase、Rainbow、任意の WalletConnect ウォレット）
+- ThirdWeb のアプリ内ウォレット経由のソーシャル / メールログイン（Google、Discord、Telegram、X、GitHub、Coinbase、メール、パスキー）
+- 7 日間の JWT セッション
+
+## UI/UX
+
+- ダーク/ライトテーマ
+- レスポンシブデザイン
+- トースト通知
+- キーボードショートカット

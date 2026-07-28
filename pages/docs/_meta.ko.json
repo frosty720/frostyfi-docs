@@ -1,0 +1,21 @@
+{
+  "introduction": "소개",
+  "getting-started": "시작하기",
+  "concepts": "핵심 개념",
+  "workflows": "워크플로우 & 노드",
+  "agents": "에이전트, A2A & 결제",
+  "models": "모델 & 사용량",
+  "-- legacy --": {
+    "type": "separator",
+    "title": "참고 자료"
+  },
+  "features": "기능",
+  "engine": "Frosty Engine",
+  "mcp": "MCP",
+  "vaults": "Vault",
+  "pricing": "요금제",
+  "tokenomics": "토크노믹스",
+  "pol": "POL & 펀딩",
+  "roadmap": "로드맵",
+  "faq": "FAQ"
+}

@@ -1,0 +1,78 @@
+# Abonnements & Tarifs
+
+FrostyFi propose trois paliers. Les abonnements sont payés en **USDC sur Base** via le
+contrat intelligent `FrostySubscription` — il n'y a pas de carte de crédit ni de NFT à gérer ;
+votre palier est lu directement depuis la chaîne à partir de votre portefeuille.
+
+## Paliers
+
+![La page de tarifs dans l'application — paliers Gratuit, Pro et Enterprise](/screenshots/pricing.png)
+
+| | **Gratuit** | **Pro** | **Enterprise** |
+|---|---|---|---|
+| Prix | 0 $/mois | **25 $/mois** | **99 $/mois** |
+| Modèles de chat | Modèles gratuits uniquement | **Tous les modèles** | **Tous les modèles** |
+| Usage mensuel | 50 appels (modèles gratuits) | ≈400 à 4 700 appels premium/mois (varie selon le modèle) | ≈1 500 à 18 000 appels premium/mois (varie selon le modèle) |
+| Flux de travail | 5 | 50 | Illimité |
+| Exécution en arrière-plan (Frosty Engine) | — | ✅ | ✅ |
+| Déployer des flux de travail comme agents (A2A / x402) | — | ✅ | ✅ |
+
+Votre décompte d'appels n'est pas un nombre forfaitaire — il **évolue avec le modèle que vous
+choisissez**. Les modèles moins chers vont beaucoup plus loin ; les modèles de pointe
+consomment davantage de votre allocation mensuelle par appel. Voir
+[Modèles & Usage](/docs/models) pour savoir comment fonctionnent l'usage mensuel et le
+compteur **≈ appels restants**. L'accès aux modèles est binaire : Pro et Enterprise
+obtiennent tous deux *tous* les modèles payants — il n'y a pas de restriction de palier par
+modèle.
+
+## Comment fonctionne le paiement
+
+Les abonnements se règlent en **USDC (6 décimales) sur Base**. L'application prend en charge
+deux flux d'achat on-chain :
+
+- **Approuver + s'abonner (2 transactions)** — fonctionne pour tous les portefeuilles, y
+  compris les portefeuilles de contrat intelligent.
+- **`subscribeWithAuthorization` (1 transaction, EIP-3009)** — une signature unique de type
+  sans gaz, disponible pour les portefeuilles EOA.
+
+Pour vous abonner :
+
+1. Connectez votre portefeuille (ou utilisez la connexion e-mail/sociale, qui provisionne un
+   portefeuille intégré).
+2. Choisissez **Pro** ou **Enterprise** sur la page de tarifs.
+3. Approuvez la dépense en USDC et confirmez.
+4. Votre palier bascule on-chain immédiatement, et votre budget d'usage est provisionné.
+
+Le contrat `FrostySubscription` est déployé sur Base (mainnet `0x80f6…3716`, chain id 8453)
+avec un déploiement Base Sepolia (`0xF23B…31bd`) pour les tests. Le contrat a remplacé les
+anciens abonnements de FrostyFi basés sur NFT/Unlock.
+
+## Programme d'affiliation / parrainage
+
+FrostyFi verse une **commission de parrainage sur les abonnements** que vous apportez, réglée
+on-chain :
+
+- Partagez un lien avec votre portefeuille comme parrain (`?ref=<votre-portefeuille>`). Le
+  parrainage est capturé dans un cookie qui survit à la redirection de connexion.
+- Lorsque quelqu'un s'abonne via votre lien, votre portefeuille est transmis comme
+  `referrer` on-chain, et le contrat accumule votre part sur un **solde de parrainage**
+  réclamable.
+- Réclamez vos gains à tout moment depuis la carte **Tableau de bord créateur → Gains
+  d'affiliation** (appelle `claimAffiliate()` sur le répartiteur).
+
+Le programme d'affiliation verse **10 % sur trois niveaux persistants** — **6 %** au parrain
+direct, **2,5 %** et **1,5 %** aux deux niveaux au-dessus — accumulés on-chain sous forme de
+solde réclamable. Votre lignée ascendante est fixée une seule fois, lors du premier paiement
+d'un utilisateur parrainé, et reste figée ensuite. **Pas de parrain ? Cette part finance la
+POL à la place.** Les auto-parrainages sont ignorés.
+
+## Enterprise
+
+Besoin de limites ou de fonctionnalités personnalisées au-delà du palier Enterprise standard ?
+Contactez **hello@frostylabs.ai**.
+
+> **À propos de $FROST :** FrostyFi a un jeton planifié, **$FROST** (verrouillez-le pour une
+> position **PERMA** soulbound), mais il **n'a pas été lancé** et n'est requis pour rien
+> aujourd'hui — tous les abonnements sont en USDC. $FROST est principalement **gagné par les
+> clients payants**, une partie étant vendue via des bonds. Voir
+> [Tokenomics](/docs/tokenomics) et [POL](/docs/pol) pour la conception.

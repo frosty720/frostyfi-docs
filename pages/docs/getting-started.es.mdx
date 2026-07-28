@@ -1,0 +1,85 @@
+# Primeros pasos
+
+Esta guía te lleva a través de tus primeros cinco minutos en la app alojada en
+[app.frostylabs.ai](https://app.frostylabs.ai): iniciar sesión, enviar tu primer chat,
+elegir un modelo y crear un flujo de trabajo a partir de una plantilla.
+
+## 1. Inicia sesión
+
+FrostyFi usa **ThirdWeb Auth** — la autenticación está basada en wallet, y la sesión es un
+JWT almacenado en una cookie (válido durante 7 días). Tienes dos formas de iniciar sesión:
+
+- **Conectar una wallet** — MetaMask, Coinbase Wallet, Rainbow o cualquier wallet de WalletConnect.
+  Se te pedirá que firmes un mensaje (Sign-In With Ethereum). Sin transacción, sin gas.
+- **Inicio de sesión social / con correo** — inicia sesión con un correo electrónico o una cuenta social
+  (Google, etc.). ThirdWeb aprovisiona una wallet integrada para ti entre bastidores, por lo que
+  aún obtienes una dirección on-chain sin gestionar una frase semilla.
+
+De cualquier manera terminas con una dirección de wallet, que es tu identidad a través del chat,
+los flujos de trabajo, las suscripciones y los agentes.
+
+## 2. Tu primer chat
+
+Una vez que hayas iniciado sesión, aterrizas en el espacio de trabajo de chat. Escribe un mensaje y envíalo — las respuestas
+se transmiten de vuelta en tiempo real (FrostyFi usa el Vercel AI SDK internamente).
+
+![El espacio de trabajo de chat de FrostyFi](/screenshots/chat-workspace.png)
+
+Algunas cosas que puedes hacer en el chat:
+
+- **Adjuntar archivos** para que el modelo los lea.
+- **Mencionar un Asistente con `@`** para traer un experto de razonamiento con una persona y un
+  conjunto de skills a medida (por ejemplo, un analista o un redactor). Consulta [Conceptos fundamentales](/docs/concepts#assistants).
+- **Mencionar un Flujo de trabajo con `@`** para ejecutar uno de tus flujos de trabajo en línea como una herramienta y obtener su
+  salida de vuelta en la conversación.
+
+## 3. Elige un modelo
+
+Usa el **selector de modelos** en el compositor del chat para elegir qué modelo de IA te responde. Cada
+modelo alojado se enruta a través de [OpenRouter](/docs/models), por lo que obtienes un selector único y consistente
+en lugar de hacer malabarismos con claves de proveedores.
+
+![El selector de modelos, con pestañas de Texto / Imagen / Vídeo y la estimación de llamadas restantes](/screenshots/model-picker.png)
+
+- El **nivel Free** ve los **modelos gratuitos** (el conjunto `:free` — modelos abiertos potentes a $0).
+- **Pro y Enterprise** ven esos **más los modelos insignia de pago curados**. El acceso a los modelos
+  es binario: cada nivel de pago obtiene *todos* los modelos de pago — no hay restricciones de "este modelo es
+  solo para Enterprise".
+
+El selector también muestra una estimación de **≈ llamadas restantes** que se actualiza cuando cambias de modelo, para que
+puedas ver aproximadamente cuánto compra tu presupuesto mensual en el modelo que has seleccionado. Consulta
+[Modelos y uso](/docs/models#the-calls-left-estimate) para saber cómo se calcula ese número.
+
+## 4. Crea tu primer flujo de trabajo a partir de una plantilla
+
+![La galería de plantillas de flujos de trabajo](/screenshots/templates-gallery.png)
+
+La forma más rápida de obtener un flujo de trabajo funcional es clonar una **plantilla**:
+
+1. Abre **Plantillas** desde la barra lateral.
+2. Explora o busca en la galería (las plantillas se agrupan por categoría — cripto/trading,
+   automatización y más).
+3. Haz clic en **Usar plantilla**. FrostyFi clona la plantilla en tu propio espacio de trabajo (los IDs de nodo
+   se reasignan para que sea totalmente tuya para editar).
+4. Aterrizas en el **constructor visual de flujos de trabajo**, donde puedes reconectar nodos, cambiar
+   prompts y añadir pasos.
+
+![El constructor visual de flujos de trabajo](/screenshots/workflow-canvas.png)
+
+Cada flujo de trabajo comienza con un nodo **Input** y termina con un nodo **Output**. Para aprender
+qué hace cada nodo, consulta [Flujos de trabajo y nodos](/docs/workflows).
+
+## 5. Ejecútalo, prográmalo o despliégalo
+
+- **Ejecutar en línea:** menciona el flujo de trabajo con `@` desde el chat para ejecutarlo una vez y ver la salida.
+- **Programarlo o activarlo por webhook:** despliégalo en [Frosty Engine](/docs/workflows#frosty-engine)
+  para que se ejecute en segundo plano en una programación cron o cuando un servicio externo llame a su
+  webhook. (La ejecución en segundo plano requiere una [suscripción](/docs/pricing) Pro o Enterprise.)
+- **Publicarlo como agente:** convierte el flujo de trabajo en un
+  [agente A2A](/docs/agents) de pago y on-chain que otros pueden invocar.
+
+## Próximos pasos
+
+- [Conceptos fundamentales](/docs/concepts) — Flujos de trabajo vs. Asistentes vs. Agentes vs. Skills vs. MCP
+- [Flujos de trabajo y nodos](/docs/workflows) — la biblioteca completa de nodos
+- [Suscripciones y precios](/docs/pricing) — Free / Pro / Enterprise

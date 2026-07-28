@@ -1,0 +1,129 @@
+# Tokenomics de $FROST
+
+> **$FROST** est le jeton de protocole de FrostyFi — une distribution finie et liée aux revenus qui transforme l'usage réel du produit en propriété. Il est principalement **gagné par les clients payants** (pas de prévente, pas de VC), une partie étant vendue via des bonds qui financent la liquidité détenue par le protocole. Verrouillez-le pour **PERMA** et percevez une part des revenus du protocole en USDC.
+
+import { Callout } from 'nextra/components'
+
+<Callout type="warning">
+Il s'agit de la conception prévue. Le jeton **n'a pas été lancé** — le TGE (génération du jeton) reste à déterminer. Tout ce qui suit est publié à l'avance afin que les termes soient connus, et non imposés au lancement.
+</Callout>
+
+## FROST et PERMA
+
+Deux choses, un seul objectif :
+
+| | **FROST** | **PERMA** |
+|---|---|---|
+| Ce que c'est | Le jeton ERC-20 liquide | Votre **position FROST verrouillée** — soulbound, non transférable |
+| Comment vous l'obtenez | Gagnez-le en payant pour FrostyFi | Verrouillez du FROST pour une durée choisie (1 semaine – 4 ans) |
+| Confère | — | Un poids de vote + une part des revenus du protocole — **frais POL + revenus de la DAO** — payée en **USDC** |
+| Échangeable | Oui | Non — c'est la position de verrouillage elle-même, liée à votre adresse |
+
+PERMA n'est pas un jeton que vous détenez ou échangez — c'est votre position FROST verrouillée, enregistrée on-chain et liée à votre adresse, exactement comme le veCRV de Curve. Le poids de vote et la part de frais évoluent avec le montant × le temps restant et décroissent linéairement. Elle est **soulbound** afin que personne ne puisse acheter ou vendre vos votes ni votre droit au rendement — ils appartiennent à quiconque a verrouillé son propre FROST.
+
+**Verrouiller, c'est de l'entiercement, pas une dépense.** Lorsque votre durée se termine, vous déverrouillez et **votre FROST vous revient** ; la position PERMA prend simplement fin. Le nom est littéral — verrouillez du FROST et il reste gelé sous forme de PERMA jusqu'à ce que vous le dégeliez.
+
+## Offre — 100M, plafond strict
+
+**Offre totale : 100 000 000 FROST — un plafond strict.** Chaque jeton qui existera jamais provient de l'un de ces compartiments :
+
+| Compartiment | Part | Objectif |
+|---|---|---|
+| **Émissions clients** | **42 %** | La distribution elle-même — finie, liée aux revenus, décroissante |
+| Réserve de bonds | 18 % | Soutient le bonding USDC post-lancement, plafonné par un plafond de dette de trésorerie |
+| **Récompense du dev** | **10 %** | Conditionnée aux revenus, mêmes conditions de réclamation que les clients, divulguée (ci-dessous) |
+| Amorce POL | 10 % | Amorce le LP de lancement, puis la réserve d'appariement pour la POL continue |
+| Incitation LP | 5 % | Profondeur de liquidité initiale par des tiers |
+| Trésorerie DAO | 15 % | Une trésorerie active — agents x402 de première partie, bribes de liquidité, investissements votés ; une part de ses revenus rémunère ceux qui verrouillent |
+
+Les jetons ne sont mintés que lorsqu'ils sont réclamés, de sorte que l'offre réelle se situe généralement **en dessous** de 100M — les émissions non réclamées ne sont jamais mintées, et les puits de burn ci-dessous la font baisser davantage.
+
+## Comment vous gagnez du FROST
+
+Seuls les **abonnés payants** gagnent du FROST. Les constructions gratuites, pay-per-deploy et Architect ne rapportent rien — il n'y a donc pas de surface de farming gratuite.
+
+> **Vous gagnez du FROST proportionnellement à ce que vous payez, au taux de l'ère en cours — et le taux est divisé par deux tous les 25 000 $ que le produit génère.**
+
+Les émissions sont libérées par dollar de revenu produit et réparties entre les abonnés actifs **purement au prorata des dollars payés cette période** — pas de paliers, pas de multiplicateurs d'ancienneté. Enterprise gagne ~4× Pro parce qu'il paie ~4×. Un mois où vous ne payez pas est un mois où vous ne gagnez rien.
+
+Le taux est divisé par deux sur des **jalons de revenus, pas sur le calendrier** — de forme Bitcoin, vérifiable on-chain, et impossible à falsifier sans payer au protocole de l'argent réel :
+
+| Ère | Revenu cumulé | Taux | Libéré |
+|---|---|---|---|
+| 1 | 0 $ → 25k $ | 840 FROST / 1 $ | 21M |
+| 2 | 25k $ → 50k $ | 420 / 1 $ | 10,5M |
+| 3 | 50k $ → 75k $ | 210 / 1 $ | 5,3M |
+| 4 | 75k $ → 100k $ | 105 / 1 $ | 2,6M |
+
+Être précoce vaut des multiples — le taux est le plus élevé avant la première division par deux. Pas de compte à rebours, pas d'expiration : des revenus lents signifient une libération lente, de sorte que la distribution dure exactement aussi longtemps qu'il le faut.
+
+## L'engagement de lancement équitable
+
+FrostyFi est un projet auto-financé, à opérateur unique — pas de VC, pas de prévente.
+
+> **Pas de prévente, pas de pré-minage, rien au lancement — le dev gagne 10 % divulgués, mintés uniquement à mesure que les clients payants gagnent les leurs, aux exactes mêmes conditions de réclamation que chaque client.**
+
+La récompense du dev accumule **1 FROST pour 4,2 émis aux clients** (10M : 42M), pilotée par le même compteur de revenus et le même calendrier de division par deux. Pas de revenus, pas de jetons dev — c'est gagné, non octroyé, et le risque de perte (le protocole échoue → le dev n'obtient presque rien) est identique à celui de tout autre participant. Les réclamations du dev passent par le même contrat de réclamation et les mêmes conditions que les clients, avec une discipline de vente publiée (portefeuille annoncé, jamais plus de ~10 à 15 % du volume quotidien, jamais un largage sur le marché).
+
+## Réclamer — vester, ou verrouiller
+
+Les émissions s'accumulent **avant le lancement sous forme de solde de registre non transférable** — le tableau de bord affiche le FROST gagné, mais aucun jeton n'existe encore. Au lancement, et à chaque réclamation ensuite, vous choisissez l'une de deux portes :
+
+- **Réclamer en liquide** — vestat linéairement sur ~6 mois. La vente est étalée pendant que la POL continue de croître en dessous.
+- **Réclamer 100 % instantanément en verrouillant** — prenez tout maintenant si cela va directement dans un **verrou PERMA d'au moins 6 mois**. Vouloir du FROST liquide est ce qui vous coûte l'attente.
+
+<Callout type="info">
+La voie instantanée est celle qui est bonne pour le protocole — les détenteurs verrouillés commencent à gagner de l'USDC immédiatement et ne vendent pas dans un carnet peu profond. La réclamation de chacun, y compris celle du dev, utilise ces deux mêmes portes.
+</Callout>
+
+## Rendement réel — verrouillez pour de l'USDC
+
+**Détenir du FROST seul ne rapporte rien.** Vous devez le verrouiller dans une position PERMA pour gagner — les détenteurs liquides obtiennent l'appréciation du prix et la déflation issue des burns, pas de rendement.
+
+Ceux qui verrouillent gagnent en **USDC** à partir de deux sources :
+
+- **Frais de trading de la POL** — la liquidité que détient la POL perçoit des frais sur chaque échange ; le côté USDC va à ceux qui verrouillent, 100 %.
+- **Une part des revenus de la DAO** — la DAO est un acteur qui génère activement des revenus, pas un coffre : elle exploite une flotte d'agents x402 de première partie, fait des bribes pour une liquidité plus profonde, et investit son trésor de guerre sous vote. Une part divulguée de ce qu'elle génère est versée à ceux qui verrouillent.
+
+Les deux sont payées dans un stablecoin — ceux qui verrouillent ne sont jamais payés en FROST. (Le côté FROST des frais POL va à la DAO.) Voir **[POL](/docs/pol)**.
+
+Verrouiller débloque aussi une échelle de droits :
+
+| Verrou | Débloque |
+|---|---|
+| **25 000 FROST (≥6 mois)** | Crédits produit — **50 % de réduction sur le pay-per-deploy**, **10 % de réduction sur les abonnements** |
+| **100 000 FROST** | Vote |
+| **1 000 000 FROST** | Proposition |
+
+Les crédits vous paient en *produit*, jamais en davantage de jetons — et il n'y a **jamais de palier Pro gratuit**, car cela permettrait aux détenteurs de cesser de payer et d'assécher les revenus qui financent tout.
+
+## Bonds — accélérer la liquidité
+
+Les revenus construisent la POL de façon régulière ; les bonds la construisent *vite*. Après le lancement, quiconque peut déposer de l'USDC et recevoir du $FROST à une **réduction publique** (~10 %), vestant linéairement sur environ **7 jours**. Le protocole conserve l'USDC et le déploie directement dans la POL.
+
+<Callout type="info">
+Cela résout la profondeur et le flottant en un seul mouvement : le bondeur obtient une taille qu'un pool peu profond n'aurait jamais pu remplir, et le protocole obtient la liquidité qui lui manquait. **Un seul bond de 10k $ peut ajouter plus de profondeur que des mois de revenus** — c'est ainsi que la POL passe rapidement de peu profonde à profonde.
+</Callout>
+
+- **Sans permission et équitable.** Pas de liste blanche, pas d'allocation, pas de prix d'initié — la réduction est publiée et ouverte à tous. Adossée à la réserve de bonds de 18M FROST.
+- **Plafonnée, pas un robinet.** L'émission est bornée par un plafond de dette de trésorerie plus une limite de débit par semaine, et les paiements sont tarifés à partir d'un TWAP de pool *établi*, pas d'un spot manipulable. Les bonds ouvrent environ une semaine après le lancement, le temps que le prix se stabilise d'abord.
+- **Financement, pas revenu.** Le principal des bonds n'alimente jamais le compteur d'émission — il ne peut déclencher ni une division par deux ni une aubaine.
+
+## Burn — une utilité qui retire de l'offre
+
+Chaque jeton dépensé pour une utilité FrostyFi est **brûlé à 100 %** :
+
+| Puits | Burn |
+|---|---|
+| Inférence **FrostyG4** (le modèle auto-hébergé de FrostyFi) | 100 % |
+| Constructions Architect (post-lancement, tarifées en FROST) | 100 % |
+| Surcharge d'exécution prioritaire | 100 % |
+| Frais de marketplace | 100 % |
+
+<Callout type="info">
+FROST tarife **FrostyG4 uniquement** — un modèle que FrostyFi auto-héberge, donc son coût est un GPU fixe, pas une facture USD par jeton. Les modèles tiers (Claude, GPT) restent toujours tarifés en USD : payer un jeton volatil contre une facture en USD forcerait le protocole à le vendre. L'utilité de FROST ne pointe que là où elle ne peut créer de pression vendeuse.
+</Callout>
+
+---
+
+Voir aussi : **[POL — Liquidité détenue par le protocole](/docs/pol)** · **[Tarifs](/docs/pricing)** · **[Feuille de route](/docs/roadmap)**

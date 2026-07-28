@@ -1,0 +1,96 @@
+# Prise en main
+
+Ce guide vous accompagne dans vos cinq premières minutes sur l'application hébergée à
+[app.frostylabs.ai](https://app.frostylabs.ai) : connexion, envoi de votre premier chat,
+choix d'un modèle et création d'un flux de travail à partir d'un template.
+
+## 1. Connexion
+
+FrostyFi utilise **ThirdWeb Auth** — l'authentification est basée sur un portefeuille, et la
+session est un JWT stocké dans un cookie (valable 7 jours). Vous disposez de deux façons de
+vous connecter :
+
+- **Connecter un portefeuille** — MetaMask, Coinbase Wallet, Rainbow, ou tout portefeuille
+  WalletConnect. Il vous sera demandé de signer un message (Sign-In With Ethereum). Pas de
+  transaction, pas de frais de gaz.
+- **Connexion e-mail / sociale** — connectez-vous avec une adresse e-mail ou un compte social
+  (Google, etc.). ThirdWeb provisionne un portefeuille intégré pour vous en coulisses, ce
+  qui vous donne tout de même une adresse on-chain sans gérer de phrase de récupération.
+
+Dans les deux cas, vous obtenez une adresse de portefeuille, qui est votre identité à travers
+le chat, les flux de travail, les abonnements et les agents.
+
+## 2. Votre premier chat
+
+Une fois connecté, vous arrivez dans l'espace de travail de chat. Tapez un message et
+envoyez-le — les réponses sont diffusées en temps réel (FrostyFi utilise le Vercel AI SDK
+sous le capot).
+
+![L'espace de travail de chat FrostyFi](/screenshots/chat-workspace.png)
+
+Quelques actions possibles dans le chat :
+
+- **Joindre des fichiers** pour que le modèle les lise.
+- **`@mentionner` un Assistant** pour faire intervenir un expert de raisonnement doté d'une
+  persona et d'un ensemble de skills sur mesure (par exemple un analyste ou un rédacteur).
+  Voir [Concepts fondamentaux](/docs/concepts#assistants).
+- **`@mentionner` un flux de travail** pour exécuter l'un de vos flux de travail en ligne
+  comme un outil et récupérer sa sortie dans la conversation.
+
+## 3. Choisir un modèle
+
+Utilisez le **sélecteur de modèle** dans le compositeur de chat pour choisir quel modèle
+d'IA vous répond. Chaque modèle hébergé est routé via [OpenRouter](/docs/models), vous
+obtenez donc un sélecteur unique et cohérent au lieu de jongler avec des clés de fournisseur.
+
+![Le sélecteur de modèle, avec les onglets Texte / Image / Vidéo et l'estimation des appels restants](/screenshots/model-picker.png)
+
+- **Le palier Gratuit** voit les **modèles gratuits** (l'ensemble `:free` — de puissants
+  modèles ouverts à 0 $).
+- **Pro et Enterprise** voient ceux-là **plus les modèles phares payants sélectionnés**.
+  L'accès aux modèles est binaire : chaque palier payant obtient *tous* les modèles payants
+  — il n'y a pas de restriction « ce modèle est réservé à Enterprise ».
+
+Le sélecteur affiche aussi une estimation **≈ appels restants** qui se met à jour lorsque
+vous changez de modèle, de sorte que vous voyez approximativement ce que votre budget mensuel
+permet sur le modèle sélectionné. Voir
+[Modèles & Usage](/docs/models#the-calls-left-estimate) pour savoir comment ce nombre est
+calculé.
+
+## 4. Créer votre premier flux de travail à partir d'un template
+
+![La galerie de Templates de flux de travail](/screenshots/templates-gallery.png)
+
+La façon la plus rapide d'obtenir un flux de travail fonctionnel est de cloner un
+**template** :
+
+1. Ouvrez **Templates** depuis la barre latérale.
+2. Parcourez ou recherchez dans la galerie (les templates sont regroupés par catégorie —
+   crypto/trading, automatisation, et plus).
+3. Cliquez sur **Utiliser le template**. FrostyFi clone le template dans votre propre espace
+   de travail (les identifiants de nœuds sont réattribués pour qu'il soit entièrement à vous
+   pour l'éditer).
+4. Vous êtes déposé dans le **constructeur visuel de flux de travail**, où vous pouvez
+   recâbler les nœuds, changer les invites et ajouter des étapes.
+
+![Le constructeur visuel de flux de travail](/screenshots/workflow-canvas.png)
+
+Chaque flux de travail commence par un nœud **Input** et se termine par un nœud **Output**.
+Pour apprendre ce que fait chaque nœud, voir [Flux de travail & Nœuds](/docs/workflows).
+
+## 5. L'exécuter, le planifier ou le déployer
+
+- **Exécution en ligne :** `@mentionnez` le flux de travail depuis le chat pour l'exécuter
+  une fois et voir la sortie.
+- **Le planifier ou le déclencher par webhook :** déployez-le sur
+  [Frosty Engine](/docs/workflows#frosty-engine) afin qu'il s'exécute en arrière-plan selon
+  un planning cron ou lorsqu'un service externe appelle son webhook. (L'exécution en
+  arrière-plan requiert un [abonnement](/docs/pricing) Pro ou Enterprise.)
+- **Le publier comme agent :** transformez le flux de travail en un
+  [agent A2A](/docs/agents) payant et on-chain que d'autres peuvent appeler.
+
+## Étapes suivantes
+
+- [Concepts fondamentaux](/docs/concepts) — Flux de travail vs Assistants vs Agents vs Skills vs MCP
+- [Flux de travail & Nœuds](/docs/workflows) — la bibliothèque complète de nœuds
+- [Abonnements & Tarifs](/docs/pricing) — Gratuit / Pro / Enterprise

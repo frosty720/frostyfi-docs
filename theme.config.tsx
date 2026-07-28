@@ -1,6 +1,14 @@
 import { ReactNode } from 'react'
+import { useRouter } from 'next/router'
 
 const config = {
+  useNextSeoProps() {
+    const { pathname } = useRouter()
+    const isHome = /^\/index(\.[a-z]{2})?$/.test(pathname)
+    return {
+      titleTemplate: isHome ? 'FrostyFi Docs' : '%s – FrostyFi Docs',
+    }
+  },
   logo: (
     <span style={{ display: 'flex', alignItems: 'center', gap: '0.625rem' }}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -12,6 +20,14 @@ const config = {
     link: 'https://github.com/FrostyLabsAi/frostyflow',
   },
   docsRepositoryBase: 'https://github.com/FrostyLabsAi/frostyflow/tree/main/docs-site',
+  i18n: [
+    { locale: 'en', text: 'English' },
+    { locale: 'es', text: 'Español' },
+    { locale: 'fr', text: 'Français' },
+    { locale: 'ja', text: '日本語' },
+    { locale: 'ko', text: '한국어' },
+    { locale: 'zh', text: '中文' },
+  ],
   sidebar: {
     defaultMenuCollapseLevel: 1,
   },

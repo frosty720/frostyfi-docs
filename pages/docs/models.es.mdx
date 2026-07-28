@@ -1,0 +1,69 @@
+# Modelos y uso
+
+FrostyFi enruta **todos los modelos de chat a través de [OpenRouter](https://openrouter.ai)** — una
+única puerta de enlace frente a cada proveedor principal. Esta página explica el selector de modelos, cómo
+el uso mensual escala con el modelo que elijes, y el medidor de **≈ llamadas restantes**.
+
+## Una puerta de enlace, un selector
+
+![El selector de modelos, con pestañas de Texto / Imagen / Vídeo y la estimación de llamadas restantes](/screenshots/model-picker.png)
+
+En lugar de integraciones de proveedor separadas y claves por proveedor, FrostyFi envía cada solicitud de chat
+a través de OpenRouter. Eso significa:
+
+- **Un selector curado.** Añade o elimina un modelo en un solo lugar; sin tablas paralelas de
+  herramienta/visión que mantener sincronizadas.
+- **Un control de gasto.** El uso de cada usuario pasa por una clave de OpenRouter por usuario con un
+  tope mensual estricto (más abajo).
+- **Atribución de la app.** Cada llamada de inferencia lleva los encabezados de atribución de FrostyFi, por lo que la
+  app aparece en los rankings y analíticas públicas de OpenRouter.
+
+Los modelos vienen en dos grupos:
+
+- **Modelos gratuitos** — el conjunto `:free` siempre activo (modelos abiertos potentes a $0, por ejemplo Gemma,
+  DeepSeek, Qwen, GPT-OSS). Los nuevos modelos `:free` en OpenRouter se muestran automáticamente.
+- **Modelos de pago** — un conjunto insignia curado.
+
+**El acceso a los modelos es binario — `free` o `paid`.** El nivel Free ve solo modelos gratuitos; **tanto
+Pro como Enterprise ven todos los modelos de pago.** No existe "este modelo es solo para Enterprise".
+
+## El uso mensual escala con el modelo
+
+Cuánto puedes hacer cada mes depende de tu [nivel de suscripción](/docs/pricing) **y de
+los modelos que elijas** — esa es la parte justa. Una llamada a un modelo ligero y una llamada a un
+modelo de frontera son cantidades de cómputo muy diferentes, por lo que tu asignación se mide por
+uso en lugar de un recuento fijo de llamadas. Los modelos más baratos rinden mucho más; los modelos premium
+usan más de tu asignación por llamada.
+
+| Nivel | Uso mensual |
+|------|---------------|
+| **Free** | Un total fijo de **50 llamadas/mes** solo en **modelos gratuitos**. |
+| **Pro** | Una asignación mensual generosa — aproximadamente **400–4700 llamadas premium/mes**, según los modelos que uses. |
+| **Enterprise** | Una asignación mayor — aproximadamente **1500–18 000 llamadas premium/mes**, según los modelos que uses. |
+
+Cuando alcanzas tu asignación mensual, FrostyFi muestra un mensaje elegante de "límite alcanzado"
+y se restablece al comienzo de cada mes. Los modelos gratuitos y rápidos siguen disponibles para Pro y
+Enterprise sin consumir la asignación premium.
+
+## La estimación de "llamadas restantes"
+
+El medidor de uso traduce tu asignación mensual restante en una estimación de **≈ N llamadas restantes**
+**para el modelo que tienes seleccionado actualmente** — nunca una cifra de coste en bruto:
+
+- Cambia a un modelo **más barato** y la estimación **sube**.
+- Cambia a un modelo **más caro** y **baja**.
+
+Es la misma asignación de cualquier manera — el medidor solo te da una sensación honesta e intuitiva de
+lo que queda en el modelo que estás usando. La estimación usa un perfil representativo de tokens por llamada,
+por lo que es una guía, no un contrato.
+
+El medidor del **nivel Free** es más simple: solo muestra las llamadas usadas contra la asignación fija de
+**50/mes**.
+
+## Seguimiento de costes
+
+FrostyFi registra el coste real por llamada reportado por OpenRouter en un único libro de contabilidad de uso
+por usuario. Ese libro de contabilidad alimenta el medidor, hace cumplir los presupuestos y es la misma capa de
+contabilidad que respaldará el uso del token PERMA en el futuro.
+
+Siguiente: [Suscripciones y precios →](/docs/pricing)

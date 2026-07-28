@@ -1,0 +1,62 @@
+# Frosty Engine
+
+Exécution automatisée de flux de travail en arrière-plan.
+
+## Vue d'ensemble
+
+Frosty Engine exécute des flux de travail selon des plannings ou via des webhooks. Disponible pour les utilisateurs Pro et Enterprise.
+
+Chaque flux de travail déployé dispose d'un panneau **Runs** (Exécutions) qui met en avant
+ses exécutions en arrière-plan — type de déclencheur (webhook / planning), statut et latence
+— afin que vous puissiez voir en un coup d'œil la performance de vos automatisations.
+
+![Le panneau Runs — exécutions en arrière-plan avec statut et latence](/screenshots/runs-panel.png)
+
+## Fonctionnalités
+
+- **Flux de travail planifiés** : Automatisation basée sur cron
+- **Déclencheurs webhook** : Points de terminaison HTTP pour déclencher des flux de travail
+- **Vérification de palier** : Contrôles d'abonnement à chaque exécution
+- **Intégration Vault** : Opérations blockchain en arrière-plan
+- **Historique d'exécution** : Piste d'audit complète
+
+## États de déploiement
+
+| État | Planificateur | Webhook |
+|-------|-----------|---------|
+| Non déployé | ❌ | ❌ |
+| Déployé | ✅ | ✅ |
+| En pause | ⏸️ | ❌ |
+| Arrêté | ❌ | ❌ |
+
+## Points de terminaison de l'API
+
+### Déploiement
+- `POST /api/deploy` - Déployer un flux de travail
+- `POST /api/deployments/:id/pause` - Mettre en pause
+- `POST /api/deployments/:id/resume` - Reprendre
+- `DELETE /api/deployments/:id` - Supprimer
+
+### Exécution
+- `POST /api/execute` - Exécution manuelle
+- `GET /api/executions/:id` - Obtenir le statut
+
+### Webhooks
+- `POST /webhooks/:id` - Déclencher un flux de travail déployé via son webhook
+
+> Les plannings cron et les webhooks sont configurés dans le cadre du **déploiement** d'un
+> flux de travail (le planificateur et le récepteur de webhook les lisent depuis la base de
+> données) — il n'y a pas de point de terminaison distinct de gestion des plannings.
+
+## Sécurité
+
+- Authentification JWT requise
+- Vérification du palier d'abonnement
+- Limitation de débit activée
+- Validation du secret de webhook
+
+## Prérequis
+
+- Abonnement Pro (25 $/mois) ou Enterprise (99 $/mois)
+- Redis pour la file d'attente de tâches
+- Base de données partagée avec l'application principale

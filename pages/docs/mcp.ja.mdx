@@ -1,0 +1,65 @@
+# MCP 連携
+
+Model Context Protocol を通じて外部ツールに接続します。
+
+## MCP とは？
+
+MCP（Model Context Protocol）は、AI モデルが外部のツールやサービスとやり取りできるようにします。
+
+## MCP サーバーの追加
+
+ホスティングされたアプリは（セキュリティのため）**リモートの MCP サーバーのみ** に接続します。ローカルの stdio /
+`npx` 起動サーバーはサポートされていません。
+
+![MCP サーバーページ — 最初のサーバーを接続、ワンクリックの審査済み連携付き](/screenshots/mcp-1.png)
+
+1. **Settings** → **MCP Servers** に移動する
+2. **Add Server** をクリックする
+3. リモートのトランスポートタイプを選択する：
+   - **StreamableHTTP**：HTTP ベース（推奨）
+   - **SSE**：Server-Sent Events
+
+マーケットプレイスも、ワンクリックで追加できる審査済みのリモートサーバー（例：CoinGecko、Alpha Vantage、Stripe、
+Etherscan、Blockscout）を提供しています。
+
+![MCP マーケットプレイス — 審査済みのリモート MCP サーバーを発見して追加](/screenshots/mcp-2.png)
+
+## 例：リモート MCP サーバー
+
+```json
+{
+  "name": "coingecko",
+  "transport": "streamableHttp",
+  "url": "https://mcp.example.com/coingecko"
+}
+```
+
+UI では、サーバーに名前を付け、URL ベースの設定（任意の認証ヘッダー付き）を貼り付けます。
+リモート（URL ベース）のサーバーのみです — コマンドベースのサーバーは、厳選されたマーケットプレイスから来る必要があります。
+
+![MCP 設定フォーム — 認証ヘッダーとライブプレビュー付きの URL ベースのリモートサーバー](/screenshots/mcp-config.png)
+
+## チャットで MCP ツールを使う
+
+`@` に続けてツール名を入力して呼び出します：
+
+```
+@coingecko price of ETH and BTC right now
+```
+
+## 組み込みツール
+
+MCP サーバーに加えて、すべてのチャットには次の組み込みツールが備わっています：
+
+| ツール | 説明 |
+|------|-------------|
+| Web search | EXA による Web 検索 |
+| Web content | ページの内容を取得して読む |
+| HTTP fetch | 任意の REST エンドポイントを呼び出す |
+| Code (JS / Python) | サンドボックス化された JavaScript または Python を実行する |
+| Create workflow | 説明からワークフローの雛形を作る |
+| Image generation | 画像を生成する（OpenRouter 経由でルーティング） |
+
+## カスタムサーバーの作成
+
+独自のリモート MCP サーバーの構築については、[MCP SDK](https://github.com/modelcontextprotocol/sdk) を参照してください。
