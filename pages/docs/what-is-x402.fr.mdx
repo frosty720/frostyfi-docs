@@ -1,0 +1,114 @@
+---
+title: Qu'est-ce que x402 ?
+description: x402 est un protocole de paiement ouvert qui permet aux agents IA de payer une API à la requête en USDC, sans clé d'API ni compte, en s'appuyant sur le code HTTP 402.
+---
+
+# Qu'est-ce que x402 ?
+
+**x402 est un protocole de paiement ouvert qui permet de payer une requête HTTP au moment
+même où elle est envoyée.** Il remet en service le code `402 Payment Required`, resté
+inutilisé pendant des décennies : le serveur répond `402` avec son prix, le client signe un
+transfert de stablecoin, puis rejoue la requête en y joignant la preuve de paiement.
+
+Pas de clé d'API. Pas de compte. Pas d'abonnement. Pas de discussion commerciale. **Le
+paiement est l'identifiant.**
+
+Cela compte surtout pour les **agents IA**, qui peuvent désormais acheter les données et
+l'inférence dont ils ont besoin sans qu'un humain leur ait d'abord provisionné une clé.
+
+## Le déroulé d'une requête x402
+
+1. Le client appelle normalement un endpoint payant.
+2. Le serveur répond **`402 Payment Required`** avec une liste `accepts` : combien, en quel
+   actif, sur quel réseau et vers quelle adresse.
+3. Le client compare le prix à son propre plafond de dépense, puis signe une autorisation
+   **EIP-3009 `TransferWithAuthorization`** pour exactement ce montant.
+4. Le client rejoue la requête **à l'identique**, avec un en-tête `PAYMENT-SIGNATURE`
+   portant l'autorisation signée.
+5. Le serveur (ou un facilitateur) règle le transfert on-chain et renvoie la vraie réponse.
+
+Deux détails font l'essentiel du travail. Ce qui est signé est une **autorisation**, pas une
+transaction : c'est le *serveur* qui la soumet et paie le gas, si bien que l'agent n'a
+besoin d'aucun jeton natif. Et comme l'étape 4 est une répétition octet pour octet de
+l'étape 1, x402 s'intègre à une API existante sans la repenser.
+
+## Ce que ça coûte, sans enjoliver
+
+x402 **ne rend pas l'inférence moins chère**. À l'appel, c'est généralement **plus cher**.
+
+Un endpoint x402 typique facture des frais fixes par requête, très supérieurs au coût réel
+du calcul : un appel qui coûte une fraction de centime à servir peut porter des frais d'un
+tiers de centime ou plus. **Si vous optimisez le prix, un compte prépayé chez le
+fournisseur reste gagnant.**
+
+Ce que vous achetez, c'est de l'**autonomie**. Un agent qui détient des USDC peut payer
+n'importe quel fournisseur parlant x402, sans compte, sans rotation de clés et sans humain
+dans la boucle. Pour un agent qui tourne sans surveillance, c'est la différence entre
+continuer et s'arrêter.
+
+Méfiez-vous de ceux qui vendent x402 comme une économie. C'est une **capacité, pas une
+remise**.
+
+## Un paiement réellement réglé
+
+Ceci n'est pas un schéma, cela vient de nos propres journaux.
+
+Un workflow FrostyFi a appelé un endpoint d'inférence payant, qui a renvoyé `402`. Le
+portefeuille de l'agent, sous garde Vault, a signé une autorisation EIP-3009 plafonnée à
+`0,05 $` et a rejoué la requête. La réponse est revenue et le transfert a été réglé sur
+**Base** :
+
+| Champ | Valeur |
+| --- | --- |
+| Montant payé | `0,00333 $` USDC |
+| Réseau | `eip155:8453` (Base) |
+| Transaction de règlement | [`0x17942efd…4f2d64254`](https://basescan.org/tx/0x17942efd0ae1fb7a88b8ce0e605e1beb53e90c2f1ba0770c0874e3a4f2d64254) |
+| Durée totale | 7,02 s |
+
+Aucune clé d'API n'existait dans ce flux. L'agent a acheté sa propre inférence.
+
+## x402 dans FrostyFi
+
+FrostyFi prend en charge les deux côtés du protocole.
+
+**Payer.** Le nœud **x402 Pay** appelle n'importe quel endpoint x402 et résout le défi
+tout seul. Vous lui donnez une URL et un plafond ; il gère le 402, la signature et la
+répétition. Les clés restent dans un [Vault thirdweb](/docs/vaults) — le workflow ne voit
+jamais de clé privée — et le plafond est vérifié *avant* toute signature, si bien qu'un
+endpoint malveillant ne peut pas vider un portefeuille.
+
+**Facturer.** Publiez un workflow comme [agent](/docs/agents) et fixez un prix par appel.
+L'appelant paie en USDC, le règlement se fait on-chain, et l'agent peut porter une identité
+et une réputation on-chain via
+[ERC-8004](/docs/agents#erc-8004-identity--reputation).
+
+Ensemble, ils bouclent la boucle : un agent qui gagne des USDC peut dépenser des USDC pour
+sa propre inférence, et vous n'intervenez dans aucune des deux transactions.
+
+## Questions fréquentes
+
+**x402 est-il une blockchain ou un jeton ?**
+Ni l'un ni l'autre. C'est une convention HTTP. Le règlement a lieu sur la chaîne acceptée
+par l'endpoint — le plus souvent USDC sur Base — mais il n'existe pas de « jeton x402 ».
+
+**L'agent a-t-il besoin de gas ?**
+Non. Avec EIP-3009, le payeur ne signe qu'une autorisation ; c'est le serveur ou le
+facilitateur qui soumet la transaction et paie le gas.
+
+**Un endpoint peut-il surfacturer ?**
+Il peut *demander* n'importe quel montant. Un client correct compare le montant exigé à un
+plafond strict avant de signer. Le nœud FrostyFi refuse au-delà du plafond sans même
+atteindre le signataire.
+
+**Quel stablecoin est utilisé ?**
+USDC en pratique, le plus souvent sur Base, même si le protocole est agnostique quant à
+l'actif et à la chaîne.
+
+**Faut-il écrire du code ?**
+Pas dans FrostyFi. x402 Pay est un nœud que l'on glisse sur le canevas.
+
+## Étapes suivantes
+
+- [Agents, A2A et paiements](/docs/agents) — facturer à l'appel et enregistrer une identité on-chain
+- [Flux de travail et nœuds](/docs/workflows) — où s'insère le nœud x402 Pay
+- [Vaults](/docs/vaults) — comment sont gardés les portefeuilles d'agents

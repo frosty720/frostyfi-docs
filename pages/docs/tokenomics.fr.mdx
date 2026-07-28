@@ -99,14 +99,14 @@ Les crédits vous paient en *produit*, jamais en davantage de jetons — et il n
 
 ## Bonds — accélérer la liquidité
 
-Les revenus construisent la POL de façon régulière ; les bonds la construisent *vite*. Après le lancement, quiconque peut déposer de l'USDC et recevoir du $FROST à une **réduction publique** (~10 %), vestant linéairement sur environ **7 jours**. Le protocole conserve l'USDC et le déploie directement dans la POL.
+Les revenus construisent la POL de façon régulière ; les bonds la construisent *vite*. Après le lancement, quiconque peut déposer de l'USDC et recevoir du $FROST à une **réduction publique pilotée par la demande** (~10 % visés à l'ouverture), vestant linéairement sur environ **7 jours**. Le protocole conserve l'USDC et le déploie directement dans la POL.
 
 <Callout type="info">
 Cela résout la profondeur et le flottant en un seul mouvement : le bondeur obtient une taille qu'un pool peu profond n'aurait jamais pu remplir, et le protocole obtient la liquidité qui lui manquait. **Un seul bond de 10k $ peut ajouter plus de profondeur que des mois de revenus** — c'est ainsi que la POL passe rapidement de peu profonde à profonde.
 </Callout>
 
 - **Sans permission et équitable.** Pas de liste blanche, pas d'allocation, pas de prix d'initié — la réduction est publiée et ouverte à tous. Adossée à la réserve de bonds de 18M FROST.
-- **Plafonnée, pas un robinet.** L'émission est bornée par un plafond de dette de trésorerie plus une limite de débit par semaine, et les paiements sont tarifés à partir d'un TWAP de pool *établi*, pas d'un spot manipulable. Les bonds ouvrent environ une semaine après le lancement, le temps que le prix se stabilise d'abord.
+- **Plafonnée, pas un robinet.** L'émission est bornée par un plafond de dette de trésorerie plus une limite hebdomadaire ajustée à la profondeur, et les paiements proviennent d'une **formule on-chain de ratio de dette avec un prix plancher strict** (à la Olympus) — le prix du pool n'entre jamais dans le paiement, donc manipuler le marché ne peut pas minter de FROST supplémentaire, et une forte demande comprime automatiquement la réduction. Les bonds ouvrent environ une semaine après le lancement, le temps que le prix de marché se stabilise d'abord.
 - **Financement, pas revenu.** Le principal des bonds n'alimente jamais le compteur d'émission — il ne peut déclencher ni une division par deux ni une aubaine.
 
 ## Burn — une utilité qui retire de l'offre

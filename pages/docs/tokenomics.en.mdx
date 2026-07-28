@@ -99,14 +99,14 @@ Credits pay you in *product*, never in more tokens — and there is **never a fr
 
 ## Bonds — accelerating the liquidity
 
-Revenue builds POL steadily; bonds build it *fast*. After launch, anyone can deposit USDC and receive $FROST at a **public discount** (~10%), vesting linearly over about **7 days**. The protocol keeps the USDC and deploys it straight into POL.
+Revenue builds POL steadily; bonds build it *fast*. After launch, anyone can deposit USDC and receive $FROST at a **public, demand-driven discount** (~10% target at open), vesting linearly over about **7 days**. The protocol keeps the USDC and deploys it straight into POL.
 
 <Callout type="info">
 It solves depth and float in one move: the bonder gets size a thin pool could never fill, and the protocol gets the liquidity it lacked. **A single $10k bond can add more depth than months of revenue** — this is how POL goes from thin to deep quickly.
 </Callout>
 
 - **Permissionless and fair.** No whitelist, no allocation, no insider price — the discount is published and open to everyone. Backed by the 18M-FROST bond reserve.
-- **Capped, not a faucet.** Issuance is bounded by a treasury debt ceiling plus a per-week rate limit, and payouts are priced off a *seasoned* pool TWAP, not a manipulable spot. Bonds open about a week after launch so the price settles first.
+- **Capped, not a faucet.** Issuance is bounded by a treasury debt ceiling plus a depth-aware weekly cap, and payouts come from an on-chain **debt-ratio formula with a hard price floor** (Olympus-style) — the pool price never touches the payout, so bending the market can't mint extra FROST, and heavy demand compresses the discount automatically. Bonds open about a week after launch so the market price settles first.
 - **Funding, not revenue.** Bond principal never feeds the emission counter — it cannot trigger a halving or a windfall.
 
 ## Burn — utility that removes supply

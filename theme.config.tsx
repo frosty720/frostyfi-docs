@@ -1,12 +1,21 @@
 import { ReactNode } from 'react'
 import { useRouter } from 'next/router'
+import { useConfig } from 'nextra-theme-docs'
+
+const DEFAULT_DESCRIPTION = 'FrostyFi - Web3 AI Workflow Automation Platform'
 
 const config = {
   useNextSeoProps() {
     const { pathname } = useRouter()
+    const { frontMatter } = useConfig()
     const isHome = /^\/index(\.[a-z]{2})?$/.test(pathname)
+    // Pages can set their own `description:` in frontmatter. Without this every
+    // doc page ships the same meta description, which wastes the snippet.
+    const description = frontMatter?.description || DEFAULT_DESCRIPTION
     return {
       titleTemplate: isHome ? 'FrostyFi Docs' : '%s – FrostyFi Docs',
+      description,
+      openGraph: { description },
     }
   },
   logo: (
@@ -55,12 +64,11 @@ const config = {
   head: (
     <>
       <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <meta name="description" content="FrostyFi - Web3 AI Workflow Automation Platform" />
+      {/* description + og:description come from useNextSeoProps (per-page frontmatter) */}
       <link rel="icon" href="/favicon.ico" sizes="any" />
       <link rel="icon" type="image/png" href="/resources/frostylogo.png" />
       <link rel="apple-touch-icon" href="/resources/frostylogo.png" />
       <meta property="og:title" content="FrostyFi Docs" />
-      <meta property="og:description" content="Build AI agents that think, act on-chain, and get paid." />
     </>
   ),
 }

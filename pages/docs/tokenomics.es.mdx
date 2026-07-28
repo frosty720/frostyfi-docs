@@ -99,14 +99,14 @@ Los créditos te pagan en *producto*, nunca en más tokens — y **nunca hay un 
 
 ## Bonos — acelerando la liquidez
 
-Los ingresos construyen POL de forma constante; los bonos lo construyen *rápido*. Tras el lanzamiento, cualquiera puede depositar USDC y recibir $FROST con un **descuento público** (~10%), con vesting lineal durante unos **7 días**. El protocolo se queda con el USDC y lo despliega directo en POL.
+Los ingresos construyen POL de forma constante; los bonos lo construyen *rápido*. Tras el lanzamiento, cualquiera puede depositar USDC y recibir $FROST con un **descuento público que responde a la demanda** (~10% objetivo en la apertura), con vesting lineal durante unos **7 días**. El protocolo se queda con el USDC y lo despliega directo en POL.
 
 <Callout type="info">
 Resuelve profundidad y flotante en un solo movimiento: el bonista obtiene un tamaño que un pool delgado nunca podría llenar, y el protocolo obtiene la liquidez que le faltaba. **Un solo bono de $10k puede añadir más profundidad que meses de ingresos** — así es como POL pasa de delgado a profundo rápidamente.
 </Callout>
 
 - **Sin permiso y justo.** Sin whitelist, sin asignación, sin precio de insider — el descuento se publica y está abierto a todos. Respaldado por la reserva de bonos de 18M FROST.
-- **Limitado, no un grifo.** La emisión está acotada por un techo de deuda de la tesorería más un límite de tasa por semana, y los pagos se valoran sobre un TWAP de un pool *maduro*, no un spot manipulable. Los bonos abren aproximadamente una semana después del lanzamiento para que el precio se asiente primero.
+- **Limitado, no un grifo.** La emisión está acotada por un techo de deuda de la tesorería más un límite semanal ajustado a la profundidad, y los pagos provienen de una **fórmula on-chain de ratio de deuda con un precio mínimo estricto** (al estilo Olympus) — el precio del pool nunca entra en el pago, así que manipular el mercado no puede acuñar FROST extra, y una demanda alta comprime el descuento automáticamente. Los bonos abren aproximadamente una semana después del lanzamiento para que el precio de mercado se asiente primero.
 - **Financiación, no ingresos.** El principal del bono nunca alimenta el contador de emisiones — no puede desencadenar una reducción a la mitad ni una ganancia inesperada.
 
 ## Quema — utilidad que retira suministro
