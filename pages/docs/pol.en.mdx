@@ -54,7 +54,7 @@ There is no off-chain accounting. Every payment — subscriptions, the $5 pay-pe
 
 **After launch** — the POL share keeps flowing, forever. Each payment market-buys FROST and adds to one canonical liquidity position, so revenue becomes real, verifiable buy pressure — not a batch you have to trust happens. POL only grows and never sells.
 
-**Bonds accelerate it.** Revenue deepens POL steadily, but a young pool needs depth fast. After launch, anyone can bond USDC for discounted $FROST (vesting ~7 days) and the USDC goes straight into POL — so a single bond can add more depth than months of revenue. See **[Tokenomics → Bonds](/docs/tokenomics)**.
+**Bonds accelerate it.** Revenue deepens POL steadily, but a young pool needs depth fast. After launch, anyone can bond **USDC, WETH, or a Uniswap V3 LP position** for vesting $FROST, priced by an on-chain debt formula — and the principal goes to the treasury and POL, so a single bond can add more depth than months of revenue. See **[Tokenomics → Bonds](/docs/tokenomics)**.
 
 ```mermaid
 flowchart TD
@@ -64,38 +64,33 @@ flowchart TD
     RES -->|at token launch| LP["Permanent<br/>FROST / USDC liquidity"]
     BOND["USDC bonds<br/>post-launch"] -->|deepen POL| LP
     LP --> FEE["Trading fees"]
-    FEE --> LCK["USDC → lockers"]
-    FEE --> D["FROST → DAO"]
+    FEE -->|compounded| LP
+    S -->|locker share| LCK["Weekly USDC epochs<br/>→ PERMA lockers"]
 ```
 
 ## Real yield for lockers
 
-The liquidity POL owns earns trading fees in **both** tokens. That income has a destination:
+Locker yield comes straight from the revenue split, in **USDC, on weekly epochs**: the lockers' share of every payment accumulates in an on-chain distributor, each week's pot is credited to that week's total PERMA weight, and lockers claim pro-rata once the week completes. Lock FROST, receive a soulbound **PERMA** position, earn stablecoin yield — never more FROST. See **[Tokenomics](/docs/tokenomics)**.
 
-- **USDC side → lockers, 100%.** Lock FROST, receive a soulbound **PERMA** position, and earn a share of real USDC fees — Aerodrome's model pointed at protocol-owned liquidity. See **[Tokenomics](/docs/tokenomics)**.
-- **FROST side → the DAO treasury.** The DAO is an active earner — first-party x402 agents, liquidity bribes, and voted investments — and a disclosed cut of its USDC earnings is paid to lockers too. It never pays anyone in FROST.
+The liquidity POL owns earns trading fees too — those are harvested and **compounded back into the position**, so the pool that backs the token gets deeper with every swap.
 
-Because "POL grows" and "locker yield grows" are the same event, deepening liquidity directly rewards long-term holders.
+Because "revenue grows" and "locker yield grows" are the same event, real product usage directly rewards long-term holders.
 
 ## The full flywheel
 
-Every piece feeds the next: revenue deepens the liquidity that pays lockers, the token it distributes is earned by the customers who generate that revenue, and spending it burns supply — so the loop tightens as it turns.
+Every piece feeds the next: revenue deepens the protocol's own liquidity, the token is earned by the customers who generate that revenue, and locking it pays those same customers in USDC — so the loop tightens as it turns.
 
 ```mermaid
 flowchart TD
     C["💵 Paying customers"] -->|USDC revenue| S["Revenue Splitter"]
     S -->|POL share| POL["POL liquidity<br/>grows · never sold"]
-    S -->|emissions| E["FROST to customers"]
-    S -->|DAO share| DAO["Active DAO<br/>x402 fleet · bribes · investments"]
-    BOND["USDC bonds<br/>post-launch"] -->|deepen POL| POL
+    S -->|FROST rewards| E["Vesting FROST<br/>to subscribers"]
+    S -->|locker share| Y["Locker yield · USDC<br/>weekly epochs"]
+    BOND["Bonds — USDC · WETH · LP<br/>post-launch"] -->|deepen POL| POL
     E -->|lock → PERMA| P["Locked positions"]
-    POL -->|trading fees| Y["Locker yield · USDC"]
-    DAO -->|cut of earnings| Y
+    POL -->|fees compounded| POL
     P --> Y
-    P -->|spend on FrostyG4 · Architect| B["🔥 FROST burned"]
-    DAO -.reinvests.-> POL
     Y -->|rewards| C
-    B -.deflation.-> C
 ```
 
 ## Governance & custody

@@ -64,9 +64,10 @@ POL은 오직 줄어들기만 하는 잔고가 아니라 트레저리를 생산�
 검증 가능한 매수 압력이 됩니다. POL은 오직 성장하고 결코 매도하지 않습니다.
 
 **본드가 이를 가속화합니다.** 수익은 POL을 꾸준히 깊게 만들지만, 젊은 풀은 깊이가 빠르게
-필요합니다. 출시 후에는 누구나 할인된 $FROST를 위해 USDC를 본딩할 수 있고(약 7일 베스팅)
-USDC는 곧바로 POL로 갑니다 — 그래서 단일 본드가 몇 달치 수익보다 더 많은 깊이를 추가할
-수 있습니다. **[토크노믹스 → 본드](/docs/tokenomics)**를 참조하세요.
+필요합니다. 출시 후에는 누구나 **USDC, WETH, 또는 Uniswap V3 LP 포지션**을 본딩하여
+온체인 부채 공식으로 가격이 매겨지는 베스팅 $FROST를 받을 수 있습니다 — 그리고 원금은
+트레저리와 POL로 가므로, 단일 본드가 몇 달치 수익보다 더 많은 깊이를 추가할 수 있습니다.
+**[토크노믹스 → 본드](/docs/tokenomics)**를 참조하세요.
 
 ```mermaid
 flowchart TD
@@ -76,45 +77,41 @@ flowchart TD
     RES -->|at token launch| LP["Permanent<br/>FROST / USDC liquidity"]
     BOND["USDC bonds<br/>post-launch"] -->|deepen POL| LP
     LP --> FEE["Trading fees"]
-    FEE --> LCK["USDC → lockers"]
-    FEE --> D["FROST → DAO"]
+    FEE -->|compounded| LP
+    S -->|locker share| LCK["Weekly USDC epochs<br/>→ PERMA lockers"]
 ```
 
 ## 락커를 위한 리얼 일드
 
-POL이 소유한 유동성은 **두** 토큰 모두로 거래 수수료를 법니다. 그 수입에는 목적지가 있습니다:
+락커 일드는 수익 분할에서 곧바로 나옵니다, **USDC로, 주간 에포크마다**: 모든 결제에서
+락커의 몫은 온체인 분배자에 누적되고, 매주의 적립금은 그 주의 총 PERMA 가중치에
+배분되며, 락커는 그 주가 완료되면 비례 몫을 청구합니다. FROST를 락하고, 소울바운드
+**PERMA** 포지션을 받고, 스테이블코인 일드를 버세요 — 결코 더 많은 FROST가 아닙니다.
+**[토크노믹스](/docs/tokenomics)**를 참조하세요.
 
-- **USDC 쪽 → 락커에게 100%.** FROST를 락하고, 소울바운드 **PERMA** 포지션을 받고,
-  실제 USDC 수수료의 일부를 버세요 — Aerodrome의 모델을 프로토콜 소유 유동성에 겨눈 것입니다.
-  **[토크노믹스](/docs/tokenomics)**를 참조하세요.
-- **FROST 쪽 → DAO 트레저리.** DAO는 능동적인 수익 창출자입니다 — 퍼스트파티 x402
-  에이전트, 유동성 뇌물, 투표된 투자 — 그리고 그 USDC 수익의 공개된 일부도 락커에게
-  지급됩니다. 결코 누구에게도 FROST로 지급하지 않습니다.
+POL이 소유한 유동성도 거래 수수료를 법니다 — 이는 수확되어 **포지션으로 다시 복리
+적립**되므로, 토큰을 뒷받침하는 풀은 모든 스왑마다 더 깊어집니다.
 
-"POL이 성장한다"와 "락커 일드가 성장한다"는 동일한 사건이기 때문에, 유동성을 깊게 하는
-것은 장기 보유자에게 직접 보상합니다.
+"수익이 성장한다"와 "락커 일드가 성장한다"는 동일한 사건이기 때문에, 실제 제품 사용은
+장기 보유자에게 직접 보상합니다.
 
 ## 전체 플라이휠
 
-모든 조각이 다음을 먹여 살립니다: 수익은 락커에게 지급하는 유동성을 깊게 하고, 그것이
-분배하는 토큰은 그 수익을 창출하는 고객이 획득하며, 그것을 지출하면 공급이 소각됩니다 —
+모든 조각이 다음을 먹여 살립니다: 수익은 프로토콜 자신의 유동성을 깊게 하고, 그 토큰은
+그 수익을 창출하는 고객이 획득하며, 그것을 락하면 그 동일한 고객에게 USDC로 지급됩니다 —
 그래서 루프는 돌수록 조여집니다.
 
 ```mermaid
 flowchart TD
     C["💵 Paying customers"] -->|USDC revenue| S["Revenue Splitter"]
     S -->|POL share| POL["POL liquidity<br/>grows · never sold"]
-    S -->|emissions| E["FROST to customers"]
-    S -->|DAO share| DAO["Active DAO<br/>x402 fleet · bribes · investments"]
-    BOND["USDC bonds<br/>post-launch"] -->|deepen POL| POL
+    S -->|FROST rewards| E["Vesting FROST<br/>to subscribers"]
+    S -->|locker share| Y["Locker yield · USDC<br/>weekly epochs"]
+    BOND["Bonds — USDC · WETH · LP<br/>post-launch"] -->|deepen POL| POL
     E -->|lock → PERMA| P["Locked positions"]
-    POL -->|trading fees| Y["Locker yield · USDC"]
-    DAO -->|cut of earnings| Y
+    POL -->|fees compounded| POL
     P --> Y
-    P -->|spend on FrostyG4 · Architect| B["🔥 FROST burned"]
-    DAO -.reinvests.-> POL
     Y -->|rewards| C
-    B -.deflation.-> C
 ```
 
 ## 거버넌스 & 커스터디

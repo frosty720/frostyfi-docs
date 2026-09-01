@@ -54,7 +54,7 @@ No hay contabilidad off-chain. Cada pago — suscripciones, el pago-por-desplieg
 
 **Después del lanzamiento** — la porción de POL sigue fluyendo, para siempre. Cada pago compra FROST en el mercado y se añade a una posición de liquidez canónica, por lo que los ingresos se convierten en presión de compra real y verificable — no en un lote que tienes que confiar en que ocurra. POL solo crece y nunca vende.
 
-**Los bonos lo aceleran.** Los ingresos profundizan POL de forma constante, pero un pool joven necesita profundidad rápido. Tras el lanzamiento, cualquiera puede bonar USDC por $FROST con descuento (con vesting de ~7 días) y el USDC va directo a POL — por lo que un solo bono puede añadir más profundidad que meses de ingresos. Consulta **[Tokenomics → Bonos](/docs/tokenomics)**.
+**Los bonos lo aceleran.** Los ingresos profundizan POL de forma constante, pero un pool joven necesita profundidad rápido. Tras el lanzamiento, cualquiera puede bonar **USDC, WETH, o una posición LP de Uniswap V3** por $FROST en vesting, con precio fijado por una fórmula on-chain de deuda — y el principal va a la tesorería y a POL, por lo que un solo bono puede añadir más profundidad que meses de ingresos. Consulta **[Tokenomics → Bonos](/docs/tokenomics)**.
 
 ```mermaid
 flowchart TD
@@ -64,38 +64,33 @@ flowchart TD
     RES -->|at token launch| LP["Permanent<br/>FROST / USDC liquidity"]
     BOND["USDC bonds<br/>post-launch"] -->|deepen POL| LP
     LP --> FEE["Trading fees"]
-    FEE --> LCK["USDC → lockers"]
-    FEE --> D["FROST → DAO"]
+    FEE -->|compounded| LP
+    S -->|locker share| LCK["Weekly USDC epochs<br/>→ PERMA lockers"]
 ```
 
 ## Rendimiento real para quienes bloquean
 
-La liquidez que posee POL gana comisiones de trading en **ambos** tokens. Ese ingreso tiene un destino:
+El rendimiento de quienes bloquean viene directo del reparto de ingresos, en **USDC, en épocas semanales**: la porción de quienes bloquean de cada pago se acumula en un distribuidor on-chain, el bote de cada semana se acredita al peso total PERMA de esa semana, y quienes bloquean reclaman a prorrata una vez que la semana se completa. Bloquea FROST, recibe una posición **PERMA** soulbound, gana rendimiento en stablecoin — nunca más FROST. Consulta **[Tokenomics](/docs/tokenomics)**.
 
-- **Lado USDC → quienes bloquean, 100%.** Bloquea FROST, recibe una posición **PERMA** soulbound, y gana una porción de comisiones reales en USDC — el modelo de Aerodrome apuntado a la liquidez propiedad del protocolo. Consulta **[Tokenomics](/docs/tokenomics)**.
-- **Lado FROST → la tesorería de la DAO.** La DAO es un generador de ingresos activo — agentes x402 propios, sobornos de liquidez e inversiones votadas — y una porción divulgada de sus ingresos en USDC también se paga a quienes bloquean. Nunca paga a nadie en FROST.
+La liquidez que posee POL también gana comisiones de trading — esas se recolectan y se **reinvierten de vuelta en la posición**, por lo que el pool que respalda al token se profundiza con cada swap.
 
-Como "POL crece" y "el rendimiento de quienes bloquean crece" son el mismo evento, profundizar la liquidez recompensa directamente a los holders a largo plazo.
+Como "los ingresos crecen" y "el rendimiento de quienes bloquean crece" son el mismo evento, el uso real del producto recompensa directamente a los holders a largo plazo.
 
 ## El volante completo
 
-Cada pieza alimenta la siguiente: los ingresos profundizan la liquidez que paga a quienes bloquean, el token que distribuye es ganado por los clientes que generan esos ingresos, y gastarlo quema suministro — por lo que el ciclo se aprieta a medida que gira.
+Cada pieza alimenta la siguiente: los ingresos profundizan la liquidez propia del protocolo, el token es ganado por los clientes que generan esos ingresos, y bloquearlo paga a esos mismos clientes en USDC — por lo que el ciclo se aprieta a medida que gira.
 
 ```mermaid
 flowchart TD
     C["💵 Paying customers"] -->|USDC revenue| S["Revenue Splitter"]
     S -->|POL share| POL["POL liquidity<br/>grows · never sold"]
-    S -->|emissions| E["FROST to customers"]
-    S -->|DAO share| DAO["Active DAO<br/>x402 fleet · bribes · investments"]
-    BOND["USDC bonds<br/>post-launch"] -->|deepen POL| POL
+    S -->|FROST rewards| E["Vesting FROST<br/>to subscribers"]
+    S -->|locker share| Y["Locker yield · USDC<br/>weekly epochs"]
+    BOND["Bonds — USDC · WETH · LP<br/>post-launch"] -->|deepen POL| POL
     E -->|lock → PERMA| P["Locked positions"]
-    POL -->|trading fees| Y["Locker yield · USDC"]
-    DAO -->|cut of earnings| Y
+    POL -->|fees compounded| POL
     P --> Y
-    P -->|spend on FrostyG4 · Architect| B["🔥 FROST burned"]
-    DAO -.reinvests.-> POL
     Y -->|rewards| C
-    B -.deflation.-> C
 ```
 
 ## Gobernanza y custodia

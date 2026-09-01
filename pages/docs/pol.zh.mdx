@@ -54,7 +54,7 @@ POL 把金库变成一份富有生产力的捐赠基金，而不是一个只会�
 
 **发行后** —— POL 份额会持续流入，永不停歇。每一笔支付都会在市场上买入 FROST 并加入一个规范的流动性头寸，因此收入变成真实、可验证的买入压力——而不是一批你只能选择信任其确实发生的操作。POL 只会增长，永不出售。
 
-**债券加速它。** 收入会稳步加深 POL，但一个年轻的资金池需要快速获得深度。发行后，任何人都可以用 USDC 认购折价的 $FROST（约 7 天归属期），且这些 USDC 会直接进入 POL——因此单笔债券所能增加的深度，可能超过数月的收入。参见 **[代币经济 → 债券](/docs/tokenomics)**。
+**债券加速它。** 收入会稳步加深 POL，但一个年轻的资金池需要快速获得深度。发行后，任何人都可以用 **USDC、WETH，或一个 Uniswap V3 LP 头寸**认购归属中的 $FROST，价格由一个链上债务公式定价——本金会流入金库和 POL，因此单笔债券所能增加的深度，可能超过数月的收入。参见 **[代币经济 → 债券](/docs/tokenomics)**。
 
 ```mermaid
 flowchart TD
@@ -64,38 +64,33 @@ flowchart TD
     RES -->|at token launch| LP["Permanent<br/>FROST / USDC liquidity"]
     BOND["USDC bonds<br/>post-launch"] -->|deepen POL| LP
     LP --> FEE["Trading fees"]
-    FEE --> LCK["USDC → lockers"]
-    FEE --> D["FROST → DAO"]
+    FEE -->|compounded| LP
+    S -->|locker share| LCK["Weekly USDC epochs<br/>→ PERMA lockers"]
 ```
 
 ## 面向锁仓者的真实收益
 
-POL 所拥有的流动性会以**两种**代币赚取交易手续费。这份收入有其去向：
+锁仓者的收益直接来自收入分账，以 **USDC、按每周纪元**发放：每一笔支付中锁仓者的份额会累积在一个链上分配器中，每一周的资金池会按当周的 PERMA 总权重进行分配，一旦该周结束，锁仓者便可以按比例领取。锁定 FROST，获得一个灵魂绑定的 **PERMA** 头寸，赚取稳定币收益——绝不会赚到更多的 FROST。参见 **[代币经济](/docs/tokenomics)**。
 
-- **USDC 一侧 → 锁仓者，100%。** 锁定 FROST，获得一个灵魂绑定的 **PERMA** 头寸，并赚取真实 USDC 手续费中的一份——这是把 Aerodrome 的模式对准了协议自有流动性。参见 **[代币经济](/docs/tokenomics)**。
-- **FROST 一侧 → DAO 金库。** DAO 是一个积极的赚取者——第一方 x402 智能体、流动性贿赂以及经投票的投资——其 USDC 收益中一份已披露的比例同样会支付给锁仓者。它从不以 FROST 支付给任何人。
+POL 所拥有的流动性也会赚取交易手续费——这些手续费会被收取并**复投回该头寸**，因此支撑代币的资金池会随着每一次兑换而变得更深。
 
-由于「POL 增长」与「锁仓者收益增长」是同一件事，加深流动性会直接回报长期持有者。
+由于「收入增长」与「锁仓者收益增长」是同一件事，真实的产品使用会直接回报长期持有者。
 
 ## 完整飞轮
 
-每一环都为下一环供能：收入加深支付给锁仓者的流动性，它所分发的代币由创造这笔收入的客户赚取，而花费它则会销毁供应量——因此这个循环在转动中越收越紧。
+每一环都为下一环供能：收入加深协议自有的流动性，这枚代币由创造这笔收入的客户赚取，而锁定它则会以 USDC 支付给这些同样的客户——因此这个循环在转动中越收越紧。
 
 ```mermaid
 flowchart TD
     C["💵 Paying customers"] -->|USDC revenue| S["Revenue Splitter"]
     S -->|POL share| POL["POL liquidity<br/>grows · never sold"]
-    S -->|emissions| E["FROST to customers"]
-    S -->|DAO share| DAO["Active DAO<br/>x402 fleet · bribes · investments"]
-    BOND["USDC bonds<br/>post-launch"] -->|deepen POL| POL
+    S -->|FROST rewards| E["Vesting FROST<br/>to subscribers"]
+    S -->|locker share| Y["Locker yield · USDC<br/>weekly epochs"]
+    BOND["Bonds — USDC · WETH · LP<br/>post-launch"] -->|deepen POL| POL
     E -->|lock → PERMA| P["Locked positions"]
-    POL -->|trading fees| Y["Locker yield · USDC"]
-    DAO -->|cut of earnings| Y
+    POL -->|fees compounded| POL
     P --> Y
-    P -->|spend on FrostyG4 · Architect| B["🔥 FROST burned"]
-    DAO -.reinvests.-> POL
     Y -->|rewards| C
-    B -.deflation.-> C
 ```
 
 ## 治理与托管

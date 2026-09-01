@@ -38,7 +38,7 @@ const config = {
     { locale: 'zh', text: '中文' },
   ],
   sidebar: {
-    defaultMenuCollapseLevel: 1,
+    defaultMenuCollapseLevel: 2,
   },
   chat: {
     link: 'https://t.me/+ZX21TSI9AaY4ODUx',

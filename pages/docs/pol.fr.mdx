@@ -54,7 +54,7 @@ Il n'y a pas de comptabilité hors chaîne. Chaque paiement — abonnements, le 
 
 **Après le lancement** — la part POL continue d'affluer, pour toujours. Chaque paiement achète FROST au marché et vient s'ajouter à une position de liquidité canonique unique, de sorte que les revenus deviennent une pression d'achat réelle et vérifiable — et non un lot dont il faut espérer qu'il se produise. La POL ne fait que croître et ne vend jamais.
 
-**Les bonds l'accélèrent.** Les revenus approfondissent la POL de façon régulière, mais un pool jeune a besoin de profondeur rapidement. Après le lancement, quiconque peut apporter de l'USDC en bond contre du $FROST à prix réduit (acquisition sur ~7 jours) et l'USDC va directement dans la POL — ainsi un seul bond peut ajouter plus de profondeur que des mois de revenus. Voir **[Tokenomics → Bonds](/docs/tokenomics)**.
+**Les bonds l'accélèrent.** Les revenus approfondissent la POL de façon régulière, mais un pool jeune a besoin de profondeur rapidement. Après le lancement, quiconque peut bonder de l'**USDC, du WETH, ou une position LP Uniswap V3** contre du $FROST en acquisition, tarifé par une formule de dette on-chain — et le principal va à la trésorerie et à la POL, si bien qu'un seul bond peut ajouter plus de profondeur que des mois de revenus. Voir **[Tokenomics → Bonds](/docs/tokenomics)**.
 
 ```mermaid
 flowchart TD
@@ -64,38 +64,33 @@ flowchart TD
     RES -->|at token launch| LP["Permanent<br/>FROST / USDC liquidity"]
     BOND["USDC bonds<br/>post-launch"] -->|deepen POL| LP
     LP --> FEE["Trading fees"]
-    FEE --> LCK["USDC → lockers"]
-    FEE --> D["FROST → DAO"]
+    FEE -->|compounded| LP
+    S -->|locker share| LCK["Weekly USDC epochs<br/>→ PERMA lockers"]
 ```
 
-## Un rendement réel pour ceux qui verrouillent
+## Rendement réel pour ceux qui verrouillent
 
-La liquidité que détient la POL perçoit des frais de trading dans les **deux** jetons. Ce revenu a une destination :
+Le rendement de ceux qui verrouillent provient directement de la répartition des revenus, en **USDC, sur des époques hebdomadaires** : la part de ceux qui verrouillent sur chaque paiement s'accumule dans un distributeur on-chain, la cagnotte de chaque semaine est créditée au poids PERMA total de cette semaine, et ceux qui verrouillent réclament leur part au prorata une fois la semaine terminée. Verrouillez du FROST, recevez une position **PERMA** soulbound, gagnez un rendement en stablecoin — jamais plus de FROST. Voir **[Tokenomics](/docs/tokenomics)**.
 
-- **Côté USDC → à ceux qui verrouillent, 100 %.** Verrouillez du FROST, recevez une position **PERMA** soulbound, et percevez une part de frais réels en USDC — le modèle d'Aerodrome orienté vers une liquidité détenue par le protocole. Voir **[Tokenomics](/docs/tokenomics)**.
-- **Côté FROST → la trésorerie de la DAO.** La DAO est un acteur qui génère activement des revenus — agents x402 de première partie, bribes de liquidité et investissements votés — et une part divulguée de ses revenus en USDC est également versée à ceux qui verrouillent. Elle ne paie jamais personne en FROST.
+La liquidité que détient la POL perçoit elle aussi des frais de trading — ils sont récoltés et **réinvestis dans la position**, de sorte que le pool qui adosse le jeton s'approfondit à chaque échange.
 
-Parce que « la POL croît » et « le rendement de ceux qui verrouillent croît » sont le même événement, approfondir la liquidité récompense directement les détenteurs de long terme.
+Parce que « les revenus croissent » et « le rendement de ceux qui verrouillent croît » sont le même événement, l'usage réel du produit récompense directement les détenteurs de long terme.
 
 ## Le volant d'inertie complet
 
-Chaque pièce alimente la suivante : les revenus approfondissent la liquidité qui rémunère ceux qui verrouillent, le jeton qu'elle distribue est gagné par les clients qui génèrent ces revenus, et le dépenser brûle de l'offre — de sorte que la boucle se resserre à mesure qu'elle tourne.
+Chaque pièce alimente la suivante : les revenus approfondissent la liquidité propre du protocole, le jeton est gagné par les clients qui génèrent ces revenus, et le verrouiller paie ces mêmes clients en USDC — de sorte que la boucle se resserre à mesure qu'elle tourne.
 
 ```mermaid
 flowchart TD
     C["💵 Paying customers"] -->|USDC revenue| S["Revenue Splitter"]
     S -->|POL share| POL["POL liquidity<br/>grows · never sold"]
-    S -->|emissions| E["FROST to customers"]
-    S -->|DAO share| DAO["Active DAO<br/>x402 fleet · bribes · investments"]
-    BOND["USDC bonds<br/>post-launch"] -->|deepen POL| POL
+    S -->|FROST rewards| E["Vesting FROST<br/>to subscribers"]
+    S -->|locker share| Y["Locker yield · USDC<br/>weekly epochs"]
+    BOND["Bonds — USDC · WETH · LP<br/>post-launch"] -->|deepen POL| POL
     E -->|lock → PERMA| P["Locked positions"]
-    POL -->|trading fees| Y["Locker yield · USDC"]
-    DAO -->|cut of earnings| Y
+    POL -->|fees compounded| POL
     P --> Y
-    P -->|spend on FrostyG4 · Architect| B["🔥 FROST burned"]
-    DAO -.reinvests.-> POL
     Y -->|rewards| C
-    B -.deflation.-> C
 ```
 
 ## Gouvernance & garde
