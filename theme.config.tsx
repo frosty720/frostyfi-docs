@@ -41,7 +41,7 @@ const config = {
     defaultMenuCollapseLevel: 2,
   },
   chat: {
-    link: 'https://t.me/+ZX21TSI9AaY4ODUx',
+    link: 'https://t.me/FrostyLabsAI',
     icon: (
       <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-label="Telegram">
         <path d="m9.78 18.65.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z" />
@@ -54,7 +54,7 @@ const config = {
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.25rem', fontSize: '0.875rem' }}>
           <a href="https://frostylabs.ai" target="_blank" rel="noreferrer">Website</a>
           <a href="https://app.frostylabs.ai" target="_blank" rel="noreferrer">Launch App</a>
-          <a href="https://t.me/+ZX21TSI9AaY4ODUx" target="_blank" rel="noreferrer">Telegram</a>
+          <a href="https://t.me/FrostyLabsAI" target="_blank" rel="noreferrer">Telegram</a>
           <a href="https://x.com/FrostyLabsAi" target="_blank" rel="noreferrer">X / Twitter</a>
         </div>
         <span>© 2026 FrostyLabs · Agents that get paid, on-chain.</span>
