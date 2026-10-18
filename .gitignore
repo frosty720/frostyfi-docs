@@ -8,3 +8,7 @@ out
 .vercel
 _archive
 *.tsbuildinfo
+# agent tooling
+.claude/
+.superpowers/
+docs/superpowers/
