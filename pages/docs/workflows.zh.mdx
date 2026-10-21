@@ -77,7 +77,7 @@ Input ──► (any nodes) ──► Output
 | 节点 | 作用 |
 |------|--------------|
 | **Vault** | 通过 ThirdWeb Vault 进行密钥托管 + 签名——管理服务器钱包（`getWallet`、`createEoa`、`listEoas`）并签名（`signMessage`、`signTypedData`、`signTransaction`、`signAuthorization`），外加 Solana 对应操作。密钥保管在 Vault 中，绝不以原始私钥形式粘贴。参见 [Vault](/docs/vaults)。 |
-| **EVM** | 通过 ThirdWeb v5 SDK 进行 EVM 操作——读取余额、读/写合约、发送交易、ERC-20/721/1155 转账、ENS 解析、Uniswap V3 报价、跨链桥状态、合约部署，以及 **x402 支付**（`x402Payment`、`x402RetryWithPayment`）。多链：通过 ThirdWeb 支持 1700+ 条链。 |
+| **EVM** | 通过 ThirdWeb v5 SDK 进行 EVM 操作——读取余额、读/写合约、发送交易、ERC-20/721/1155 转账、ENS 解析、Uniswap V3 报价、跨链桥状态和合约部署。多链：通过 ThirdWeb 支持 1700+ 条链。 |
 | **Solana** | 通过 `@solana/web3.js` 进行 Solana 操作。 |
 
 ### DeFi 与交易
