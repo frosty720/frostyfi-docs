@@ -1,0 +1,90 @@
+# Telegram
+
+Discutez avec vos [assistants](/docs/assistants) depuis Telegram : envoyez des messages, des
+photos et des messages vocaux, passez d'un assistant à l'autre, et recevez sur votre
+téléphone les réponses de vos tâches planifiées. Telegram fonctionne avec votre compte
+FrostyFi : la mémoire, les skills et les outils d'un assistant fonctionnent comme dans
+l'application.
+
+## Connexion
+
+1. Ouvrez l'un de vos assistants et repérez le panneau **Telegram**. Cliquez sur **Connecter
+   Telegram**.
+2. Cliquez sur **Ouvrir Telegram**, puis appuyez sur **Start** dans la discussion avec le bot
+   FrostyFi. Le lien ne fonctionne qu'une fois, pendant 15 minutes.
+3. De retour dans FrostyFi, le panneau affiche le compte Telegram qui demande à se connecter.
+   Vérifiez que c'est le vôtre, puis cliquez sur **Confirmer** (ou **Refuser**). Ne confirmez
+   que votre propre compte : la personne que vous confirmez peut discuter avec l'assistant
+   comme si c'était vous.
+4. Le bot le confirme dans Telegram. Les messages que vous lui envoyez vont désormais à cet
+   assistant.
+
+![Le panneau Telegram d'un assistant, avant la connexion](/screenshots/assistant-telegram.png)
+
+![Connexion dans Telegram : touchez Start, puis confirmez dans FrostyFi](/screenshots/telegram-connect.png)
+
+Un compte Telegram se connecte à un seul compte FrostyFi, et le bot ne répond que dans les
+discussions privées. Vos conversations Telegram sont aussi enregistrées comme des chats dans
+FrostyFi.
+
+Le bot vous écrit dans la langue de votre application Telegram.
+
+## Commandes
+
+| Commande | Ce qu'elle fait |
+|---|---|
+| `/new` | Démarre une nouvelle conversation |
+| `/agents` | Liste vos assistants |
+| `/use 2` | Passe au numéro 2 de cette liste (ou tapez une partie de son nom) |
+| `/unlink` | Déconnecte cette discussion de FrostyFi |
+| `/help` | Explique le fonctionnement du bot |
+
+![Le bot confirme la connexion, et /agents liste vos assistants](/screenshots/telegram-agents.png)
+
+Vous pouvez aussi changer depuis l'application : ouvrez un autre assistant et cliquez sur
+**Utiliser cet assistant dans Telegram** dans son panneau Telegram.
+
+## Messages, photos et voix
+
+- **Texte** : l'assistant répond dans Telegram ; les longues réponses sont découpées en
+  plusieurs messages.
+- **Un à la fois** : pendant qu'il répond, un nouveau message reçoit « Je travaille encore sur
+  votre dernier message… ». Renvoyez-le une fois la réponse arrivée.
+- **Photos** : envoyez une photo, avec une légende si vous voulez, et l'assistant la voit.
+- **Messages vocaux** (Pro et Enterprise) : le bot répond d'abord
+  « 🎤 J'ai entendu : … » pour que vous repériez une erreur d'écoute, puis l'assistant répond
+  à vos paroles. Les messages vocaux sont écoutés par Gemini 3.8 Flash et utilisent les
+  crédits de votre offre ; 5 minutes maximum chacun. Avec l'offre Gratuit, le bot vous demande
+  d'envoyer du texte à la place.
+- L'assistant répond toujours par écrit. Les autocollants, fichiers et vidéos ne sont pas
+  encore lus.
+
+![Un message vocal : le bot affiche ce qu'il a entendu, puis l'assistant répond](/screenshots/telegram-voice.png)
+
+## Réponses planifiées
+
+Lorsqu'un assistant a des [tâches planifiées](/docs/assistants), chaque réponse est aussi
+envoyée dans votre discussion Telegram. Répondez-y pour poursuivre : la conversation reprend
+là où la tâche s'est arrêtée.
+
+## Ce qui s'exécute depuis Telegram
+
+Par sécurité, certaines choses ne s'exécutent que dans FrostyFi lui-même :
+
+- **Les flux de travail qui peuvent déplacer des fonds** et les **outils MCP** ne s'exécutent
+  jamais depuis Telegram. Si quelqu'un accédait à votre compte Telegram, vos portefeuilles
+  resteraient hors de portée.
+- **Les étapes qui demandent votre accord** (tests, publication, déploiement, mise en pause,
+  reprise et planification) se font dans l'application ; l'assistant vous y renverra.
+- **Les flux de travail qui publient** (X, Telegram, Discord, SMS, e-mail) s'exécutent bien
+  depuis Telegram.
+
+Les discussions Telegram avec le bot ne sont pas chiffrées de bout en bout : vos messages et
+les réponses de l'assistant passent par les serveurs de Telegram.
+
+## Déconnexion
+
+Envoyez `/unlink` dans Telegram, ou cliquez sur **Déconnecter** dans le panneau Telegram d'un
+assistant.
+
+Suite : [Agents, A2A & Paiements →](/docs/agents)

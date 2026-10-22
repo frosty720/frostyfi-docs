@@ -25,7 +25,7 @@ Consulta [Flujos de trabajo y nodos](/docs/workflows) para la biblioteca complet
 
 Un **Asistente** es un **experto de chat de razonamiento**. Piensa en él como una persona configurada — un
 rol/experiencia, un prompt de sistema, un conjunto de skills y un conjunto de herramientas — que puedes invocar
-en el chat con `@`.
+en el chat con `@` o con el botón **Agente**.
 
 Propiedades clave:
 
@@ -33,10 +33,15 @@ Propiedades clave:
   hayas seleccionado en el selector.
 - **Invocable con `@`** en el chat. Cuando mencionas a un asistente, su persona y skills se
   inyectan en la conversación.
-- **No se puede desplegar.** Los asistentes viven dentro del entorno de ejecución del chat — no tienen ningún
-  entorno de ejecución en segundo plano sin interfaz, por lo que *no* se convierten directamente en endpoints x402/A2A/ERC-8004.
-  Si necesitas el comportamiento de un asistente como una unidad desplegable, constrúyelo en un flujo de trabajo (el
-  **nodo Agent** permite que un flujo de trabajo incorpore razonamiento tipo asistente).
+- **Recuerda y aprende.** Cada asistente guarda una memoria sobre ti y aprende de tus
+  chats; también puede encargar tareas a tus otros asistentes y trabajar con tus flujos de trabajo.
+- **Accesible más allá de la ventana de chat.** Puedes chatear con él desde
+  [Telegram](/docs/telegram) y hacer que responda con una programación.
+- **Desplegable mediante un flujo de trabajo.** Un asistente no tiene un flujo de trabajo propio, así que no es
+  por sí solo un endpoint x402/A2A/ERC-8004. Para venderlo, crea un **flujo de trabajo de agente** que lo ejecute
+  en vivo y despliega ese flujo de trabajo como agente de pago (el editor de asistentes lo hace por ti).
+
+La guía completa está en la página [Asistentes](/docs/assistants).
 
 ## Agentes
 
@@ -57,15 +62,15 @@ Un agente te da:
 |---|---|---|
 | Qué es | Una persona de chat de razonamiento | Un flujo de trabajo desplegado |
 | ¿Respaldado por un flujo de trabajo? | No (`workflowId` es nulo) | Sí (tiene un `workflowId`) |
-| Dónde se ejecuta | Dentro del entorno de ejecución del chat | Sin interfaz, en Frosty Engine |
+| Dónde se ejecuta | Chat, Telegram y tareas programadas, en la app | Sin interfaz, en Frosty Engine |
 | ¿Invocable con `@` en el chat? | Sí | No — invócalo mediante su endpoint de agente o ejecuta su flujo de trabajo |
-| ¿Se puede desplegar? | No | Sí — eso *es* lo que lo convierte en un agente |
-| ¿x402 / A2A / ERC-8004? | No | Sí |
+| ¿Se puede desplegar? | Mediante un flujo de trabajo de agente que lo ejecuta | Sí — eso *es* lo que lo convierte en un agente |
+| ¿x402 / A2A / ERC-8004? | Mediante ese flujo de trabajo de agente | Sí |
 
-La versión corta: **los Asistentes son para pensar dentro del chat; los Agentes son para ejecutar
-flujos de trabajo desplegados que otros pueden invocar y pagar.** Ambas superficies obtienen la misma
-ruta de monetización *a través de los flujos de trabajo* — compones las capacidades de un asistente en un
-flujo de trabajo y luego despliegas ese flujo de trabajo como agente.
+La versión corta: **los Asistentes son para pensar contigo, en el chat y en Telegram; los Agentes
+son para ejecutar flujos de trabajo desplegados que otros pueden invocar y pagar.** Ambas superficies
+obtienen la misma ruta de monetización *a través de los flujos de trabajo* — un asistente se vende
+desplegando un flujo de trabajo de agente que lo ejecuta.
 
 ## Skills
 
@@ -102,7 +107,7 @@ Templates ──clone──► Workflows ──deploy──► Agents (A2A / x40
                          ▲
                          │ run inline as a tool
                          │
-        Chat ──@──► Assistants  (persona + Skills + Tools)
+Chat, Telegram ───► Assistants  (persona + Skills + Tools + Memory)
                          ▲
                          │ provide tools
                     MCP servers

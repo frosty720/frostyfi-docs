@@ -7,9 +7,9 @@ les agents découvrables, payables et dignes de confiance : le **protocole A2A**
 **paiements x402** et l'**identité ERC-8004**.
 
 > Rappel des [Concepts fondamentaux](/docs/concepts) : seuls les **agents adossés à un flux
-> de travail** deviennent des points de terminaison A2A / x402 / ERC-8004. Les **Assistants**
-> de raisonnement restent dans le chat — pour déployer un comportement de type assistant,
-> intégrez-le d'abord dans un flux de travail.
+> de travail** deviennent des points de terminaison A2A / x402 / ERC-8004. Pour vendre un
+> [Assistant](/docs/assistants), créez un flux de travail d'agent qui l'exécute (voir
+> ci-dessous) et déployez-le.
 
 ## Déployer un flux de travail comme agent
 
@@ -23,8 +23,36 @@ les agents découvrables, payables et dignes de confiance : le **protocole A2A**
 4. Confirmez. Votre agent est désormais en ligne avec un point de terminaison A2A et une
    carte d'agent.
 
-Le prix par appel par défaut est de **0,01 USDC** ; vous pouvez le modifier (ou le rendre
-gratuit).
+Le prix par appel par défaut est de **0,01 USDC** ; vous pouvez le modifier (le minimum est
+de **0,001 USDC**).
+
+### Déployer un assistant
+
+L'éditeur d'un assistant contient un panneau **Déployer comme agent payant**. **Créer le
+workflow de l'agent** construit un flux de travail qui exécute l'assistant en direct, avec
+ses instructions, ses skills et ses outils ; déployez ce flux de travail comme ci-dessus. Ne
+mettez pas de secrets dans un assistant que vous vendez : un appelant payant peut demander au
+modèle de révéler ses instructions et ses skills. Voir [Assistants](/docs/assistants).
+
+## Ce qu'un appel payant peut faire
+
+Un appel payant exécute votre flux de travail pour quelqu'un d'autre ; certaines étapes sont
+donc limitées :
+
+- **Vos fonds restent en place.** Les étapes qui déplacent des fonds ou signent avec vos
+  portefeuilles sont refusées dans les appels d'appelants payants. Les étapes qui paient une
+  API à chaque appel (le nœud x402, BlockRun, les modèles payés par portefeuille)
+  s'exécutent toujours, avec l'URL et le plafond de dépense définis dans votre flux de
+  travail ; un appelant ne peut pas les modifier.
+- **Outils MCP** : seuls les outils rattachés un par un sont disponibles ; un serveur MCP
+  rattaché en entier ne l'est pas.
+- **Les étapes de publication s'exécutent** (X, Telegram, Discord, SMS, e-mail). Le
+  formulaire de déploiement vous avertit lorsqu'un flux de travail en contient.
+- **Facturé dès le démarrage** : l'appelant paie lorsque l'exécution a démarré, quel que soit
+  son résultat. Un appel qui n'a pas pu démarrer n'est pas facturé.
+- **Uniquement via le point de terminaison payant** : le flux de travail d'un agent payant ne
+  peut pas être déclenché par son webhook simple, et son secret de webhook n'est visible que
+  par vous.
 
 ## Protocole A2A
 

@@ -25,7 +25,7 @@ See [Workflows & Nodes](/docs/workflows) for the full node library.
 
 An **Assistant** is a **reasoning chat expert**. Think of it as a configured persona — a
 role/expertise, a system prompt, a set of skills, and a set of tools — that you can summon
-in chat with `@`.
+in chat with `@` or the **Agent** button.
 
 Key properties:
 
@@ -33,10 +33,15 @@ Key properties:
   you've selected in the picker.
 - **`@mentionable`** in chat. When you mention an assistant, its persona and skills are
   injected into the conversation.
-- **Cannot be deployed.** Assistants live inside the chat runtime — they have no headless
-  background runtime, so they are *not* turned into x402/A2A/ERC-8004 endpoints directly.
-  If you need an assistant's behavior as a deployable unit, build it into a workflow (the
-  **Agent node** lets a workflow embed assistant-style reasoning).
+- **Remembers and learns.** Each assistant keeps a memory about you and learns from your
+  chats; it can also hand tasks to your other assistants and work with your workflows.
+- **Reachable beyond the chat window.** You can chat with it from
+  [Telegram](/docs/telegram) and have it answer on a schedule.
+- **Deployable through a workflow.** An assistant has no workflow of its own, so it isn't an
+  x402/A2A/ERC-8004 endpoint by itself. To sell it, create an **agent workflow** that runs it
+  live and deploy that workflow as a paid agent (the assistant editor does this for you).
+
+The full guide is on the [Assistants](/docs/assistants) page.
 
 ## Agents
 
@@ -58,15 +63,15 @@ An agent gives you:
 |---|---|---|
 | What it is | A reasoning chat persona | A deployed workflow |
 | Backed by a workflow? | No (`workflowId` is null) | Yes (has a `workflowId`) |
-| Where it runs | Inside the chat runtime | Headless, in Frosty Engine |
+| Where it runs | Chat, Telegram and scheduled jobs, in the app | Headless, in Frosty Engine |
 | `@mentionable` in chat? | Yes | No — call it via its agent endpoint or run its workflow |
-| Can be deployed? | No | Yes — that *is* what makes it an agent |
-| x402 / A2A / ERC-8004? | No | Yes |
+| Can be deployed? | Through an agent workflow that runs it | Yes — that *is* what makes it an agent |
+| x402 / A2A / ERC-8004? | Through that agent workflow | Yes |
 
-The short version: **Assistants are for thinking inside chat; Agents are for running
-deployed workflows that others can call and pay for.** Both surfaces get the same
-monetization path *through workflows* — you compose an assistant's capabilities into a
-workflow and then deploy that workflow as an agent.
+The short version: **Assistants are for thinking with you, in chat and on Telegram; Agents
+are for running deployed workflows that others can call and pay for.** Both surfaces get the
+same monetization path *through workflows* — an assistant is sold by deploying an agent
+workflow that runs it.
 
 ## Skills
 
@@ -103,7 +108,7 @@ Templates ──clone──► Workflows ──deploy──► Agents (A2A / x40
                          ▲
                          │ run inline as a tool
                          │
-        Chat ──@──► Assistants  (persona + Skills + Tools)
+Chat, Telegram ───► Assistants  (persona + Skills + Tools + Memory)
                          ▲
                          │ provide tools
                     MCP servers

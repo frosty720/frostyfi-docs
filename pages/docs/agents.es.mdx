@@ -6,8 +6,8 @@ tres sistemas nativos de blockchain que hacen que los agentes sean descubribles,
 el **protocolo A2A**, los **pagos x402** y la **identidad ERC-8004**.
 
 > Recordatorio de [Conceptos fundamentales](/docs/concepts): solo los **agentes respaldados por un flujo de trabajo** se convierten en
-> endpoints A2A / x402 / ERC-8004. Los **Asistentes** de razonamiento permanecen dentro del chat — para desplegar
-> un comportamiento similar al de un asistente, constrúyelo primero en un flujo de trabajo.
+> endpoints A2A / x402 / ERC-8004. Para vender un [Asistente](/docs/assistants), crea un
+> flujo de trabajo de agente que lo ejecute (ver más abajo) y despliega ese flujo de trabajo.
 
 ## Desplegar un flujo de trabajo como agente
 
@@ -19,7 +19,33 @@ el **protocolo A2A**, los **pagos x402** y la **identidad ERC-8004**.
    A2A**, donde defines el **precio x402** y la **red**.
 4. Confirma. Tu agente ahora está en vivo con un endpoint A2A y una tarjeta de agente.
 
-El precio por llamada predeterminado es **0.01 USDC**; puedes cambiarlo (o dejarlo gratis).
+El precio por llamada predeterminado es **0.01 USDC**; puedes cambiarlo (el mínimo es
+**0.001 USDC**).
+
+### Desplegar un asistente
+
+El editor de un asistente tiene un panel **Desplegar como agente de pago**. **Crear flujo de trabajo del agente**
+construye un flujo de trabajo que ejecuta el asistente en vivo, con sus instrucciones, skills y herramientas;
+despliega ese flujo de trabajo como arriba. No pongas secretos en un asistente que vendas: quien
+paga puede pedirle al modelo que revele sus instrucciones y skills. Consulta
+[Asistentes](/docs/assistants).
+
+## Qué puede hacer una llamada de pago
+
+Una llamada de pago ejecuta tu flujo de trabajo para otra persona, así que algunos pasos están limitados:
+
+- **Tus fondos no se mueven.** Los pasos que mueven fondos o firman con tus wallets se rechazan en
+  las llamadas de quienes pagan. Los pasos que pagan una API por llamada (el nodo x402, BlockRun,
+  modelos pagados con wallet) sí se ejecutan, con la URL y el tope de gasto definidos en tu flujo de trabajo; quien llama
+  no puede cambiarlos.
+- **Herramientas MCP**: solo están disponibles las herramientas adjuntas una a una; un servidor MCP
+  completo adjunto no.
+- **Los pasos que publican se ejecutan** (X, Telegram, Discord, SMS, correo). El formulario de despliegue te avisa cuando
+  un flujo de trabajo los tiene.
+- **Se cobra al empezar**: quien llama paga cuando la ejecución ha empezado, sea cual sea su resultado.
+  Una llamada que no pudo empezar no se cobra.
+- **Solo mediante el endpoint de pago**: el flujo de trabajo de un agente de pago no se puede activar mediante su
+  webhook normal, y su secreto de webhook solo se te muestra a ti.
 
 ## Protocolo A2A
 

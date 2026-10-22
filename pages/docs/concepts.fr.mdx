@@ -28,7 +28,7 @@ Consultez [Flux de travail & Nœuds](/docs/workflows) pour la bibliothèque comp
 
 Un **Assistant** est un **expert de chat de raisonnement**. Considérez-le comme une persona
 configurée — un rôle/une expertise, une invite système, un ensemble de skills et un ensemble
-d'outils — que vous pouvez invoquer dans le chat avec `@`.
+d'outils — que vous pouvez invoquer dans le chat avec `@` ou le bouton **Agent**.
 
 Propriétés clés :
 
@@ -36,12 +36,17 @@ Propriétés clés :
   le modèle que vous avez sélectionné dans le sélecteur.
 - **`@mentionnable`** dans le chat. Lorsque vous mentionnez un assistant, sa persona et ses
   skills sont injectées dans la conversation.
-- **Ne peut pas être déployé.** Les assistants vivent à l'intérieur de l'environnement
-  d'exécution du chat — ils n'ont pas d'environnement d'exécution en arrière-plan sans
-  interface, ils ne sont donc *pas* transformés directement en points de terminaison
-  x402/A2A/ERC-8004. Si vous avez besoin du comportement d'un assistant comme unité
-  déployable, intégrez-le dans un flux de travail (le **nœud Agent** permet à un flux de
-  travail d'incorporer un raisonnement de type assistant).
+- **Il se souvient et apprend.** Chaque assistant garde une mémoire à votre sujet et apprend
+  de vos discussions ; il peut aussi confier des tâches à vos autres assistants et travailler
+  avec vos flux de travail.
+- **Accessible au-delà de la fenêtre de chat.** Vous pouvez discuter avec lui depuis
+  [Telegram](/docs/telegram) et lui faire répondre selon un planning.
+- **Déployable via un flux de travail.** Un assistant n'a pas de flux de travail propre ; ce
+  n'est donc pas, en soi, un point de terminaison x402/A2A/ERC-8004. Pour le vendre, créez un
+  **flux de travail d'agent** qui l'exécute en direct et déployez ce flux de travail comme
+  agent payant (l'éditeur d'assistant le fait pour vous).
+
+Le guide complet se trouve sur la page [Assistants](/docs/assistants).
 
 ## Agents
 
@@ -65,16 +70,15 @@ Un agent vous offre :
 |---|---|---|
 | Ce que c'est | Une persona de chat de raisonnement | Un flux de travail déployé |
 | Adossé à un flux de travail ? | Non (`workflowId` est null) | Oui (possède un `workflowId`) |
-| Où il s'exécute | À l'intérieur de l'environnement de chat | Sans interface, dans Frosty Engine |
+| Où il s'exécute | Chat, Telegram et tâches planifiées, dans l'application | Sans interface, dans Frosty Engine |
 | `@mentionnable` dans le chat ? | Oui | Non — appelez-le via son point de terminaison d'agent ou exécutez son flux de travail |
-| Peut être déployé ? | Non | Oui — c'est *cela même* qui en fait un agent |
-| x402 / A2A / ERC-8004 ? | Non | Oui |
+| Peut être déployé ? | Via un flux de travail d'agent qui l'exécute | Oui — c'est *cela même* qui en fait un agent |
+| x402 / A2A / ERC-8004 ? | Via ce flux de travail d'agent | Oui |
 
-En bref : **les Assistants servent à réfléchir dans le chat ; les Agents servent à exécuter
-des flux de travail déployés que d'autres peuvent appeler et payer.** Les deux surfaces
-bénéficient du même chemin de monétisation *à travers les flux de travail* — vous composez
-les capacités d'un assistant dans un flux de travail, puis déployez ce flux de travail comme
-agent.
+En bref : **les Assistants servent à réfléchir avec vous, dans le chat et sur Telegram ; les
+Agents servent à exécuter des flux de travail déployés que d'autres peuvent appeler et
+payer.** Les deux surfaces bénéficient du même chemin de monétisation *à travers les flux de
+travail* — un assistant se vend en déployant un flux de travail d'agent qui l'exécute.
 
 ## Skills
 
@@ -116,7 +120,7 @@ Templates ──clone──► Workflows ──deploy──► Agents (A2A / x40
                          ▲
                          │ run inline as a tool
                          │
-        Chat ──@──► Assistants  (persona + Skills + Tools)
+Chat, Telegram ───► Assistants  (persona + Skills + Tools + Memory)
                          ▲
                          │ provide tools
                     MCP servers

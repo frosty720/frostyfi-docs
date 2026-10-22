@@ -122,9 +122,31 @@ Background execution (Frosty Engine) is a **Pro / Enterprise** feature — see
 > after a restart — durable job queuing is on the roadmap. For time-critical automations,
 > prefer recurring schedules.
 
+## Run history
+
+Open the **Runs** panel (the history icon in the workflow's header) to see every run of a
+workflow, newest first. Each run is labeled by how it started:
+
+- **Scheduler**, **Webhook** or **Api**: a deployed run on Frosty Engine;
+- **Manual**: the **Run** button in the editor;
+- **Chat**: an `@mention` of the workflow in chat;
+- **Agent**: an [assistant](/docs/assistants) ran it, or used it as one of its tools;
+- **Test**: an assistant tested a draft.
+
+![The Runs panel listing agent, chat and webhook runs](/screenshots/runs-app.png)
+
+Open a run to see each step with its timing, its input and output, and any error. A run that
+finished but had a step fail (for example a transaction that reverted on-chain) is marked
+with a warning and lists the failed steps.
+
+![The detail of a run: each step with its timing](/screenshots/runs-app-detail.png)
+
+Only the workflow's owner sees its runs. When someone else runs your public workflow from
+their own editor or chat, that run isn't recorded in your history.
+
 ### From workflow to agent
 
 Once a workflow is published and deployed, you can publish it as a paid, on-chain
-**agent**. That's covered next.
+**agent**. That's covered in [Agents, A2A & Payments](/docs/agents).
 
-Next: [Agents, A2A & Payments →](/docs/agents)
+Next: [Assistants →](/docs/assistants)

@@ -1,0 +1,156 @@
+# Asistentes
+
+Un **Asistente** es un agente de chat que configuras una vez y con el que hablas cuando lo
+necesites: en el chat, desde [Telegram](/docs/telegram) o con una programación. Tiene un rol
+e instrucciones, usa skills, herramientas y tus flujos de trabajo, te recuerda entre
+conversaciones y aprende de tus chats.
+
+> Un asistente no tiene un flujo de trabajo detrás. Un flujo de trabajo que despliegas como
+> endpoint invocable y de pago es un **Agente**, que se explica en
+> [Agentes, A2A y pagos](/docs/agents). La diferencia se explica en
+> [Conceptos fundamentales](/docs/concepts).
+
+![El editor de asistentes: nombre, descripción, rol, instrucciones y herramientas, con un chat Pruébalo a la derecha](/screenshots/assistant-editor.png)
+
+## Crear un asistente
+
+Abre **Asistentes** en la barra lateral y crea uno. Dale:
+
+- un **nombre**, un **icono** y una **descripción** corta;
+- **Experto en**: su rol, en pocas palabras;
+- **instrucciones**: su personalidad, sus pautas y lo que sabe.
+
+También puedes describir lo que quieres y dejar que **Generar con IA** rellene el formulario.
+
+El panel **Pruébalo** de la derecha chatea con el asistente guardado, herramientas incluidas,
+para que compruebes cómo responde antes de usarlo.
+
+## Chatear con un asistente
+
+En el chat principal, haz clic en **Agente** en el cuadro de mensaje y elige uno, o escribe
+`@` y elígelo en **Agentes**. Hacer clic en un asistente de la lista **Asistentes** de la barra
+lateral también inicia un chat con él.
+
+![El botón Agente en el cuadro de chat, con la lista de asistentes con los que puedes chatear](/screenshots/chat-agent-picker.png)
+
+La lista muestra tus propios asistentes y los públicos que puedes usar. Los agentes de flujo
+de trabajo de pago no aparecen: se invocan mediante su endpoint de agente.
+
+## Herramientas, skills y ayudantes
+
+En **Agrega herramientas que este asistente puede usar.**, adjunta lo que puede usar:
+
+- **Skills**: guías de solo instrucciones, como una lista de revisión o una forma de razonar
+  (consulta [Conceptos fundamentales](/docs/concepts)). El asistente carga un skill cuando tu
+  solicitud lo necesita.
+- **Flujos de trabajo**: tus flujos de trabajo publicados, que el asistente puede ejecutar
+  como herramientas.
+- **Herramientas MCP** y **herramientas de la app**, como la búsqueda web.
+- **Otros asistentes** (ayudantes): añade tus otros asistentes y este podrá encargarles tareas.
+  Un ayudante responde con sus propias instrucciones y skills, y le informa. Solo tus propios
+  asistentes pueden ser ayudantes, y un ayudante no invoca a ayudantes propios.
+
+![Herramientas adjuntas a un asistente: un skill, un flujo de trabajo y un asistente ayudante](/screenshots/assistant-tools.png)
+
+## Trabajar con tus flujos de trabajo
+
+Tu asistente puede trabajar con tus flujos de trabajo por ti. Pídele con palabras normales que:
+
+- busque un flujo de trabajo y lo **ejecute**;
+- **construya** un flujo de trabajo nuevo, o **edite** uno (se guarda como borrador sin publicar para que lo revises);
+- **pruebe** un borrador y lo **publique**;
+- **despliegue**, **pause** y **reanude** un flujo de trabajo desplegado;
+- consulte el **historial de ejecuciones**: ejecuciones recientes, fallos y por qué fallaron.
+
+Los pasos con efectos reales preguntan primero. Probar, publicar, desplegar, pausar, reanudar y
+programar muestran los botones **Aprobar** y **Rechazar** en el chat, y no pasa nada hasta que
+haces clic en **Aprobar**. Los borradores con pasos que mueven fondos, envían mensajes o invocan
+herramientas MCP u otros agentes no los puede probar ni publicar el asistente: te da un enlace
+para hacerlo en el editor. Los despliegues usan los espacios incluidos en tu plan; el asistente
+nunca paga un despliegue.
+
+### Aprobar llamadas a herramientas
+
+El modo de herramientas del chat (el icono de ajustes junto a **Tools**) decide cómo se usan las
+herramientas: **Auto** las usa libremente, **Manual** pregunta antes de cada llamada a MCP o a un
+flujo de trabajo, y **None** no usa herramientas (una `@mention` sigue funcionando). En modo
+Manual, cada llamada espera con su solicitud a la vista hasta que haces clic en **Aprobar** o
+**Rechazar**.
+
+![Una llamada a un flujo de trabajo esperando aprobación en modo de herramientas Manual](/screenshots/chat-approve.png)
+
+## Memoria
+
+Cada asistente guarda una **Memoria** sobre ti, en dos bloques:
+
+- **Notas**: datos y contexto que vale la pena conservar, hasta 2200 caracteres.
+- **Sobre ti**: quién eres y cómo te gusta trabajar, hasta 1375 caracteres.
+
+El asistente actualiza su memoria solo mientras chateas. Puedes editarla o borrarla en el panel
+**Memoria**; una entrada por línea. La memoria es por persona: si otra persona chatea con tu
+asistente público, tendrá una memoria propia.
+
+Las líneas que escribió el asistente aparecen en **Aprendido de tus chats**. Haz clic en **×**
+para quitar una del cuadro y luego en **Guardar**. Una línea que escribes o editas tú sigue
+siendo tuya: el ciclo de aprendizaje nunca la cambia.
+
+![El panel Memoria con líneas que el asistente aprendió de tus chats](/screenshots/assistant-memory.png)
+
+## Aprendizaje
+
+Cada 10 mensajes que envías a un asistente (en la app o en Telegram), este revisa el chat y
+guarda en la memoria lo que aprendió sobre ti. Solo añade líneas. Cuando un bloque de memoria
+está casi lleno, lo ordena uniendo o quitando líneas que aprendió él mismo, nunca las tuyas.
+
+Cuando le enseñas una forma repetible de hacer algo, como un resumen semanal en un orden fijo,
+escribe un **skill** para ello. Los skills nuevos esperan en **Habilidades pendientes de
+aprobación**: haz clic en **Ver pasos** para leer uno, en **Aprobar** para adjuntarlo al asistente
+o en **Rechazar** para descartarlo. Pueden esperar hasta 3 a la vez. Lee cada uno antes de
+aprobarlo: el asistente sigue sus pasos en tus chats.
+
+![El panel Aprendizaje con dos skills que escribió el asistente, pendientes de aprobación](/screenshots/assistant-learning.png)
+
+Para detenerlo, desactiva **Aprender de mis chats**; los mensajes que aún no se han revisado se
+descartan. Las revisiones se ejecutan con el modelo predeterminado de tu plan y cuentan en tu uso.
+De las tareas programadas y de los chats de otras personas con tu asistente nunca se aprende.
+
+## Tareas programadas
+
+Un asistente puede responder a un prompt con una programación, por ejemplo "cada día laborable
+a las 8:00, resume las noticias cripto". En el panel **Tareas programadas**, escribe qué debe hacer y
+elige cuándo: **Todos los días**, **Días laborables**, **Cada semana** o **Cada pocas horas**, a una
+hora de tu zona horaria. Cada respuesta se guarda como un chat y se envía a tu Telegram si está conectado.
+
+![El panel Tareas programadas con una tarea semanal](/screenshots/assistant-schedule.png)
+
+Desde la tarea puedes ejecutarla ya, editarla, pausarla o eliminarla. También puedes pedirle al
+asistente en el chat que programe algo; te pide que lo apruebes primero.
+
+| | **Free** | **Pro** | **Enterprise** |
+|---|---|---|---|
+| Tareas programadas activas a la vez (entre todos los asistentes) | — | 3 | 10 |
+
+Las ejecuciones programadas no pueden mover fondos ni usar herramientas MCP, y cada ejecución
+cuenta en tu uso como un mensaje. Los flujos de trabajo que publican (X, Telegram, Discord, SMS,
+correo) sí se ejecutan.
+
+## Telegram
+
+Conecta un asistente a Telegram desde su panel **Telegram** y chatea con él desde tu teléfono,
+fotos y mensajes de voz incluidos. Consulta [Telegram](/docs/telegram).
+
+## Desplegar como agente de pago
+
+El panel **Desplegar como agente de pago** crea un flujo de trabajo de agente que ejecuta este
+asistente en vivo. Después despliegas ese flujo de trabajo desde su página, y quienes lo invocan
+pagan por llamada con x402.
+
+![El panel Desplegar como agente de pago, con una advertencia sobre los flujos de trabajo adjuntos](/screenshots/assistant-deploy.png)
+
+El panel te avisa cuando los flujos de trabajo adjuntos contienen pasos que envían mensajes,
+invocan servicios externos, ejecutan herramientas de pago o mueven fondos. En las llamadas de
+quienes pagan, los pasos que mueven tus fondos o firman con tus wallets se rechazan; todo lo demás
+se ejecuta. No pongas secretos en un asistente que despliegues: quien paga puede pedirle al modelo
+que revele sus instrucciones y skills. Más en [Agentes, A2A y pagos](/docs/agents).
+
+Siguiente: [Telegram →](/docs/telegram)
