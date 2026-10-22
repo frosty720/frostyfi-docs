@@ -128,9 +128,34 @@ voir [Tarifs](/docs/pricing).
 > d'attente de tâches durable figure sur la feuille de route. Pour les automatisations
 > critiques en temps, préférez les plannings récurrents.
 
+## Historique des exécutions
+
+Ouvrez le panneau **Exécutions** (l'icône d'historique dans l'en-tête du flux de travail)
+pour voir toutes les exécutions d'un flux de travail, de la plus récente à la plus ancienne.
+Chaque exécution est étiquetée selon la façon dont elle a démarré :
+
+- **Scheduler**, **Webhook** ou **Api** : une exécution déployée sur Frosty Engine ;
+- **Manual** : le bouton **Exécuter** de l'éditeur ;
+- **Chat** : une `@mention` du flux de travail dans le chat ;
+- **Agent** : un [assistant](/docs/assistants) l'a exécuté, ou l'a utilisé comme l'un de ses
+  outils ;
+- **Test** : un assistant a testé un brouillon.
+
+![Le panneau Exécutions listant des exécutions d'agent, de chat et de webhook](/screenshots/runs-app.png)
+
+Ouvrez une exécution pour voir chaque étape avec sa durée, son entrée et sa sortie, ainsi que
+toute erreur. Une exécution terminée dont une étape a échoué (par exemple une transaction
+annulée on-chain) est marquée d'un avertissement et liste les étapes en échec.
+
+![Le détail d'une exécution : chaque étape avec sa durée](/screenshots/runs-app-detail.png)
+
+Seul le propriétaire du flux de travail voit ses exécutions. Lorsqu'une autre personne
+exécute votre flux de travail public depuis son propre éditeur ou son propre chat, cette
+exécution n'est pas enregistrée dans votre historique.
+
 ### Du flux de travail à l'agent
 
 Une fois un flux de travail publié et déployé, vous pouvez le publier comme un **agent**
-payant et on-chain. C'est le sujet de la suite.
+payant et on-chain. C'est le sujet de [Agents, A2A & Paiements](/docs/agents).
 
-Suite : [Agents, A2A & Paiements →](/docs/agents)
+Suite : [Assistants →](/docs/assistants)

@@ -6,8 +6,8 @@ three blockchain-native systems that make agents discoverable, payable, and trus
 the **A2A protocol**, **x402 payments**, and **ERC-8004 identity**.
 
 > Reminder from [Core Concepts](/docs/concepts): only **workflow-backed agents** become
-> A2A / x402 / ERC-8004 endpoints. Reasoning **Assistants** stay inside chat — to deploy
-> assistant-like behavior, build it into a workflow first.
+> A2A / x402 / ERC-8004 endpoints. To sell an [Assistant](/docs/assistants), create an
+> agent workflow that runs it (see below) and deploy that.
 
 ## Deploying a workflow as an agent
 
@@ -19,7 +19,33 @@ the **A2A protocol**, **x402 payments**, and **ERC-8004 identity**.
    modal**, where you set the **x402 price** and **network**.
 4. Confirm. Your agent is now live with an A2A endpoint and an agent card.
 
-The default per-call price is **0.01 USDC**; you can change it (or set it free).
+The default per-call price is **0.01 USDC**; you can change it (the minimum is
+**0.001 USDC**).
+
+### Deploying an assistant
+
+An assistant's editor has a **Deploy as a paid agent** panel. **Create agent workflow**
+builds a workflow that runs the assistant live, with its instructions, skills and tools;
+deploy that workflow as above. Don't put secrets in an assistant you sell: a paying
+caller can ask the model to reveal its instructions and skills. See
+[Assistants](/docs/assistants).
+
+## What a paid call can do
+
+A paid call runs your workflow for someone else, so some steps are limited:
+
+- **Your funds stay put.** Steps that move funds or sign with your wallets are refused in
+  calls from paying callers. Steps that pay for an API per call (the x402 node, BlockRun,
+  wallet-paid models) still run, with the URL and spending cap set in your workflow; a caller
+  can't change them.
+- **MCP tools**: only tools attached one by one are available; a whole attached MCP server
+  is not.
+- **Posting steps run** (X, Telegram, Discord, SMS, email). The deploy form warns you when
+  a workflow has them.
+- **Charged once it starts**: the caller pays when the run has started, whatever its result.
+  A call that couldn't start isn't charged.
+- **Only through the paid endpoint**: a paid agent's workflow can't be triggered through its
+  plain webhook, and its webhook secret is shown only to you.
 
 ## A2A protocol
 

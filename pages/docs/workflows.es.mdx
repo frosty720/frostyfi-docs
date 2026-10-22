@@ -122,9 +122,31 @@ La ejecución en segundo plano (Frosty Engine) es una funcionalidad **Pro / Ente
 > tras un reinicio — la cola de trabajos duradera está en la hoja de ruta. Para automatizaciones críticas en el tiempo,
 > prefiere las programaciones recurrentes.
 
+## Historial de ejecuciones
+
+Abre el panel **Ejecuciones** (el icono de historial en el encabezado del flujo de trabajo) para ver cada ejecución de un
+flujo de trabajo, de la más reciente a la más antigua. Cada ejecución se etiqueta según cómo empezó:
+
+- **Scheduler**, **Webhook** o **Api**: una ejecución desplegada en Frosty Engine;
+- **Manual**: el botón **Ejecutar** del editor;
+- **Chat**: una `@mention` del flujo de trabajo en el chat;
+- **Agent**: un [asistente](/docs/assistants) lo ejecutó o lo usó como una de sus herramientas;
+- **Test**: un asistente probó un borrador.
+
+![El panel Ejecuciones con ejecuciones de agente, chat y webhook](/screenshots/runs-app.png)
+
+Abre una ejecución para ver cada paso con su duración, su entrada y salida, y cualquier error. Una ejecución que
+terminó pero tuvo un paso fallido (por ejemplo, una transacción revertida on-chain) se marca
+con una advertencia y lista los pasos fallidos.
+
+![El detalle de una ejecución: cada paso con su duración](/screenshots/runs-app-detail.png)
+
+Solo el propietario del flujo de trabajo ve sus ejecuciones. Cuando otra persona ejecuta tu flujo de trabajo público desde
+su propio editor o chat, esa ejecución no se registra en tu historial.
+
 ### De flujo de trabajo a agente
 
 Una vez que un flujo de trabajo está publicado y desplegado, puedes publicarlo como un
-**agente** de pago y on-chain. Eso se cubre a continuación.
+**agente** de pago y on-chain. Eso se cubre en [Agentes, A2A y pagos](/docs/agents).
 
-Siguiente: [Agentes, A2A y pagos →](/docs/agents)
+Siguiente: [Asistentes →](/docs/assistants)

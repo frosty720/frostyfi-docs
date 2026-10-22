@@ -1,0 +1,150 @@
+# Assistants
+
+An **Assistant** is a chat agent you set up once and talk to whenever you need it: in
+chat, from [Telegram](/docs/telegram), or on a schedule. It has a role and instructions,
+uses skills, tools and your workflows, remembers you across conversations, and learns from
+your chats.
+
+> An assistant has no workflow behind it. A workflow you deploy as a callable, paid
+> endpoint is an **Agent**, covered in [Agents, A2A & Payments](/docs/agents). The
+> difference is explained in [Core Concepts](/docs/concepts).
+
+![The assistant editor: name, description, role, instructions and tools, with a Try it chat on the right](/screenshots/assistant-editor.png)
+
+## Create an assistant
+
+Open **Assistants** in the sidebar and create one. Give it:
+
+- a **name**, an **icon** and a short **description**;
+- **Expert in**: its role, in a few words;
+- **instructions**: its personality, guidelines and what it knows.
+
+You can also describe what you want and let **Generate With AI** fill the form in.
+
+The **Try it** panel on the right chats with the saved assistant, tools included, so you can
+check how it answers before using it.
+
+## Chat with an assistant
+
+In the main chat, click **Agent** in the message box and pick one, or type `@` and choose it
+under **Agents**. Clicking an assistant in the sidebar's **Assistants** list also starts a
+chat with it.
+
+![The Agent button in the chat box, listing the assistants you can chat with](/screenshots/chat-agent-picker.png)
+
+The list shows your own assistants and public ones you can use. Paid workflow agents aren't
+in it: they're called through their agent endpoint instead.
+
+## Tools, skills and helpers
+
+Under **Add tools that this assistant can use**, attach what it may use:
+
+- **Skills**: instruction-only guides, such as a review checklist or a way of reasoning (see
+  [Core Concepts](/docs/concepts)). The assistant loads a skill when your request needs it.
+- **Workflows**: your published workflows, which the assistant can run as tools.
+- **MCP tools** and **app tools** such as web search.
+- **Other assistants** (helpers): add your other assistants and this one can hand them tasks.
+  A helper answers with its own instructions and skills and reports back. Only your own
+  assistants can be helpers, and a helper doesn't call helpers of its own.
+
+![Tools attached to an assistant: a skill, a workflow and a helper assistant](/screenshots/assistant-tools.png)
+
+## Working with your workflows
+
+Your own assistant can work with your workflows for you. Ask it in plain words to:
+
+- find a workflow and **run** it;
+- **build** a new workflow, or **edit** one (saved as an unpublished draft for you to review);
+- **test** a draft and **publish** it;
+- **deploy**, **pause** and **resume** a deployed workflow;
+- check **run history**: recent runs, failures and why they failed.
+
+Steps with real effects ask first. Testing, publishing, deploying, pausing, resuming and
+scheduling show **Approve** and **Reject** buttons in the chat, and nothing happens until
+you click **Approve**. Drafts with steps that move funds, send messages, or call MCP tools or
+other agents can't be tested or published by the assistant: it gives you a link to do that
+in the editor. Deploys use your plan's included slots; the assistant never pays for a deploy.
+
+### Approving tool calls
+
+The chat's tool mode (the settings icon next to **Tools**) decides how tools are used:
+**Auto** uses them freely, **Manual** asks before every MCP or workflow call, and **None**
+uses no tools (an `@mention` still works). In Manual mode each call waits with its request
+shown until you click **Approve** or **Reject**.
+
+![A workflow call waiting for approval in Manual tool mode](/screenshots/chat-approve.png)
+
+## Memory
+
+Each assistant keeps a **Memory** about you, in two blocks:
+
+- **Notes**: facts and context worth keeping, up to 2,200 characters.
+- **About you**: who you are and how you like to work, up to 1,375 characters.
+
+The assistant updates its memory itself as you chat. You can edit or clear it in the
+**Memory** panel; one entry per line. Memory is kept per person: if someone else chats with
+your public assistant, they get a memory of their own.
+
+Lines the assistant wrote are listed under **Learned from your chats**. Click **×** to take
+one out of the box, then **Save**. A line you type or edit yourself stays yours: the learning
+loop never changes it.
+
+![The Memory panel with lines the assistant learned from your chats](/screenshots/assistant-memory.png)
+
+## Learning
+
+Every 10 messages you send an assistant (in the app or on Telegram), it reviews the chat and
+saves what it learned about you to memory. It only adds lines. When a memory block is nearly
+full, it tidies up by merging or removing lines it learned itself, never yours.
+
+When you teach it a repeatable way of doing something, such as a weekly recap in a fixed
+order, it writes a **skill** for it. New skills wait under **Skills waiting for approval**:
+click **Show steps** to read one, **Approve** to attach it to the assistant, or **Reject** to
+discard it. Up to 3 can wait at a time. Read each one before approving: the assistant
+follows its steps in your chats.
+
+![The Learning panel with two skills the assistant wrote, waiting for approval](/screenshots/assistant-learning.png)
+
+To stop it, turn off **Learn from my chats**; messages not reviewed yet are discarded.
+Reviews run on your plan's default model and count toward your usage. Scheduled jobs and
+other people's chats with your assistant are never learned from.
+
+## Scheduled jobs
+
+An assistant can answer a prompt on a schedule, for example "every weekday at 8:00, summarize
+the crypto news". In the **Scheduled jobs** panel, write what it should do and pick when:
+**Every day**, **Weekdays**, **Every week**, or **Every few hours**, at a time in your time
+zone. Each answer is saved as a chat, and sent to your Telegram when it's connected.
+
+![The Scheduled jobs panel with a weekly job](/screenshots/assistant-schedule.png)
+
+From the job you can run it now, edit it, pause it or delete it. You can also ask the
+assistant in chat to schedule something; it asks you to approve first.
+
+| | **Free** | **Pro** | **Enterprise** |
+|---|---|---|---|
+| Scheduled jobs running at a time (across all assistants) | — | 3 | 10 |
+
+Scheduled runs can't move funds or use MCP tools, and each run counts toward your usage like
+a message. Workflows that post (X, Telegram, Discord, SMS, email) do run.
+
+## Telegram
+
+Connect an assistant to Telegram from its **Telegram** panel and chat with it from your
+phone, photos and voice messages included. See [Telegram](/docs/telegram).
+
+## Deploy as a paid agent
+
+The **Deploy as a paid agent** panel creates an agent workflow that runs this assistant
+live. You then deploy that workflow from the workflow page, and callers pay per call with
+x402.
+
+![The Deploy as a paid agent panel, with a warning about attached workflows](/screenshots/assistant-deploy.png)
+
+The panel warns you when attached workflows contain steps that send messages, call external
+services, run paid tools or move funds. In calls from paying callers, steps that move your
+funds or sign with your wallets are refused; everything else runs. Don't put secrets in an
+assistant you deploy: a paying caller can ask the model to reveal its instructions and
+skills. More in [Agents, A2A & Payments](/docs/agents).
+
+Next: [Telegram →](/docs/telegram)

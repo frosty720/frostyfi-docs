@@ -1,0 +1,171 @@
+# Assistants
+
+Un **Assistant** est un agent de chat que vous configurez une fois et avec lequel vous
+discutez quand vous en avez besoin : dans le chat, depuis [Telegram](/docs/telegram), ou selon
+un planning. Il a un rôle et des instructions, utilise des skills, des outils et vos flux de
+travail, se souvient de vous d'une conversation à l'autre et apprend de vos discussions.
+
+> Un assistant n'a pas de flux de travail derrière lui. Un flux de travail que vous déployez
+> comme point de terminaison appelable et payant est un **Agent**, présenté dans
+> [Agents, A2A & Paiements](/docs/agents). La différence est expliquée dans
+> [Concepts fondamentaux](/docs/concepts).
+
+![L'éditeur d'assistant : nom, description, rôle, instructions et outils, avec un chat Essayer à droite](/screenshots/assistant-editor.png)
+
+## Créer un assistant
+
+Ouvrez **Assistants** dans la barre latérale et créez-en un. Donnez-lui :
+
+- un **nom**, une **icône** et une courte **description** ;
+- **Expert en** : son rôle, en quelques mots ;
+- des **instructions** : sa personnalité, ses consignes et ce qu'il sait.
+
+Vous pouvez aussi décrire ce que vous voulez et laisser **Générer avec IA** remplir le
+formulaire.
+
+Le panneau **Essayer** à droite discute avec l'assistant enregistré, outils compris, pour que
+vous puissiez vérifier ses réponses avant de l'utiliser.
+
+## Discuter avec un assistant
+
+Dans le chat principal, cliquez sur **Agent** dans la zone de message et choisissez-en un, ou
+tapez `@` et choisissez-le sous **Agents**. Cliquer sur un assistant dans la liste
+**Assistants** de la barre latérale démarre aussi un chat avec lui.
+
+![Le bouton Agent dans la zone de chat, listant les assistants avec lesquels vous pouvez discuter](/screenshots/chat-agent-picker.png)
+
+La liste montre vos propres assistants et les assistants publics que vous pouvez utiliser. Les
+agents de flux de travail payants n'y figurent pas : on les appelle via leur point de
+terminaison d'agent.
+
+## Outils, skills et assistants auxiliaires
+
+Sous **Ajoutez des outils que cet assistant peut utiliser**, rattachez ce qu'il peut utiliser :
+
+- **Skills** : des guides composés uniquement d'instructions, comme une liste de contrôle de
+  relecture ou une façon de raisonner (voir [Concepts fondamentaux](/docs/concepts)).
+  L'assistant charge un skill quand votre demande en a besoin.
+- **Flux de travail** : vos flux de travail publiés, que l'assistant peut exécuter comme
+  outils.
+- **Outils MCP** et **outils de l'application** comme la recherche web.
+- **D'autres assistants** (auxiliaires) : ajoutez vos autres assistants et celui-ci pourra
+  leur confier des tâches. Un auxiliaire répond avec ses propres instructions et skills, puis
+  fait son rapport. Seuls vos propres assistants peuvent être des auxiliaires, et un
+  auxiliaire n'appelle pas ses propres auxiliaires.
+
+![Outils rattachés à un assistant : un skill, un flux de travail et un assistant auxiliaire](/screenshots/assistant-tools.png)
+
+## Travailler avec vos flux de travail
+
+Votre assistant peut travailler avec vos flux de travail à votre place. Demandez-lui, en mots
+simples, de :
+
+- trouver un flux de travail et l'**exécuter** ;
+- **construire** un nouveau flux de travail, ou en **modifier** un (enregistré comme brouillon
+  non publié que vous relisez) ;
+- **tester** un brouillon et le **publier** ;
+- **déployer**, **mettre en pause** et **reprendre** un flux de travail déployé ;
+- consulter l'**historique des exécutions** : exécutions récentes, échecs et leurs causes.
+
+Les étapes qui ont de vrais effets demandent d'abord votre accord. Les tests, publications,
+déploiements, mises en pause, reprises et planifications affichent des boutons **Approuver**
+et **Refuser** dans le chat, et rien ne se passe tant que vous n'avez pas cliqué sur
+**Approuver**. Les brouillons dont des étapes déplacent des fonds, envoient des messages, ou
+appellent des outils MCP ou d'autres agents ne peuvent pas être testés ni publiés par
+l'assistant : il vous donne un lien pour le faire dans l'éditeur. Les déploiements utilisent
+les emplacements inclus dans votre offre ; l'assistant ne paie jamais un déploiement.
+
+### Approuver les appels d'outils
+
+Le mode d'outils du chat (l'icône de réglages à côté de **Tools**) décide comment les outils
+sont utilisés : **Auto** les utilise librement, **Manual** demande avant chaque appel MCP ou
+de flux de travail, et **None** n'utilise aucun outil (une `@mention` fonctionne quand même).
+En mode Manual, chaque appel attend avec sa requête affichée jusqu'à ce que vous cliquiez sur
+**Approuver** ou **Refuser**.
+
+![Un appel de flux de travail en attente d'approbation en mode d'outils Manual](/screenshots/chat-approve.png)
+
+## Mémoire
+
+Chaque assistant garde une **Mémoire** à votre sujet, en deux blocs :
+
+- **Notes** : les faits et le contexte à conserver, jusqu'à 2 200 caractères.
+- **À propos de vous** : qui vous êtes et comment vous aimez travailler, jusqu'à 1 375
+  caractères.
+
+L'assistant met à jour sa mémoire lui-même au fil de vos discussions. Vous pouvez la modifier
+ou l'effacer dans le panneau **Mémoire** ; une entrée par ligne. La mémoire est propre à
+chaque personne : si quelqu'un d'autre discute avec votre assistant public, il obtient une
+mémoire qui lui est propre.
+
+Les lignes écrites par l'assistant sont listées sous **Appris de vos discussions**. Cliquez
+sur **×** pour en retirer une du bloc, puis sur **Enregistrer**. Une ligne que vous tapez ou
+modifiez vous-même reste la vôtre : la boucle d'apprentissage ne la change jamais.
+
+![Le panneau Mémoire avec des lignes que l'assistant a apprises de vos discussions](/screenshots/assistant-memory.png)
+
+## Apprentissage
+
+Tous les 10 messages que vous envoyez à un assistant (dans l'application ou sur Telegram), il
+relit la discussion et enregistre en mémoire ce qu'il a appris sur vous. Il ne fait qu'ajouter
+des lignes. Quand un bloc de mémoire est presque plein, il fait le ménage en fusionnant ou en
+supprimant des lignes qu'il a apprises lui-même, jamais les vôtres.
+
+Quand vous lui apprenez une façon répétable de faire quelque chose, comme un récapitulatif
+hebdomadaire dans un ordre fixe, il écrit un **skill** pour cela. Les nouveaux skills attendent
+sous **Compétences en attente d'approbation** : cliquez sur **Voir les étapes** pour en lire
+un, sur **Approuver** pour le rattacher à l'assistant, ou sur **Refuser** pour l'écarter.
+Jusqu'à 3 peuvent attendre en même temps. Lisez chacun avant d'approuver : l'assistant en suit
+les étapes dans vos discussions.
+
+![Le panneau Apprentissage avec deux skills écrits par l'assistant, en attente d'approbation](/screenshots/assistant-learning.png)
+
+Pour l'arrêter, désactivez **Apprendre de mes discussions** ; les messages pas encore relus
+sont écartés. Les relectures utilisent le modèle par défaut de votre offre et comptent dans
+votre usage. Les tâches planifiées et les discussions d'autres personnes avec votre assistant
+ne servent jamais à apprendre.
+
+## Tâches planifiées
+
+Un assistant peut répondre à une consigne selon un planning, par exemple « chaque jour de
+semaine à 8 h 00, résume l'actualité crypto ». Dans le panneau **Tâches planifiées**, écrivez
+ce qu'il doit faire et choisissez quand : **Tous les jours**, **En semaine**, **Chaque
+semaine** ou **Toutes les quelques heures**, à une heure de votre fuseau horaire. Chaque
+réponse est enregistrée comme un chat, et envoyée sur votre Telegram quand il est connecté.
+
+![Le panneau Tâches planifiées avec une tâche hebdomadaire](/screenshots/assistant-schedule.png)
+
+Depuis la tâche, vous pouvez l'exécuter maintenant, la modifier, la mettre en pause ou la
+supprimer. Vous pouvez aussi demander à l'assistant dans le chat de planifier quelque chose ;
+il vous demande d'abord votre accord.
+
+| | **Gratuit** | **Pro** | **Enterprise** |
+|---|---|---|---|
+| Tâches planifiées en cours simultanément (tous assistants confondus) | — | 3 | 10 |
+
+Les exécutions planifiées ne peuvent pas déplacer de fonds ni utiliser d'outils MCP, et
+chaque exécution compte dans votre usage comme un message. Les flux de travail qui publient
+(X, Telegram, Discord, SMS, e-mail) s'exécutent bien.
+
+## Telegram
+
+Connectez un assistant à Telegram depuis son panneau **Telegram** et discutez avec lui depuis
+votre téléphone, photos et messages vocaux compris. Voir [Telegram](/docs/telegram).
+
+## Déployer comme agent payant
+
+Le panneau **Déployer comme agent payant** crée un flux de travail d'agent qui exécute cet
+assistant en direct. Vous déployez ensuite ce flux de travail depuis la page du flux de
+travail, et les appelants paient par appel avec x402.
+
+![Le panneau Déployer comme agent payant, avec un avertissement sur les flux de travail rattachés](/screenshots/assistant-deploy.png)
+
+Le panneau vous avertit lorsque des flux de travail rattachés contiennent des étapes qui
+envoient des messages, appellent des services externes, exécutent des outils payants ou
+déplacent des fonds. Dans les appels d'appelants payants, les étapes qui déplacent vos fonds
+ou signent avec vos portefeuilles sont refusées ; tout le reste s'exécute. Ne mettez pas de
+secrets dans un assistant que vous déployez : un appelant payant peut demander au modèle de
+révéler ses instructions et ses skills. Plus de détails dans
+[Agents, A2A & Paiements](/docs/agents).
+
+Suite : [Telegram →](/docs/telegram)
