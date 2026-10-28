@@ -1,0 +1,24 @@
+export default {
+	"introduction": "はじめに",
+	"getting-started": "Getting Started",
+	"concepts": "コアコンセプト",
+	"what-is-x402": "x402とは？",
+	"workflows": "ワークフローとノード",
+	"assistants": "アシスタント",
+	"telegram": "Telegram",
+	"agents": "エージェント、A2A と決済",
+	"models": "モデルと使用量",
+	"-- legacy --": {
+		"type": "separator",
+		"title": "リファレンス"
+	},
+	"features": "機能",
+	"engine": "Frosty Engine",
+	"mcp": "MCP",
+	"vaults": "Vaults",
+	"pricing": "料金",
+	"tokenomics": "トークノミクス",
+	"pol": "POL と資金調達",
+	"roadmap": "ロードマップ",
+	"faq": "FAQ"
+}

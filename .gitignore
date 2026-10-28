@@ -12,3 +12,5 @@ _archive
 .claude/
 .superpowers/
 docs/superpowers/
+# search index, rebuilt on every build
+public/_pagefind/
