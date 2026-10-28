@@ -1,0 +1,24 @@
+export default {
+	"introduction": "简介",
+	"getting-started": "快速上手",
+	"concepts": "核心概念",
+	"what-is-x402": "x402 是什么？",
+	"workflows": "工作流与节点",
+	"assistants": "助手",
+	"telegram": "Telegram",
+	"agents": "智能体、A2A 与支付",
+	"models": "模型与用量",
+	"-- legacy --": {
+		"type": "separator",
+		"title": "参考"
+	},
+	"features": "功能特性",
+	"engine": "Frosty Engine",
+	"mcp": "MCP",
+	"vaults": "Vault",
+	"pricing": "定价",
+	"tokenomics": "代币经济",
+	"pol": "POL 与资金机制",
+	"roadmap": "路线图",
+	"faq": "常见问题"
+}

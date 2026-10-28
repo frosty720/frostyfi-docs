@@ -1,0 +1,24 @@
+export default {
+	"introduction": "Introduction",
+	"getting-started": "Getting Started",
+	"concepts": "Core Concepts",
+	"what-is-x402": "What is x402?",
+	"workflows": "Workflows & Nodes",
+	"assistants": "Assistants",
+	"telegram": "Telegram",
+	"agents": "Agents, A2A & Payments",
+	"models": "Models & Usage",
+	"-- legacy --": {
+		"type": "separator",
+		"title": "Reference"
+	},
+	"features": "Features",
+	"engine": "Frosty Engine",
+	"mcp": "MCP",
+	"vaults": "Vaults",
+	"pricing": "Pricing",
+	"tokenomics": "Tokenomics",
+	"pol": "POL & Funding",
+	"roadmap": "Roadmap",
+	"faq": "FAQ"
+}
