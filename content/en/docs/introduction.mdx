@@ -50,8 +50,8 @@ flowchart TD
     Agent["Publish as Agent"]
     Endpoint["A2A endpoint + ERC-8004 identity + x402 payments<br/>discoverable in the Marketplace"]
 
-    Chat -->|@mention| Assist
-    Chat -->|@mention| Inline
+    Chat -->|"@mention"| Assist
+    Chat -->|"@mention"| Inline
     Chat --> Builder
     Builder -->|deploy| Engine
     Builder --> Agent
