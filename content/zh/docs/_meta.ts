@@ -17,8 +17,8 @@ export default {
 	"mcp": "MCP",
 	"vaults": "Vault",
 	"pricing": "定价",
-	"tokenomics": "代币经济",
-	"pol": "POL 与资金机制",
+	"tokenomics": "$FROSTY 代币",
+	"pol": { "display": "hidden" },
 	"roadmap": "路线图",
 	"faq": "常见问题"
 }

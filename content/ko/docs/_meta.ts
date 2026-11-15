@@ -17,8 +17,8 @@ export default {
 	"mcp": "MCP",
 	"vaults": "Vault",
 	"pricing": "요금제",
-	"tokenomics": "토크노믹스",
-	"pol": "POL & 펀딩",
+	"tokenomics": "$FROSTY 토큰",
+	"pol": { "display": "hidden" },
 	"roadmap": "로드맵",
 	"faq": "FAQ"
 }
