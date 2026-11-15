@@ -17,8 +17,8 @@ export default {
 	"mcp": "MCP",
 	"vaults": "Vaults",
 	"pricing": "Precios",
-	"tokenomics": "Tokenomics",
-	"pol": "POL y financiación",
+	"tokenomics": "Token $FROSTY",
+	"pol": { "display": "hidden" },
 	"roadmap": "Hoja de ruta",
 	"faq": "Preguntas frecuentes"
 }

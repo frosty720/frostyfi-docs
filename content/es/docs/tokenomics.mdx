@@ -1,96 +1,70 @@
-# Tokenomics de $FROST
+# $FROSTY
 
-> **$FROST** es el token del protocolo de FrostyFi — ganado por los clientes que pagan, jamás vendido en preventa. Suscríbete y tu pago te acuña FROST a través de la misma maquinaria de bonos que usa todo el mundo. Bloquéalo por **PERMA** y gana una porción de los ingresos del protocolo en USDC.
+> **$FROSTY** es el único token para todo lo que construye FrostyLabs: el terminal de trading [FrostyFunds](https://frostyfi.fund), la app de flujos de trabajo FrostyFi y el análisis de fondos. Se lanza en [BaseStonk](https://basestonk.io) sobre Base, emparejado con USDC.
 
 import { Callout } from 'nextra/components'
 
-<Callout type="warning">
-El token **no ha lanzado** — el TGE (generación del token) está por determinar. Pero esta página no es un whitepaper de intenciones: cada mecanismo descrito abajo está implementado y ha sido validado de extremo a extremo en una testnet pública — suscripciones dividiendo ingresos on-chain, recompensas en vesting, bloqueos ganando USDC, bonos con precio basado en deuda real, y un ciclo de gobernanza completo ejecutado.
-</Callout>
-
-## FROST y PERMA
-
-Dos cosas, un propósito:
-
-| | **FROST** | **PERMA** |
-|---|---|---|
-| Qué | El token líquido ERC-20 | Tu **posición de FROST bloqueado** — soulbound, no transferible |
-| Cómo lo obtienes | Gánalo pagando por FrostyFi, o bona por él | Bloquea FROST por un plazo elegido (1 semana – 4 años) |
-| Otorga | — | Peso de voto + una porción de los ingresos del protocolo, pagada en **USDC** |
-| Negociable | Sí | No — es la posición de bloqueo en sí, ligada a tu dirección |
-
-PERMA no es un token que mantienes o negocias — es tu posición de FROST bloqueado, registrada on-chain y ligada a tu dirección. El peso de voto escala con **cantidad × tiempo restante** y decae linealmente, exactamente igual que el veAERO de Aerodrome. Es **soulbound** para que nadie pueda comprar o vender tus votos ni tu derecho a rendimiento — pertenecen a quien bloqueó su propio FROST.
-
-**Bloquear es depósito en garantía, no gastar.** Cuando tu plazo termina, desbloqueas y **tu FROST regresa a ti**; la posición PERMA simplemente termina. El nombre es literal — bloquea FROST y se queda congelado como PERMA hasta que lo descongeles.
-
-## Suministro — limitado por asignación, acuñado al reclamar
-
-FROST no tiene un número de suministro arbitrario que memorizar. En cambio, el suministro se controla como se controla un presupuesto:
-
-- **Cada contrato que puede acuñar tiene una `mintAllowance` on-chain** — un presupuesto que nunca puede exceder, que se va gastando con cada acuñación. La maquinaria de bonos, las recompensas de suscripción, la porción del desarrollador: cada uno acuña solo dentro de su presupuesto otorgado, y los presupuestos son estado público que cualquiera puede leer.
-- **Los tokens se acuñan solo cuando se reclaman.** Las recompensas primero pasan por vesting y se acuñan al redimirse, por lo que el suministro circulante refleja lo que los participantes realmente reclamaron — nada permanece pre-acuñado en una wallet de tesorería esperando a ser volcado.
-- **Sin pre-minado, sin preventa, sin asignación para VC.** En el lanzamiento el suministro empieza en cero y crece solo a través de los mecanismos de esta página.
-
-Este es un enfoque deliberadamente honesto: un «tope estricto» que la gobernanza puede modificar es teatro, mientras que una asignación por módulo se aplica en el bytecode en cada acuñación. Lo que el propietario puede otorgar, la cadena lo muestra.
-
-## Cómo ganas FROST
-
-Solo los **suscriptores que pagan** ganan FROST. El nivel gratuito no gana nada — no hay superficie de farming.
-
-> **Suscríbete, y tu pago se convierte en FROST al precio de bono vigente — el mismo precio que paga un comprador de bonos en ese momento — otorgado como una posición en vesting.**
-
-Cuando pagas una suscripción, el contrato de recompensas lee el precio de bono actual y te otorga un bono de FROST por valor del **100% de lo que pagaste** (un dial de gobernanza, con un tope estricto en bytecode del 200%). Pasa por vesting durante unos días como cualquier bono, y luego lo redimes y el FROST se acuña a tu nombre. Sin niveles, sin multiplicadores de antigüedad, sin un calendario de emisión aparte que manipular — Enterprise gana ~4× que Pro porque paga ~4×. Un mes que no pagas es un mes que no ganas nada.
-
-Como la recompensa se fija por el precio del mercado de bonos, ganar se mantiene justo a cualquier precio de mercado: siempre recibes el mismo trato que obtendría un desconocido bonando USDC, y la misma maquinaria anti-manipulación (precio basado en deuda, disyuntor) protege a ambos.
-
-## La porción del desarrollador — se gana cuando tú ganas
-
-FrostyFi es un proyecto bootstrapped y de operador único — sin VC, sin preventa y sin pre-minado del fundador.
-
-> **La porción del desarrollador es una coacuñación del 10%: cada vez que un participante redime FROST, un 10% adicional de esa cantidad se acuña a la wallet del desarrollador. Sin redenciones, sin tokens para el desarrollador.**
-
-La tasa es un dial de gobernanza con un tope estricto en bytecode del 20%. La porción del desarrollador está estructuralmente aguas abajo de la de todos los demás: solo se activa cuando los clientes y bonistas realmente reclaman, por lo que el beneficio del desarrollador está acoplado al uso del protocolo — y su modo de fallo ("el protocolo fracasa, el desarrollador obtiene ~nada") es idéntico al de cada otro participante.
-
-## A dónde va cada dólar
-
-Cada pago del producto fluye a través de un divisor de ingresos on-chain:
-
-| Cubeta | Porción (ingresos de suscripción) | Propósito |
-|---|---|---|
-| Referidos | hasta 10% (6 / 2.5 / 1.5 en 3 niveles) | Se paga a la cadena de referentes en USDC; los niveles sin referente se trasladan a POL |
-| Operación | 16% | Costos de infraestructura y de modelos |
-| Desarrollo | 37% | La porción de ingresos del operador |
-| DAO / lockers | 7% | Alimenta la distribución semanal de USDC a quienes bloquean en PERMA |
-| **POL** | **el remanente (~30–40%)** | Compra FROST y lo empareja en liquidez propiedad del protocolo |
-
-El divisor está desplegado, es verificable, y cada cubeta llega a una dirección pública fija en cada pago.
-
-## Rendimiento real — bloquea por USDC
-
-**Mantener FROST por sí solo no gana nada.** Tienes que bloquearlo en una posición PERMA para ganar — los holders líquidos obtienen exposición al precio, no rendimiento.
-
-Quienes bloquean se pagan en **USDC, en una época semanal**: la porción de ingresos de quienes bloquean se acumula en un distribuidor on-chain, el bote de cada semana se acredita al peso total de bloqueo de esa semana, y reclamas tu porción a prorrata una vez que la semana se completa. Tu porción es tu peso PERMA — bloqueos más grandes y más largos ganan más, decayendo a medida que el bloqueo envejece.
-
 <Callout type="info">
-Quienes bloquean nunca se pagan en FROST. La única regla estricta que atraviesa todo el diseño: **ninguna recompensa se paga jamás en un token cuyo único uso es venderlo.**
+**Dirección del contrato: llegará con el lanzamiento.** Esta página la publicará, junto con el pool de BaseStonk, en cuanto FROSTY esté en vivo. Hasta entonces, cualquier token "FROSTY" que veas no es nuestro.
 </Callout>
 
-## Bonos — cómo la liquidez se profundiza
+## Lo básico
 
-Los ingresos construyen liquidez propiedad del protocolo de forma constante; los bonos la construyen *rápido*. Cualquiera puede depositar en un mercado de bonos abierto — **USDC, WETH, o una posición LP de Uniswap V3** — y recibir FROST con vesting durante unos 7 días.
+| | |
+|---|---|
+| Nombre | FrostyFi |
+| Ticker | FROSTY |
+| Cadena | Base |
+| Launchpad | BaseStonk |
+| Par | USDC |
+| Suministro | 1,000,000,000 FROSTY, fijo. Nada puede acuñar más. |
+| Liquidez de lanzamiento | Entra en el pool en el lanzamiento. Nadie, ni siquiera nosotros, puede retirarla. |
+| Máximo por wallet | 2.5% del suministro por wallet (el pool está exento) |
+| Preventa, VC o asignación al equipo | Ninguna |
 
-- **Con precio fijado por la deuda, no por el pool.** El precio del bono sube a medida que crece la deuda pendiente de bonos y se relaja a medida que se repaga — un ratio de deuda al estilo Olympus con un piso estricto. El precio del pool nunca toca el pago, así que manipular el mercado no puede acuñar FROST extra.
-- **Con disyuntor.** La emisión por ventana está limitada en el contrato; un pico de demanda ralentiza la máquina en lugar de vaciarla.
-- **Financiación, no ingresos.** El principal del bono va a la tesorería y a POL — nunca cuenta como ingreso del producto y nunca toca la ruta de recompensas.
+## El impuesto de trading
 
-La cubeta de POL hace exactamente lo que dice: la bóveda intercambia la mitad de su USDC por FROST y acuña una posición real de Uniswap V3 on-chain propiedad del protocolo. La posición, su tamaño y sus comisiones son todos públicos — consulta **[POL](/docs/pol)**.
+Cada operación paga un pequeño impuesto, y su destino queda fijado en el contrato del pool en el lanzamiento. **Ni las tasas ni el reparto pueden cambiarse nunca, ni por nosotros ni por nadie.**
 
-## Gobernanza — honestos sobre quién tiene las llaves
+| | Compra | Venta |
+|---|---|---|
+| Impuesto | 1% | 3% |
+| Parte de la plataforma BaseStonk | 0.5% | 1% |
+| Parte de FROSTY | 0.5% | 2% |
 
-PERMA es el voto. Las propuestas, la votación, la puesta en cola y la ejecución pasan por un Governor estándar de OpenZeppelin conectado al peso de bloqueo — el ciclo completo se ha ejecutado en testnet, incluyendo un cambio de parámetro on-chain.
+La parte de FROSTY se reparte en cuatro partes iguales:
 
-En la fase actual, la gobernanza es **de señalización primero**: los contratos que tocan fondos o acuñación permanecen bajo el multisig del operador, y las propuestas aprobadas son ejecutadas por el equipo. Esto es deliberado y está divulgado — mientras la comunidad sea pequeña, una ballena que compre una mayoría de un token delgado no debería poder votarse a sí misma la tesorería. El control migra hacia afuera en etapas a medida que la distribución de bloqueos hace que la captura sea económicamente absurda.
+| Destino | Porción | De una compra | De una venta | Qué hace |
+|---|---|---|---|---|
+| **Holders** | 25% | 0.125% | 0.5% | Se paga a los holders de FROSTY en USDC |
+| **Auto-liquidez** | 25% | 0.125% | 0.5% | Se añade al pool; lo hace más profundo y no se puede retirar |
+| **Tesorería** | 25% | 0.125% | 0.5% | La Safe de tesorería de FrostyLabs (`0x47b7…fF0A`), un multisig de 2 de 3 |
+| **Equipo** | 25% | 0.125% | 0.5% | La wallet del fundador: una porción del equipo divulgada |
+
+En una compra de $100 seguida de una venta de $100, el trader paga $4.00 de impuesto. BaseStonk se queda $1.50; los holders, la liquidez, la tesorería y el equipo reciben $0.625 cada uno.
+
+En los primeros minutos tras el lanzamiento, las compras pagan un peaje anti-sniper que empieza alto y baja hasta el 1% normal. Las ventas nunca lo pagan, y el peaje pasa por el mismo reparto.
+
+## Para qué sirve FROSTY
+
+### Recompensas para holders, en USDC
+Una cuarta parte de la porción del impuesto de FROSTY se paga a los holders en USDC, automáticamente, bajo las reglas de BaseStonk. No tienes que hacer staking ni bloquear nada.
+
+### Descuento en análisis (próximamente)
+El análisis de FrostyFunds (informes y calificaciones con IA sobre los activos de un fondo) costará menos para los holders de FROSTY. El descuento y el saldo que da derecho a él se publicarán aquí cuando el análisis esté en vivo.
+
+### Comisión del protocolo de fondos pagada en FROSTY (planificado)
+FrostyFunds puede cobrar a los fondos una pequeña comisión anual del protocolo (con un tope del 1% en el contrato; hoy es del 0%). Cuando se active, el gestor de un fondo podrá pagarla en FROSTY a **mitad de precio**, y ese FROSTY se quema. La comisión se anunciará antes de que empiece.
+
+### Recompras de la tesorería
+La tesorería obtiene ingresos del terminal de fondos (una comisión del 0.05% en los swaps spot de los fondos, una porción de las comisiones de los vaults de rendimiento, reembolsos por referidos de perps), de las suscripciones de FrostyFi y los pagos x402, y de su porción del impuesto de FROSTY. Parte de esos ingresos compra FROSTY en el pool, y ese FROSTY se quema.
+
+## Lo que FROSTY no es
+
+- **Sin bloqueo, sin staking, sin votaciones.** El diseño anterior de bloqueo PERMA, bonos y gobernanza on-chain queda retirado.
+- **Sin acuñación.** El suministro queda fijo en el lanzamiento.
+- **No es necesario.** Todos los productos de FrostyFi y FrostyFunds funcionan sin él. Las suscripciones y las comisiones se pagan en USDC.
 
 ---
 
-Ver también: **[POL — Liquidez Propiedad del Protocolo](/docs/pol)** · **[Precios](/docs/pricing)** · **[Hoja de ruta](/docs/roadmap)**
+Consulta también: **[Precios](/docs/pricing)** · **[Hoja de ruta](/docs/roadmap)**

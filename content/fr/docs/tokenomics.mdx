@@ -1,96 +1,70 @@
-# Tokenomics de $FROST
+# $FROSTY
 
-> **$FROST** est le jeton de protocole de FrostyFi — gagné par les clients payants, jamais prévendu. Abonnez-vous, et votre paiement vous mint du FROST via la même mécanique de bond que tout le monde utilise. Verrouillez-le pour **PERMA** et percevez une part des revenus du protocole en USDC.
+> **$FROSTY** est le jeton unique de tout ce que construit FrostyLabs : le terminal de trading [FrostyFunds](https://frostyfi.fund), l'application de flux de travail FrostyFi et l'analyse de fonds. Il se lance sur [BaseStonk](https://basestonk.io) sur Base, en paire avec l'USDC.
 
 import { Callout } from 'nextra/components'
 
-<Callout type="warning">
-Le jeton n'a **pas encore été lancé** — le TGE (génération du jeton) reste à déterminer. Mais cette page n'est pas un livre blanc d'intentions : chaque mécanisme ci-dessous est implémenté et a été validé de bout en bout sur un testnet public — abonnements répartissant les revenus on-chain, récompenses en acquisition, verrous rapportant de l'USDC, bonds tarifés sur une dette réelle, et un cycle de gouvernance complet exécuté.
-</Callout>
-
-## FROST et PERMA
-
-Deux choses, un seul objectif :
-
-| | **FROST** | **PERMA** |
-|---|---|---|
-| Ce que c'est | Le jeton ERC-20 liquide | Votre **position FROST verrouillée** — soulbound, non transférable |
-| Comment vous l'obtenez | Gagnez-le en payant pour FrostyFi, ou obtenez-le via un bond | Verrouillez du FROST pour une durée choisie (1 semaine – 4 ans) |
-| Confère | — | Un poids de vote + une part des revenus du protocole, payée en **USDC** |
-| Échangeable | Oui | Non — c'est la position de verrouillage elle-même, liée à votre adresse |
-
-PERMA n'est pas un jeton que vous détenez ou échangez — c'est votre position FROST verrouillée, enregistrée on-chain et liée à votre adresse. Le poids de vote évolue avec le **montant × le temps restant** et décroît linéairement, exactement comme le veAERO d'Aerodrome. Elle est **soulbound**, si bien que personne ne peut acheter ou vendre vos votes ni votre droit au rendement — ils appartiennent à quiconque a verrouillé son propre FROST.
-
-**Verrouiller, c'est de l'entiercement, pas une dépense.** Lorsque votre durée se termine, vous déverrouillez et **votre FROST vous revient** ; la position PERMA prend simplement fin. Le nom est littéral — verrouillez du FROST et il reste gelé sous forme de PERMA jusqu'à ce que vous le dégeliez.
-
-## Offre — plafonnée par allocation, mintée à la réclamation
-
-FROST n'a pas de chiffre d'offre arbitraire à mémoriser. À la place, l'offre est contrôlée comme on contrôle un budget :
-
-- **Chaque contrat capable de minter détient une `mintAllowance` on-chain** — un budget qu'il ne peut jamais dépasser, entamé à chaque mint. La mécanique de bond, les récompenses d'abonnement, la part du dev : chacun ne mint que dans les limites de son budget accordé, et ces budgets sont un état public que quiconque peut lire.
-- **Les jetons ne sont mintés qu'à la réclamation.** Les récompenses s'acquièrent d'abord progressivement puis sont mintées à la réclamation, de sorte que l'offre en circulation reflète ce que les participants ont réellement réclamé — rien ne dort pré-minté dans un portefeuille de trésorerie en attendant d'être largué sur le marché.
-- **Pas de pré-minage, pas de prévente, pas d'allocation VC.** Au lancement, l'offre démarre à zéro et ne croît que via les mécanismes décrits sur cette page.
-
-C'est un cadrage délibérément honnête : un « plafond strict » que la gouvernance peut modifier n'est que du théâtre, alors qu'une allocation par module est appliquée dans le bytecode à chaque mint. Ce que le propriétaire peut accorder, la chaîne le montre.
-
-## Comment vous gagnez du FROST
-
-Seuls les **abonnés payants** gagnent du FROST. Le palier gratuit ne rapporte rien — il n'y a pas de surface de farming.
-
-> **Abonnez-vous, et votre paiement est converti en FROST au prix de bond en direct — le même prix que paierait un acheteur de bond à cet instant — accordé sous forme de position en acquisition.**
-
-Lorsque vous payez un abonnement, le contrat de récompenses lit le prix de bond actuel et vous accorde un bond FROST d'une valeur égale à **100 % de ce que vous avez payé** (un curseur de gouvernance, plafonné dans le bytecode à 200 %). Il s'acquiert progressivement sur quelques jours comme n'importe quel bond, puis vous réclamez et le FROST est minté pour vous. Pas de paliers, pas de multiplicateurs d'ancienneté, pas de calendrier d'émission séparé à exploiter — Enterprise gagne ~4× Pro parce qu'il paie ~4×. Un mois où vous ne payez pas est un mois où vous ne gagnez rien.
-
-Parce que la récompense est tarifée par le marché des bonds, gagner reste équitable à n'importe quel prix de marché : vous recevez toujours la même offre qu'obtiendrait un inconnu qui bonderait de l'USDC, et la même mécanique anti-manipulation (tarification basée sur la dette, coupe-circuit) protège les deux.
-
-## La part du dev — gagnée quand vous gagnez
-
-FrostyFi est un projet auto-financé, à opérateur unique — pas de VC, pas de prévente, et pas de pré-minage fondateur.
-
-> **La part du développeur est un co-mint de 10 % : chaque fois qu'un participant réclame du FROST, un 10 % supplémentaire de ce montant est minté vers le portefeuille du dev. Pas de réclamations, pas de jetons dev.**
-
-Le taux est un curseur de gouvernance plafonné dans le bytecode à 20 %. La part du dev est structurellement en aval de celle de tous les autres : elle ne se déclenche que lorsque les clients et les bondeurs réclament effectivement, si bien que l'avantage du développeur est couplé à l'usage réel du protocole — et son mode d'échec (« le protocole échoue, le dev n'obtient presque rien ») est identique à celui de tout autre participant.
-
-## Où va chaque dollar
-
-Chaque paiement produit passe par un répartiteur de revenus on-chain :
-
-| Compartiment | Part (revenus d'abonnement) | Objectif |
-|---|---|---|
-| Parrainages | jusqu'à 10 % (6 / 2,5 / 1,5 sur 3 niveaux) | Versée à la chaîne de parrainage en USDC ; les niveaux sans parrain basculent vers la POL |
-| Exploitation | 16 % | Coûts d'infrastructure et de modèles |
-| Dev | 37 % | La part de revenus de l'opérateur |
-| DAO / ceux qui verrouillent | 7 % | Alimente la distribution hebdomadaire en USDC vers les positions PERMA verrouillées |
-| **POL** | **le reliquat (~30–40 %)** | Achète du FROST et l'apparie dans une liquidité détenue par le protocole |
-
-Le répartiteur est déployé, vérifiable, et chaque compartiment atterrit à une adresse publique fixe à chaque paiement.
-
-## Rendement réel — verrouillez pour de l'USDC
-
-**Détenir du FROST seul ne rapporte rien.** Vous devez le verrouiller dans une position PERMA pour gagner — les détenteurs liquides obtiennent une exposition au prix, pas du rendement.
-
-Ceux qui verrouillent sont payés en **USDC, sur une base hebdomadaire** : leur part des revenus s'accumule dans un distributeur on-chain, la cagnotte de chaque semaine est créditée au poids total verrouillé de cette semaine, et vous réclamez votre part au prorata une fois la semaine terminée. Votre part correspond à votre poids PERMA — des verrous plus grands et plus longs rapportent davantage, en décroissant à mesure que le verrou vieillit.
-
 <Callout type="info">
-Ceux qui verrouillent ne sont jamais payés en FROST. La seule règle stricte qui traverse toute la conception : **aucune récompense n'est jamais payée dans un jeton dont la seule utilité est de le vendre.**
+**Adresse du contrat : disponible au lancement.** Cette page l'indiquera, ainsi que le pool BaseStonk, dès que FROSTY sera en ligne. D'ici là, tout jeton « FROSTY » que vous voyez n'est pas le nôtre.
 </Callout>
 
-## Bonds — comment la liquidité s'approfondit
+## L'essentiel
 
-Les revenus construisent la liquidité détenue par le protocole de façon régulière ; les bonds la construisent *vite*. Quiconque peut déposer dans un marché de bonds ouvert — **USDC, WETH, ou une position LP Uniswap V3** — et recevoir du FROST qui s'acquiert progressivement sur environ 7 jours.
+| | |
+|---|---|
+| Nom | FrostyFi |
+| Ticker | FROSTY |
+| Chaîne | Base |
+| Launchpad | BaseStonk |
+| Paire | USDC |
+| Offre | 1,000,000,000 FROSTY, fixe. Rien ne peut en minter davantage. |
+| Liquidité de lancement | Placée dans le pool au lancement. Personne, nous compris, ne peut la retirer. |
+| Maximum par portefeuille | 2.5% de l'offre par portefeuille (le pool est exempté) |
+| Prévente, VC ou allocation à l'équipe | Aucune |
 
-- **Tarifé par la dette, pas par le pool.** Le prix du bond augmente à mesure que la dette de bond en cours croît et se détend à mesure qu'elle est remboursée — un ratio de dette à la Olympus avec un plancher strict. Le prix du pool n'entre jamais dans le paiement, donc manipuler le marché ne peut pas minter de FROST supplémentaire.
-- **Protégé par un coupe-circuit.** L'émission par fenêtre est plafonnée dans le contrat ; un pic de demande ralentit la machine au lieu de la vider.
-- **Du financement, pas du revenu.** Le principal des bonds va à la trésorerie et à la POL — il ne compte jamais comme revenu produit et ne touche jamais le circuit des récompenses.
+## La taxe de trading
 
-Le compartiment POL fait exactement ce que son nom indique : le coffre échange la moitié de son USDC contre du FROST et mint une véritable position Uniswap V3 on-chain détenue par le protocole. La position, sa taille et ses frais sont tous publics — voir **[POL](/docs/pol)**.
+Chaque transaction paie une petite taxe, et sa destination est fixée dans le contrat du pool au lancement. **Les taux et la répartition ne peuvent jamais être modifiés, ni par nous ni par personne.**
 
-## Gouvernance — honnête sur qui détient les clés
+| | Achat | Vente |
+|---|---|---|
+| Taxe | 1% | 3% |
+| Part de la plateforme BaseStonk | 0.5% | 1% |
+| Part de FROSTY | 0.5% | 2% |
 
-PERMA est le vote. Les propositions, le vote, la mise en file et l'exécution passent par un Governor OpenZeppelin standard câblé sur le poids de verrouillage — le cycle complet a été exécuté sur testnet, y compris un changement de paramètre on-chain.
+La part de FROSTY est répartie en quatre parts égales :
 
-Dans la phase actuelle, la gouvernance est **d'abord un signal** : les contrats qui touchent aux fonds et au mint restent sous le multisig de l'opérateur, et les propositions adoptées sont actionnées par l'équipe. C'est délibéré et divulgué — tant que la communauté est petite, une baleine qui achète une majorité d'un jeton peu liquide ne devrait pas pouvoir se voter la trésorerie. Le contrôle migre vers l'extérieur par étapes, à mesure que la distribution des verrous rend la capture économiquement absurde.
+| Destination | Part | D'un achat | D'une vente | Ce qu'elle fait |
+|---|---|---|---|---|
+| **Détenteurs** | 25% | 0.125% | 0.5% | Versée aux détenteurs de FROSTY en USDC |
+| **Auto-liquidité** | 25% | 0.125% | 0.5% | Ajoutée au pool ; elle l'approfondit et ne peut pas être retirée |
+| **Trésorerie** | 25% | 0.125% | 0.5% | La Safe de trésorerie de FrostyLabs (`0x47b7…fF0A`), un multisig 2-sur-3 |
+| **Équipe** | 25% | 0.125% | 0.5% | Le portefeuille du fondateur : une part d'équipe divulguée |
+
+Pour un achat de $100 suivi d'une vente de $100, le trader paie $4.00 de taxe. BaseStonk garde $1.50 ; les détenteurs, la liquidité, la trésorerie et l'équipe reçoivent chacun $0.625.
+
+Dans les premières minutes après le lancement, les achats paient un péage anti-sniper qui démarre haut et redescend jusqu'au 1% normal. Les ventes ne le paient jamais, et le péage passe par la même répartition.
+
+## À quoi sert FROSTY
+
+### Récompenses des détenteurs, en USDC
+Un quart de la part de taxe de FROSTY est versé aux détenteurs en USDC, automatiquement, selon les règles de BaseStonk. Vous n'avez rien à staker ni à verrouiller.
+
+### Remise sur l'analyse (à venir)
+L'analyse FrostyFunds (synthèses et notations par IA des actifs d'un fonds) coûtera moins cher aux détenteurs de FROSTY. La remise et le solde requis pour y avoir droit seront publiés ici lorsque l'analyse sera en ligne.
+
+### Frais de protocole des fonds payés en FROSTY (prévu)
+FrostyFunds peut facturer aux fonds de petits frais de protocole annuels (plafonnés à 1% dans le contrat ; ils sont à 0% aujourd'hui). Une fois activés, le gérant d'un fonds pourra les payer en FROSTY à **moitié prix**, et ce FROSTY est brûlé. Les frais seront annoncés avant leur entrée en vigueur.
+
+### Rachats par la trésorerie
+La trésorerie perçoit des revenus du terminal de fonds (des frais de 0.05% sur les swaps spot des fonds, une part des frais des vaults de rendement, des remises de parrainage sur les perps), des abonnements FrostyFi et des paiements x402, ainsi que de sa part de la taxe FROSTY. Une partie de ces revenus achète du FROSTY dans le pool, et ce FROSTY est brûlé.
+
+## Ce que FROSTY n'est pas
+
+- **Pas de verrouillage, pas de staking, pas de vote.** L'ancienne conception avec le verrou PERMA, les bonds et la gouvernance on-chain est retirée.
+- **Pas de mint.** L'offre est fixée au lancement.
+- **Pas obligatoire.** Tous les produits FrostyFi et FrostyFunds fonctionnent sans lui. Les abonnements et les frais se paient en USDC.
 
 ---
 
-Voir aussi : **[POL — Liquidité détenue par le protocole](/docs/pol)** · **[Tarifs](/docs/pricing)** · **[Feuille de route](/docs/roadmap)**
+Voir aussi : **[Tarifs](/docs/pricing)** · **[Feuille de route](/docs/roadmap)**

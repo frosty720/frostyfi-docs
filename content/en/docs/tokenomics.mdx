@@ -1,96 +1,70 @@
-# $FROST Tokenomics
+# $FROSTY
 
-> **$FROST** is FrostyFi's protocol token — earned by paying customers, never presold. Subscribe and your payment mints you FROST through the same bond machinery everyone else uses. Lock it for **PERMA** and earn a share of protocol revenue in USDC.
+> **$FROSTY** is the one token for everything FrostyLabs builds: the [FrostyFunds](https://frostyfi.fund) trading terminal, the FrostyFi workflow app, and fund research. It launches on [BaseStonk](https://basestonk.io) on Base, paired with USDC.
 
 import { Callout } from 'nextra/components'
 
-<Callout type="warning">
-The token has **not launched** — TGE (token generation) is to be determined. But this page is not a whitepaper of intentions: every mechanism below is implemented and has been validated end-to-end on a public testnet — subscriptions splitting revenue on-chain, rewards vesting, locks earning USDC, bonds pricing off real debt, and a full governance cycle executed.
-</Callout>
-
-## FROST and PERMA
-
-Two things, one purpose:
-
-| | **FROST** | **PERMA** |
-|---|---|---|
-| What | The liquid ERC-20 token | Your **locked FROST position** — soulbound, non-transferable |
-| How you get it | Earn it by paying for FrostyFi, or bond for it | Lock FROST for a chosen term (1 week – 4 years) |
-| Grants | — | Vote weight + a share of protocol revenue, paid in **USDC** |
-| Tradeable | Yes | No — it is the lock position itself, bound to your address |
-
-PERMA is not a token you hold or trade — it is your locked FROST position, recorded on-chain and bound to your address. Vote weight scales with **amount × remaining time** and decays linearly, exactly like Aerodrome's veAERO. It is **soulbound** so nobody can buy or sell your votes or your yield claim — they belong to whoever locked their own FROST.
-
-**Locking is escrow, not spending.** When your term ends you unlock and **your FROST returns to you**; the PERMA position simply ends. The name is literal — lock FROST and it stays frozen as PERMA until you thaw it.
-
-## Supply — allowance-bounded, mint-on-claim
-
-FROST has no arbitrary supply number to memorize. Instead, supply is controlled the way a budget is:
-
-- **Every contract that can mint holds an on-chain `mintAllowance`** — a budget it can never exceed, spent down with every mint. The bond machinery, the subscription rewards, the dev share: each mints only within its granted budget, and the budgets are public state anyone can read.
-- **Tokens are minted only when claimed.** Rewards vest first and mint on redemption, so circulating supply reflects what participants actually claimed — nothing sits pre-minted in a treasury wallet waiting to be dumped.
-- **No pre-mine, no presale, no VC allocation.** At launch the supply starts at zero and grows only through the mechanisms on this page.
-
-This is a deliberately honest framing: a "hard cap" that governance can amend is theater, while a per-module allowance is enforced in bytecode on every mint. What the owner can grant, the chain shows.
-
-## How you earn FROST
-
-Only **paying subscribers** earn FROST. The free tier earns nothing — there is no farming surface.
-
-> **Subscribe, and your payment is converted to FROST at the live bond price — the same price a bond buyer pays at that moment — granted as a vesting position.**
-
-When you pay for a subscription, the rewards contract reads the current bond price and grants you a FROST bond worth **100% of what you paid** (a governance dial, hard-capped in bytecode at 200%). It vests over days like any bond, then you redeem and the FROST mints to you. No tiers, no tenure multipliers, no separate emission schedule to game — Enterprise earns ~4× Pro because it pays ~4×. A month you don't pay is a month you earn nothing.
-
-Because the reward is priced by the bond market, earning stays fair at any market price: you always receive the same deal a stranger bonding USDC would get, and the same anti-manipulation machinery (debt-based pricing, circuit breaker) protects both.
-
-## The dev share — earned when you earn
-
-FrostyFi is a bootstrapped, sole-operator project — no VC, no presale, and no founder pre-mine.
-
-> **The developer's share is a 10% co-mint: whenever a participant redeems FROST, an additional 10% of that amount mints to the dev wallet. No redemptions, no dev tokens.**
-
-The rate is a governance dial hard-capped in bytecode at 20%. The dev share is structurally downstream of everyone else's: it fires only when customers and bonders actually claim, so the developer's upside is coupled to the protocol being used — and its failure mode ("protocol fails, dev gets ~nothing") is identical to every other participant's.
-
-## Where each dollar goes
-
-Every product payment flows through an on-chain revenue splitter:
-
-| Bucket | Share (subscription revenue) | Purpose |
-|---|---|---|
-| Referrals | up to 10% (6 / 2.5 / 1.5 across 3 levels) | Paid to the referrer chain in USDC; levels without a referrer roll into POL |
-| Operating | 16% | Infrastructure and model costs |
-| Dev | 37% | The operator's revenue share |
-| DAO / lockers | 7% | Feeds the weekly USDC distribution to PERMA lockers |
-| **POL** | **the remainder (~30–40%)** | Buys FROST and pairs it into protocol-owned liquidity |
-
-The splitter is deployed, verifiable, and each bucket lands at a fixed public address on every payment.
-
-## Real yield — lock for USDC
-
-**Holding FROST alone earns nothing.** You have to lock it into a PERMA position to earn — liquid holders get price exposure, not yield.
-
-Lockers are paid in **USDC, on a weekly epoch**: the lockers' revenue share accumulates in an on-chain distributor, each week's pot is credited to that week's total lock weight, and you claim your pro-rata share once the week completes. Your share is your PERMA weight — larger and longer locks earn more, decaying as the lock ages.
-
 <Callout type="info">
-Lockers are never paid in FROST. The one hard rule carried through the whole design: **no reward is ever paid in a token whose only use is selling it.**
+**Contract address: coming at launch.** This page will list it, and the BaseStonk pool, the moment FROSTY is live. Until then, any "FROSTY" token you see is not ours.
 </Callout>
 
-## Bonds — how the liquidity gets deep
+## The basics
 
-Revenue builds protocol-owned liquidity steadily; bonds build it *fast*. Anyone can deposit into an open bond market — **USDC, WETH, or a Uniswap V3 LP position** — and receive FROST vesting over about 7 days.
+| | |
+|---|---|
+| Name | FrostyFi |
+| Ticker | FROSTY |
+| Chain | Base |
+| Launchpad | BaseStonk |
+| Pair | USDC |
+| Supply | 1,000,000,000 FROSTY, fixed. Nothing can mint more. |
+| Launch liquidity | Goes into the pool at launch. Nobody, including us, can pull it. |
+| Max wallet | 2.5% of supply per wallet (the pool is exempt) |
+| Presale, VC or team allocation | None |
 
-- **Priced by debt, not by the pool.** The bond price rises as outstanding bond debt grows and eases as it's repaid — an Olympus-style debt ratio with a hard floor. The pool price never touches the payout, so bending the market can't mint extra FROST.
-- **Circuit-breakered.** Issuance per window is capped in the contract; a demand spike slows the machine instead of draining it.
-- **Funding, not revenue.** Bond principal goes to the treasury and POL — it never counts as product revenue and never touches the reward path.
+## The trading tax
 
-The POL bucket does exactly what it says: the vault swaps half its USDC for FROST and mints a real, on-chain Uniswap V3 position owned by the protocol. The position, its size, and its fees are all public — see **[POL](/docs/pol)**.
+Every trade pays a small tax, and where it goes is set in the pool's contract at launch. **The rates and the split can never be changed, by us or anyone else.**
 
-## Governance — honest about who holds the keys
+| | Buy | Sell |
+|---|---|---|
+| Tax | 1% | 3% |
+| BaseStonk's platform cut | 0.5% | 1% |
+| FROSTY's share | 0.5% | 2% |
 
-PERMA is the vote. Proposals, voting, queuing, and execution run through a standard OpenZeppelin Governor wired to lock weight — the full cycle has been executed on testnet, including an on-chain parameter change.
+FROSTY's share is split four equal ways:
 
-In the current phase, governance is **signaling-first**: fund- and mint-touching contracts stay under the operator's multisig, and passed proposals are actioned by the team. This is deliberate and disclosed — while the community is small, a whale buying a majority of a thin token should not be able to vote themselves the treasury. Control migrates outward in stages as lock distribution makes capture economically silly.
+| Destination | Share | Of a buy | Of a sell | What it does |
+|---|---|---|---|---|
+| **Holders** | 25% | 0.125% | 0.5% | Paid to FROSTY holders in USDC |
+| **Auto-liquidity** | 25% | 0.125% | 0.5% | Added to the pool; deepens it and can't be withdrawn |
+| **Treasury** | 25% | 0.125% | 0.5% | The FrostyLabs Treasury Safe (`0x47b7…fF0A`), a 2-of-3 multisig |
+| **Team** | 25% | 0.125% | 0.5% | The founder's wallet: a disclosed team share |
+
+On a $100 buy followed by a $100 sell, the trader pays $4.00 in tax. BaseStonk keeps $1.50; holders, liquidity, the treasury and the team each get $0.625.
+
+In the first minutes after launch, buys pay an anti-sniper toll that starts high and falls to the normal 1%. Sells never pay it, and the toll goes through the same split.
+
+## What FROSTY is for
+
+### Holder rewards, in USDC
+A quarter of FROSTY's tax share is paid to holders in USDC, automatically, under BaseStonk's rules. You don't stake or lock anything.
+
+### Research discount (coming)
+FrostyFunds research (AI briefs and ratings on a fund's assets) will cost less for FROSTY holders. The discount and the balance that qualifies will be published here when research goes live.
+
+### Fund protocol fee paid in FROSTY (planned)
+FrostyFunds can charge funds a small yearly protocol fee (capped at 1% in the contract; it is 0% today). Once it is switched on, a fund's manager can pay it in FROSTY at **half price**, and that FROSTY is burned. The fee will be announced before it starts.
+
+### Treasury buybacks
+The treasury earns from the funds terminal (a 0.05% fee on fund spot swaps, a share of yield vault fees, perps referral rebates), from FrostyFi subscriptions and x402 payments, and from its share of the FROSTY tax. Part of that income buys FROSTY from the pool, and the FROSTY is burned.
+
+## What FROSTY is not
+
+- **No locking, no staking, no voting.** The earlier PERMA lock, bonds and on-chain governance design is retired.
+- **No minting.** The supply is fixed at launch.
+- **Not required.** Every FrostyFi and FrostyFunds product works without it. Subscriptions and fees are paid in USDC.
 
 ---
 
-See also: **[POL — Protocol-Owned Liquidity](/docs/pol)** · **[Pricing](/docs/pricing)** · **[Roadmap](/docs/roadmap)**
+See also: **[Pricing](/docs/pricing)** · **[Roadmap](/docs/roadmap)**
